@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (playerRigidbody.velocity.x < maxXVelocity)
             {
-                playerRigidbody.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
+                playerRigidbody.AddForce(new Vector2(moveHorizontal * moveSpeed , 0f), ForceMode2D.Impulse);
             }
         }
 
