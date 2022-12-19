@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
 
     [Header("Running")]
+    [Range(0f, 1f)]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxXVelocity = 12f;
     [SerializeField] private float moveHorizontal;
