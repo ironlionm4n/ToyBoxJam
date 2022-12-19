@@ -42,15 +42,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(numInputs == 2)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashing)
         {
             playerAnimator.SetBool("Dashing", true);
 
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
-
-            dashAttemptInitiated = false;
-            inputTimer = 0;
-            numInputs = 0;
 
             dashing = true;
             dashTimer = dashCooldown;
@@ -69,18 +65,6 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        //Timer that runs and resets the number of inputs after the dash window passes
-        if (dashAttemptInitiated)
-        {
-            inputTimer += Time.deltaTime;
-        }
-
-        if(inputTimer >= dashWindow)
-        {
-            numInputs = 0;
-            inputTimer = 0;
-        }
-
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
 
@@ -91,34 +75,14 @@ public class PlayerMovement : MonoBehaviour
         if (moveHorizontal < 0)
         {
             spriteRenderer.flipX = true;
-
-            //Makes sure the dash is not on cooldown
-            if (dashTimer <= 0)
-            {
-                keyPressed = true;
-                dashDirection = -1;
-                dashAttemptInitiated = true;
-            }
+            dashDirection = -1;
         }
         if (moveHorizontal > 0)
         {
             spriteRenderer.flipX = false;
-
-            //Makes sure the dash is not on cooldown
-            if (dashTimer <= 0)
-            {
-                keyPressed = true;
-                dashDirection = 1;
-                dashAttemptInitiated = true;
-            }
+            dashDirection= 1;
         }
-        
-        //Adds 1 to the number of inputs once the player is done moving in a direction
-        if(keyPressed && moveHorizontal == 0)
-        {
-            numInputs++;
-            keyPressed = false;
-        }
+      
 
         if (Input.GetKeyDown(KeyCode.W))
         {
