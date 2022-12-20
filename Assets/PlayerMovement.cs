@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
             keyPressed = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (moveVertical > 0 && !isJumping)
         {
             playerAnimator.SetBool("Jumping", true);
             _shouldJump = true;
@@ -145,6 +145,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (_shouldJump && !isJumping) Jump();
+        
         
     }
 
