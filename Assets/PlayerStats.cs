@@ -6,6 +6,7 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("Required Components")]
     [SerializeField] private GameObject coinSpawnPoint;
+    [SerializeField] private AudioSource coinPickup;
 
     [Header("Preabs")]
     [SerializeField] private GameObject throwableCoin;
@@ -31,5 +32,6 @@ public class PlayerStats : MonoBehaviour
     public void CoinPickedUp()
     {
         numCoins++;
+        coinPickup.Play();
     }
 }
