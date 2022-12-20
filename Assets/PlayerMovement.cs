@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private AudioSource playerJump;
     [SerializeField] private AudioSource playerLand;
+    [SerializeField] private AudioSource playerRun;
 
     [Header("Running")]
     [Range(0f, 1f)]
@@ -101,6 +102,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 playerRigidbody.AddForce(new Vector2(moveHorizontal * moveSpeed , 0f), ForceMode2D.Impulse);
             }
+
+            if (!playerRun.isPlaying && playerRigidbody.velocity.y == 0)
+            {
+                playerRun.Play();
+            }
         }
 
         if (moveHorizontal < -0.1f)
@@ -109,6 +115,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 playerRigidbody.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
                 //cameraPos.x = Mathf.Clamp(cameraPos.x, minPos.x, maxPos.x);
+            }
+
+            if (!playerRun.isPlaying && playerRigidbody.velocity.y == 0)
+            {
+                playerRun.Play();
             }
         }
 
@@ -119,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        playerRun.Stop();
         playerJump.Play();
         playerRigidbody.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
         _shouldJump = false;
@@ -128,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y <= 0)
         {
+            playerRun.Stop();
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
             playerLand.Play();
