@@ -10,7 +10,7 @@ public class Coin : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Throwing")]
-    [SerializeField] private float throwForce = 10;
+    [SerializeField] private float throwForce = 15;
 
     [Header("Disapearing")]
     [SerializeField] private float disapearTime = 3f;

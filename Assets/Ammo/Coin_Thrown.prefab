@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoRigidbody: {fileID: 2116598040414044980}
   spriteRenderer: {fileID: 2116598040414044982}
-  throwForce: 10
+  throwForce: 15
   disapearTime: 3
   flashTimer: 0
   aliveTime: 5
