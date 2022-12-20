@@ -137,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y < Mathf.Epsilon)
+        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y <= 0)
         {
             playerRun.Stop();
             isJumping = false;
