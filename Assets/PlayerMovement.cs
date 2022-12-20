@@ -90,6 +90,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(moveHorizontal == 0 && playerRun.isPlaying)
+        {
+            playerRun.Stop();
+        }
+
         if (moveHorizontal > 0.1f)
         {
             if (playerRigidbody.velocity.x < maxXVelocity)
