@@ -13,6 +13,8 @@ public class PlayerStats : MonoBehaviour
     [Header("Collectables")]
     [SerializeField] private int numCoins = 0;
 
+    private bool _canFire = true;
+    
     // Update is called once per frame
     void Update()
     {
@@ -22,9 +24,16 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    //Fires a coin as long as the player has some available
-    public void Fire()
+    public void SetCanFire(bool ableToFire)
     {
+        _canFire = ableToFire;
+    }
+
+    //Fires a coin as long as the player has some available
+    private void Fire()
+    {
+        if (!_canFire) return;
+        
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
     }
 
