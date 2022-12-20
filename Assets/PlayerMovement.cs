@@ -142,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
             if (playerRigidbody.velocity.x > -maxXVelocity)
             {
                 playerRigidbody.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
+                //cameraPos.x = Mathf.Clamp(cameraPos.x, minPos.x, maxPos.x);
             }
         }
 
