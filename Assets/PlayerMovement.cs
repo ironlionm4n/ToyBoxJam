@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxXVelocity = 12f;
+    [SerializeField] private float maxYVelocity = 10f;
     [SerializeField] private float moveHorizontal;
 
     [Header("Jumping")]
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isJumping = false;
     [SerializeField] private float fallForce = 5f;
     [SerializeField] private float moveVertical;
+    [SerializeField] private bool jumpQueued = false;
+    [SerializeField] private float velocityY = 0f;
 
     [Header("Dashing")]
     [SerializeField] private float dashCooldown = 1f;
@@ -39,6 +42,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //Used for debugging
+        velocityY = playerRigidbody.velocity.y;
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && !dashing)
         {
             playerAnimator.SetBool("Dashing", true);
@@ -81,10 +87,17 @@ public class PlayerMovement : MonoBehaviour
         }
       
 
-        if (moveVertical > 0 && !isJumping)
+        if (moveVertical > 0 && !isJumping && !jumpQueued)
         {
-            playerAnimator.SetBool("Jumping", true);
-            _shouldJump = true;
+            if (playerRigidbody.velocity.y == 0f)
+            {
+                playerAnimator.SetBool("Jumping", true);
+                _shouldJump = true;
+            }
+            else
+            {
+                jumpQueued = true;
+            }
         }
     }
 
@@ -123,6 +136,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (_shouldJump && !isJumping) Jump();
+
+        if(jumpQueued && playerRigidbody.velocity.y == 0)
+        {
+            jumpQueued = false;
+            Jump();
+        }
         
         
     }
@@ -131,13 +150,14 @@ public class PlayerMovement : MonoBehaviour
     {
         playerRun.Stop();
         playerJump.Play();
+
         playerRigidbody.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
         _shouldJump = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y <= 0)
+        if (collision.gameObject.tag == "Ground")
         {
             playerRun.Stop();
             isJumping = false;
