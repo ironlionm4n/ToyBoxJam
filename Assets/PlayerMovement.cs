@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         }
       
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (moveVertical > 0 && !isJumping)
         {
             playerAnimator.SetBool("Jumping", true);
             _shouldJump = true;
@@ -112,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_shouldJump && !isJumping) Jump();
         
+        
     }
 
     private void Jump()
@@ -122,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y <= 0)
         {
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
