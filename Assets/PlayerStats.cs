@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Required Components")]
     [SerializeField] private GameObject coinSpawnPoint;
     [SerializeField] private AudioSource coinPickup;
+    [SerializeField] private AudioSource coinThrow;
 
     [Header("Preabs")]
     [SerializeField] private GameObject throwableCoin;
@@ -27,6 +28,7 @@ public class PlayerStats : MonoBehaviour
     public void Fire()
     {
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
+        coinThrow.Play();
     }
 
     public void CoinPickedUp()
