@@ -21,18 +21,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveVertical;
 
     [Header("Dashing")]
-    [SerializeField] private float dashWindow = 0.5f;
-    [SerializeField] private int numInputs = 0;
-    [SerializeField] private bool keyPressed = false;
-    [SerializeField] private bool dashAttemptInitiated = false;
-    [SerializeField] private float inputTimer = 0f;
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashTimer = 0f;
     [SerializeField] private bool dashing = false;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] float dashDirection = 0;
 
-    private Vector2 _moveDirection = Vector2.zero;
     private bool _shouldJump;
 
     private void Awake()
@@ -123,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y <= 0)
+        if (collision.gameObject.tag == "Ground" && playerRigidbody.velocity.y < Mathf.Epsilon)
         {
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
