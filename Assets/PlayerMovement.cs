@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private AudioSource playerJump;
+    [SerializeField] private AudioSource playerLand;
 
     [Header("Running")]
     [Range(0f, 1f)]
@@ -117,6 +119,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        playerJump.Play();
         playerRigidbody.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
         _shouldJump = false;
     }
@@ -127,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
+            playerLand.Play();
         }
     }
 
