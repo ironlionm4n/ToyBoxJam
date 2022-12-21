@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class BossStats : MonoBehaviour
 {
+    [Header("Required Components")]
+    [SerializeField] private AudioSource bossMusic;
+
     [Header("Stats")]
     [SerializeField] private float currentHealth = 100f;
     [SerializeField] private int phase = 1;
     [SerializeField] private bool defeated = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,13 @@ public class BossStats : MonoBehaviour
     void Update()
     {
         
+        if(currentHealth < 30)
+        {
+            bossMusic.pitch = 1.16f;
+        }else if(currentHealth < 70)
+        {
+            bossMusic.pitch = 1.05f;
+        }
     }
 
     public void Dead()
