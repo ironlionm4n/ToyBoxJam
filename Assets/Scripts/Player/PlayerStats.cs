@@ -83,7 +83,8 @@ public class PlayerStats : MonoBehaviour
         
         if(health <= 0)
         {
-            playerMovement.IsDead();
+            playerMovement.IsDead = true;
+            
             return;
         }
 
