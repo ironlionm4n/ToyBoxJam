@@ -133,7 +133,7 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball")
         {
             if (!invincible)
             {
@@ -165,6 +165,11 @@ public class PlayerStats : MonoBehaviour
                 Debug.Log("Hurt");
                 invincible = true;
                 Hurt(knockbackDirection);
+
+                if(collision.tag == "Fireball")
+                {
+                    Destroy(collision.gameObject);
+                }
             }
         }
     }
