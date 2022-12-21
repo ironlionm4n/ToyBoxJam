@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Sprite: {fileID: 964439500, guid: 4db083f7510cec7428f4e452a52be889, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rigidbody: {fileID: 2674791429354450703}
-  speed: 5
+  speed: 7
   chaseTime: 10
   chaseTimer: 0
   currentSize: 5

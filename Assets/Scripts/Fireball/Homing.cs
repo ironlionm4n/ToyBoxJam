@@ -11,8 +11,8 @@ public class Homing : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidbody;
 
     [Header("Variables")]
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float chaseTime = 10f;
+    [SerializeField] private float speed = 7f;
+    [SerializeField] private float chaseTime = 8f;
     [SerializeField] private float chaseTimer = 0f;
     [SerializeField] private float currentSize = 5f;
     [SerializeField] private float sizeChangeAmount = 0.1f;
@@ -23,7 +23,7 @@ public class Homing : MonoBehaviour
 
     private void OnEnable()
     {
-       
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame

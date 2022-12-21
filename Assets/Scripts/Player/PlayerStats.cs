@@ -22,7 +22,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Health")]
     [SerializeField] private float health = 3;
     [SerializeField] private bool invincible = false;
-    [SerializeField] private float invulnerableTimer = 3f;
+    [SerializeField] private float invulnerableTimer = 1f;
     [SerializeField] private float invulFrameTimer = 0f;
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float lowHealthAlertTimer = 5f;
@@ -88,17 +88,19 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
+
         invulFrameTimer = 0f;
 
         playerMovement.SetKnockbacked(true);
         playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
         playerRigidbody.AddForce(new Vector2(knockbackDir * knockbackForce, 5), ForceMode2D.Impulse);
-
+        
         StartCoroutine(InvulnTime());
     }
 
     public IEnumerator InvulnTime()
     {
+
         while(invulFrameTimer < invulnerableTimer)
         {
             Flash();
@@ -134,10 +136,12 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")
         {
             if (!invincible)
             {
+                invincible = true;
+
                 //Figures out which way to knock player 
                 float knockbackDirection = 0f;
 
@@ -164,12 +168,15 @@ public class PlayerStats : MonoBehaviour
                 }
 
                 Debug.Log("Hurt");
-                invincible = true;
                 Hurt(knockbackDirection);
 
                 if(collision.tag == "Fireball")
                 {
                     Destroy(collision.gameObject);
+                }
+                else if(collision.tag == "SpinningFireball")
+                {
+                    collision.gameObject.SetActive(false);
                 }
             }
         }

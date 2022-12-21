@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Fireball
   - DeathBarrier
+  - SpinningFireball
   layers:
   - Default
   - TransparentFX
