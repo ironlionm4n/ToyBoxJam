@@ -34,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] float dashDirection = 0;
 
+    [Header("General Variables")]
+    [SerializeField] private bool isDead = false;
+
     private bool _shouldJump;
 
     private void Awake()
@@ -187,5 +190,10 @@ public class PlayerMovement : MonoBehaviour
     public void SetKnockbacked(bool kb)
     {
         knockbacked = kb;
+    }
+
+    public void IsDead()
+    {
+        isDead = true;
     }
 }

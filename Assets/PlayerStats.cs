@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private GameObject coinSpawnPoint;
     [SerializeField] private AudioSource coinPickup;
     [SerializeField] private AudioSource coinThrow;
+    [SerializeField] private AudioSource lowHealth;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private PlayerMovement playerMovement;
@@ -23,10 +24,16 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private bool invincible = false;
     [SerializeField] private float invulnerableTimer = 3f;
     [SerializeField] private float invulFrameTimer = 0f;
-    [SerializeField] private bool dead = false;
     [SerializeField] private float knockbackForce = 10f;
+    [SerializeField] private float lowHealthAlertTimer = 5f;
+    [SerializeField] private bool alerting = false;
 
     private bool _canFire = true;
+
+    private void OnEnable()
+    {
+        
+    }
 
     // Update is called once per frame
     void Update()
@@ -34,6 +41,14 @@ public class PlayerStats : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+        }
+
+        if(health == 1)
+        {
+            if (!alerting)
+            {
+                StartCoroutine(LowHealthAlert());
+            }
         }
     }
 
@@ -68,7 +83,7 @@ public class PlayerStats : MonoBehaviour
         
         if(health <= 0)
         {
-            dead = true;
+            playerMovement.IsDead();
             return;
         }
 
@@ -101,6 +116,19 @@ public class PlayerStats : MonoBehaviour
             spriteRenderer.enabled = true;  
         }
         invincible = false;
+    }
+
+    public IEnumerator LowHealthAlert()
+    {
+        alerting = true;
+        
+        if(health == 1)
+        {
+            lowHealth.Play();
+        }
+        yield return new WaitForSeconds(lowHealthAlertTimer);
+
+        alerting = false;
     }
 
     private void OnTriggerStay2D(Collider2D collision)

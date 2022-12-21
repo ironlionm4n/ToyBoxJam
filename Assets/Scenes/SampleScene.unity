@@ -3417,6 +3417,8 @@ GameObject:
   - component: {fileID: 953734222}
   - component: {fileID: 953734221}
   - component: {fileID: 953734220}
+  - component: {fileID: 953734226}
+  - component: {fileID: 953734225}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3535,6 +3537,7 @@ MonoBehaviour:
   maxXVelocity: 12
   maxYVelocity: 20
   moveHorizontal: 0
+  knockbacked: 0
   jumpForce: 20
   isJumping: 0
   fallForce: 5
@@ -3644,8 +3647,19 @@ MonoBehaviour:
   coinSpawnPoint: {fileID: 1314241689}
   coinPickup: {fileID: 953734220}
   coinThrow: {fileID: 953734221}
+  lowHealth: {fileID: 953734226}
+  spriteRenderer: {fileID: 953734212}
+  playerRigidbody: {fileID: 953734211}
+  playerMovement: {fileID: 953734214}
   throwableCoin: {fileID: 2116598040414044981, guid: f444ee30e829da643980fb4cd1e2b977, type: 3}
   numCoins: 0
+  health: 3
+  invincible: 0
+  invulnerableTimer: 0.5
+  invulFrameTimer: 0
+  dead: 0
+  knockbackForce: 10
+  lowHealthAlertTimer: 5
 --- !u!82 &953734220
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4041,6 +4055,118 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 40eec7665fdc07643a7bab5eb54ea90e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!70 &953734225
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953734209}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 0.0001}
+  m_Direction: 0
+--- !u!82 &953734226
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953734209}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5eaa301830ca8bc4e81e1576e7dde2c2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4745,6 +4871,10 @@ PrefabInstance:
     - target: {fileID: 2883632627060923042, guid: 9addb8b3ca5718747afb6614231554ca, type: 3}
       propertyPath: m_Name
       value: Bat 1 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883632627060923046, guid: 9addb8b3ca5718747afb6614231554ca, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2883632627060923046, guid: 9addb8b3ca5718747afb6614231554ca, type: 3}
       propertyPath: isWaypointBat
