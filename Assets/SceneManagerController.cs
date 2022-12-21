@@ -14,4 +14,9 @@ public class SceneManagerController : MonoBehaviour
     {
         SceneManager.LoadScene("Options");
     }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
