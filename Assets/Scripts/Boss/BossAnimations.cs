@@ -9,11 +9,12 @@ public class BossAnimations : MonoBehaviour
     [SerializeField] private Animation idle;
     [SerializeField] private Animation attack;
     [SerializeField] private GameObject player;
+    [SerializeField] private Animator bossAnimator;
 
     // Start is called before the first frame update
     void OnEnable()
     {
-        
+        StartCoroutine(TestAnimations());
     }
 
     // Update is called once per frame
@@ -27,5 +28,18 @@ public class BossAnimations : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public IEnumerator TestAnimations()
+    {
+        yield return new WaitForSeconds(5f);
+
+        bossAnimator.SetBool("Attacking", true);
+
+        yield return new WaitForSeconds(5f);
+
+        bossAnimator.SetBool("Attacking", false);
+
+        StartCoroutine(TestAnimations());
     }
 }

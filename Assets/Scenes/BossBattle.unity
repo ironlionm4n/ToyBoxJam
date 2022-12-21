@@ -35528,6 +35528,7 @@ MonoBehaviour:
   idle: {fileID: 0}
   attack: {fileID: 0}
   player: {fileID: 1044909736}
+  bossAnimator: {fileID: 1681127816}
 --- !u!114 &1681127815
 MonoBehaviour:
   m_ObjectHideFlags: 0
