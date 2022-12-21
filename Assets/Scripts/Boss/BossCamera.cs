@@ -11,7 +11,7 @@ public class BossCamera : MonoBehaviour
     void Update()
     {
 
-        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, -5, 6), 
+        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, -10.9f, 11.7f), 
             Mathf.Clamp(player.transform.position.y, 1.5f, 5f), -10);
        
     }
