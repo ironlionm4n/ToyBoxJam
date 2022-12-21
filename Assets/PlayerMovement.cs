@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxXVelocity = 12f;
     [SerializeField] private float maxYVelocity = 10f;
     [SerializeField] private float moveHorizontal;
+    [SerializeField] private bool knockbacked = false;
 
     [Header("Jumping")]
     [SerializeField] private float jumpForce = 20;
@@ -75,12 +76,12 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetFloat("HorizontalMovement", moveHorizontal);
         playerAnimator.SetFloat("VerticalMovement", playerRigidbody.velocity.y);
 
-        if (moveHorizontal < 0)
+        if (moveHorizontal < 0 && !knockbacked)
         {
             spriteRenderer.flipX = true;
             dashDirection = -1;
         }
-        if (moveHorizontal > 0)
+        if (moveHorizontal > 0 && !knockbacked)
         {
             spriteRenderer.flipX = false;
             dashDirection= 1;
@@ -108,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
             playerRun.Stop();
         }
 
-        if (moveHorizontal > 0.1f)
+        if (moveHorizontal > 0.1f && !knockbacked)
         {
             if (playerRigidbody.velocity.x < maxXVelocity)
             {
@@ -121,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (moveHorizontal < -0.1f)
+        if (moveHorizontal < -0.1f && !knockbacked)
         {
             if (playerRigidbody.velocity.x > -maxXVelocity)
             {
@@ -181,5 +182,10 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitWhile(() => playerAnimator.GetCurrentAnimatorStateInfo(0).length > playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
         playerAnimator.SetBool("Dashing", false);
+    }
+
+    public void SetKnockbacked(bool kb)
+    {
+        knockbacked = kb;
     }
 }
