@@ -37,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
 
+    public bool IsDead
+    {
+        get => isDead;
+        set => isDead = value;
+    }
     private bool _shouldJump;
 
     private void Awake()
@@ -44,8 +49,15 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody.gravityScale = fallForce;
     }
 
+    private void OnEnable()
+    {
+        isDead = false;
+    }
+
     private void Update()
     {
+        if (isDead) return;
+        
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
 
@@ -191,9 +203,5 @@ public class PlayerMovement : MonoBehaviour
     {
         knockbacked = kb;
     }
-
-    public void IsDead()
-    {
-        isDead = true;
-    }
+    
 }
