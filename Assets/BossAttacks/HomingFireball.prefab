@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rigidbody: {fileID: 2674791429354450703}
+  collider: {fileID: 2674791429354450702}
   speed: 7
   chaseTime: 10
   chaseTimer: 0

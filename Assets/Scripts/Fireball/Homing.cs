@@ -9,6 +9,7 @@ public class Homing : MonoBehaviour
     [Header("Required Components")]
     [SerializeField] private GameObject player;
     [SerializeField] private Rigidbody2D rigidbody;
+    [SerializeField] private Collider2D collider;
 
     [Header("Variables")]
     [SerializeField] private float speed = 7f;
@@ -24,6 +25,7 @@ public class Homing : MonoBehaviour
     private void OnEnable()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        collider.enabled = false;
     }
 
     // Update is called once per frame
@@ -34,6 +36,12 @@ public class Homing : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Gives the player a little bit of time to get out of the fires way incase it spawns on them
+        if(chaseTimer > 1)
+        {
+            collider.enabled = true;
+        }
+
         if(chaseTimer >= chaseTime)
         {
             Destroy(gameObject);
