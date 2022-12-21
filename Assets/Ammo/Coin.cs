@@ -66,6 +66,7 @@ public class Coin : MonoBehaviour
         {
             if(collision.GetComponent<Enemy>() != null)
             {
+                Debug.Log("Hit");
                 collision.GetComponent<Enemy>().TakeDamage(damage);
                 Destroy(gameObject);
             }

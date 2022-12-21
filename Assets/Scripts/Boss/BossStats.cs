@@ -22,11 +22,12 @@ public class BossStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if(currentHealth < 30)
+        //Changes music based on boss health
+        if(currentHealth <= 30)
         {
             bossMusic.pitch = 1.16f;
-        }else if(currentHealth < 70)
+        }
+        else if(currentHealth <= 70)
         {
             bossMusic.pitch = 1.05f;
         }
