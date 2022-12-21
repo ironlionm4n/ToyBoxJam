@@ -56,7 +56,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isDead) return;
+        if (isDead)
+        {
+            if(playerRun.isPlaying)
+            {
+                playerRun.Stop();
+            }
+
+            playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
+
+            return;
+        }
         
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
