@@ -11,6 +11,9 @@ public class BossAnimations : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Animator bossAnimator;
 
+    [Header("Variables")]
+    [SerializeField] private bool attacking = false;
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -35,11 +38,35 @@ public class BossAnimations : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         bossAnimator.SetBool("Attacking", true);
+        attacking = true;
+        StartCoroutine(Vibrate());
 
         yield return new WaitForSeconds(5f);
 
+        attacking = false;
         bossAnimator.SetBool("Attacking", false);
 
         StartCoroutine(TestAnimations());
+    }
+
+    public IEnumerator Vibrate()
+    {
+        while (attacking)
+        {
+            transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, 0f);
+
+            yield return new WaitForSeconds(0.1f);
+
+            transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y, 0f);
+
+            yield return new WaitForSeconds(0.1f);
+
+            transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y, 0f);
+
+            yield return new WaitForSeconds(0.1f);
+
+            transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, 0f);
+
+        }
     }
 }
