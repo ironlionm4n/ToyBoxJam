@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class LoadBossLevel : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        SceneManager.LoadScene("BossBattle");
+        var playerMovement = other.GetComponent<PlayerMovement>();
+        if(playerMovement != null)
+            SceneManager.LoadScene("BossBattle");
     }
 }
