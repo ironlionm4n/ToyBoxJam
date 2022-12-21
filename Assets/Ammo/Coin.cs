@@ -19,6 +19,9 @@ public class Coin : MonoBehaviour
     [SerializeField] private float aliveTime = 5f;
     [SerializeField] private float aliveTimer = 0f;
 
+    [Header("Damage")]
+    [SerializeField] private float damage = 10f;
+
     void OnEnable()
     {
         //Launches Coin Up
@@ -57,6 +60,15 @@ public class Coin : MonoBehaviour
         {
             collision.GetComponent<PlayerStats>().CoinPickedUp();
             Destroy(gameObject);
+        }
+
+        if(collision.tag == "Enemy")
+        {
+            if(collision.GetComponent<Enemy>() != null)
+            {
+                collision.GetComponent<Enemy>().TakeDamage(damage);
+                Destroy(gameObject);
+            }
         }
     }
 }

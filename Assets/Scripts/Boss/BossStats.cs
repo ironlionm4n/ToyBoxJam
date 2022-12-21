@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossStats : MonoBehaviour
 {
     [Header("Stats")]
-    [SerializeField] private float health = 100f;
+    [SerializeField] private float currentHealth = 100f;
     [SerializeField] private int phase = 1;
     [SerializeField] private bool defeated = false;
 
@@ -19,5 +19,17 @@ public class BossStats : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Dead()
+    {
+        defeated = true;
+    }
+
+    public void Hit(float damage)
+    {
+        currentHealth -= damage;
+
+        //Checks for phases
     }
 }

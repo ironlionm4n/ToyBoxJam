@@ -77,4 +77,11 @@ public class BatController : MonoBehaviour
         
         _currentDestination = waypoints[_waypointIndex].position;
     }
+
+    public void Dead()
+    {
+        //Death animation?
+
+        Destroy(gameObject);
+    }
 }
