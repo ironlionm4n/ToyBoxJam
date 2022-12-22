@@ -18,15 +18,15 @@ public class BossStats : MonoBehaviour
 
     [Header("Homing")]
     [SerializeField] private float timeBetweenHomingShots = 8f;
-    [SerializeField] private float homeShotTimer = 0f;
+    [SerializeField] private float homeShotTimer = 6f;
 
     [Header("Four Way")]
     [SerializeField] private float timeBetweenFourWayAttacks = 20f;
-    [SerializeField] private float fourWayTimer = 0f;
+    [SerializeField] private float fourWayTimer = 19f;
 
     [Header("Indicator")]
     [SerializeField] private float timeBetweenIndicatorAttacks = 5f;
-    [SerializeField] private float indicatorTimer = 0f;
+    [SerializeField] private float indicatorTimer = 4f;
 
     [Header("Stats")]
     [SerializeField] private float currentHealth = 100f;

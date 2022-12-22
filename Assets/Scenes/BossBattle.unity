@@ -36444,11 +36444,11 @@ MonoBehaviour:
   FourWayAttack: {fileID: 6671852822925932260, guid: a31e1d8a22127894696a65a0e6458e71, type: 3}
   IndicatorAttack: {fileID: 4951817776641251269, guid: 72a20c8fa2c60734ea0fd84194f70593, type: 3}
   timeBetweenHomingShots: 8
-  homeShotTimer: 0
+  homeShotTimer: 6
   timeBetweenFourWayAttacks: 20
-  fourWayTimer: 0
+  fourWayTimer: 19
   timeBetweenIndicatorAttacks: 5
-  indicatorTimer: 0
+  indicatorTimer: 3
   currentHealth: 100
   phase: 1
   defeated: 0
