@@ -136,6 +136,12 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if(collision.tag == "Coin")
+        {
+            CoinPickedUp();
+            Destroy(collision.gameObject);
+        }
+        
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")
         {
             if (!invincible)

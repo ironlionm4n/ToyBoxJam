@@ -11,6 +11,7 @@ TagManager:
   - DeathBarrier
   - SpinningFireball
   - Despawn
+  - Coin
   layers:
   - Default
   - TransparentFX
