@@ -2723,7 +2723,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6671852822925932260}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0.43, z: -10.036646}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2750,7 +2750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6671852822925932259}
   target: {fileID: 6671852823871913467}
-  spinSpeed: 130
+  spinSpeed: 60
   spinTime: 10
   spinTimer: 0
   activated: 0
@@ -7429,7 +7429,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6671852823871913467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1, y: -1.66, z: 10.036646}
+  m_LocalPosition: {x: 1.09, y: -1.01, z: 10.036646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

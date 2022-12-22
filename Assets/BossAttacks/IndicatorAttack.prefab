@@ -218,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp1: {fileID: 4951817776032500187}
   sp2: {fileID: 4951817777782761487}
-  sp3: {fileID: 0}
+  sp3: {fileID: 5830222460023530682}
   flashing: 0
   flashSpeed: 0.5
   flashTime: 5

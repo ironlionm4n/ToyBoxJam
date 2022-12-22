@@ -6,6 +6,14 @@ public class BossStats : MonoBehaviour
 {
     [Header("Required Components")]
     [SerializeField] private AudioSource bossMusic;
+    [SerializeField] private GameObject homingSpawn;
+    [SerializeField] private GameObject fourWaySpawn;
+    [SerializeField] private GameObject indicatorSpawn;
+
+    [Header("Attacks")]
+    [SerializeField] private GameObject HomingAttack;
+    [SerializeField] private GameObject FourWayAttack;
+    [SerializeField] private GameObject IndicatorAttack;
 
     [Header("Stats")]
     [SerializeField] private float currentHealth = 100f;
@@ -14,9 +22,9 @@ public class BossStats : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        
+
     }
 
     // Update is called once per frame
