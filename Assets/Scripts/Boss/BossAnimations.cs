@@ -17,7 +17,7 @@ public class BossAnimations : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        StartCoroutine(TestAnimations());
+        //StartCoroutine(TestAnimations());
     }
 
     // Update is called once per frame
@@ -49,6 +49,17 @@ public class BossAnimations : MonoBehaviour
         StartCoroutine(TestAnimations());
     }
 
+    public void Attack()
+    {
+        bossAnimator.SetBool("Attacking", true);
+        StartCoroutine(Vibrate());
+    }
+
+    public void Dead()
+    {
+
+    }
+
     public IEnumerator Vibrate()
     {
         while (attacking)
@@ -68,5 +79,7 @@ public class BossAnimations : MonoBehaviour
             transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, 0f);
 
         }
+
+        bossAnimator.SetBool("Attacking", false);
     }
 }

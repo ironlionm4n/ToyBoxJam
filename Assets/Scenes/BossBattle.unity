@@ -36439,12 +36439,20 @@ MonoBehaviour:
   homingSpawn: {fileID: 937386948}
   fourWaySpawn: {fileID: 495933000}
   indicatorSpawn: {fileID: 261401251}
+  animations: {fileID: 1681127814}
   HomingAttack: {fileID: 2674791429354450697, guid: 917e62b27b9d6eb4e87a10b16e04d343, type: 3}
   FourWayAttack: {fileID: 6671852822925932260, guid: a31e1d8a22127894696a65a0e6458e71, type: 3}
   IndicatorAttack: {fileID: 4951817776641251269, guid: 72a20c8fa2c60734ea0fd84194f70593, type: 3}
+  timeBetweenHomingShots: 8
+  homeShotTimer: 0
+  timeBetweenFourWayAttacks: 20
+  fourWayTimer: 0
+  timeBetweenIndicatorAttacks: 5
+  indicatorTimer: 0
   currentHealth: 100
   phase: 1
   defeated: 0
+  attacking: 0
 --- !u!95 &1681127816
 Animator:
   serializedVersion: 4
