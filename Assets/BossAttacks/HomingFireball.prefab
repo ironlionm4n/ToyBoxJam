@@ -153,7 +153,7 @@ MonoBehaviour:
   rigidbody: {fileID: 2674791429354450703}
   collider: {fileID: 2674791429354450702}
   speed: 7
-  chaseTime: 10
+  chaseTime: 4
   chaseTimer: 0
   currentSize: 5
   sizeChangeAmount: 0.1

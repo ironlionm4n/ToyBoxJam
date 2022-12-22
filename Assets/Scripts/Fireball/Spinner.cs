@@ -54,6 +54,32 @@ public class Spinner : MonoBehaviour
 
     }
 
+    public IEnumerator Flash()
+    {
+        while(activated)
+        {
+            for (int i = NorthRow.Length - 1; i > -1; i--)
+            {
+                NorthRow[i].gameObject.SetActive(false);
+                EastRow[i].gameObject.SetActive(false);
+                SouthRow[i].gameObject.SetActive(false);
+                WestRow[i].gameObject.SetActive(false);
+            }
+                
+            yield return new WaitForSeconds(0.5f);
+
+            for (int i = 0; i < NorthRow.Length; i++)
+            {
+                NorthRow[i].gameObject.SetActive(true);
+                EastRow[i].gameObject.SetActive(true);
+                SouthRow[i].gameObject.SetActive(true);
+                WestRow[i].gameObject.SetActive(true);
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
     public IEnumerator Activate()
     {
         for(int i =0; i < NorthRow.Length; i++)
@@ -66,6 +92,7 @@ public class Spinner : MonoBehaviour
         }
 
         activated = true;
+        StartCoroutine(Flash());
     }
 
     public IEnumerator Deactivate()
