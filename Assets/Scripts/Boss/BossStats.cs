@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossStats : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class BossStats : MonoBehaviour
     [SerializeField] private GameObject fourWaySpawn;
     [SerializeField] private GameObject indicatorSpawn;
     [SerializeField] private BossAnimations animations;
+    [SerializeField] private Slider healthBar;
 
     [Header("Attacks")]
     [SerializeField] private GameObject HomingAttack;
@@ -29,10 +31,15 @@ public class BossStats : MonoBehaviour
     [SerializeField] private float indicatorTimer = 4f;
 
     [Header("Stats")]
-    [SerializeField] private float currentHealth = 100f;
+    [SerializeField] private float currentHealth = 0f;
     [SerializeField] private int phase = 1;
     [SerializeField] private bool defeated = false;
     [SerializeField] private bool attacking = false;
+
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
 
     // Start is called before the first frame update
@@ -47,19 +54,21 @@ public class BossStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (inCutscene) { return; }
+
         //Changes music based on boss health
-        if(currentHealth <= 30)
+        if (currentHealth <= 30)
         {
             bossMusic.pitch = 1.16f;
             phase = 3;
         }
-        else if(currentHealth <= 70)
+        else if (currentHealth <= 70)
         {
             bossMusic.pitch = 1.05f;
             phase = 2;
         }
 
-        switch(phase)
+        switch (phase)
         {
             case 1:
                 homeShotTimer += Time.deltaTime;
@@ -77,21 +86,21 @@ public class BossStats : MonoBehaviour
                 break;
         }
 
-        if(homeShotTimer > timeBetweenHomingShots)
+        if (homeShotTimer > timeBetweenHomingShots)
         {
             homeShotTimer = 0;
             Instantiate(HomingAttack, homingSpawn.transform.position, Quaternion.identity);
             animations.Attack();
         }
 
-        if(fourWayTimer > timeBetweenFourWayAttacks)
+        if (fourWayTimer > timeBetweenFourWayAttacks)
         {
             fourWayTimer = 0;
             Instantiate(FourWayAttack, fourWaySpawn.transform.position, Quaternion.identity);
             animations.Attack();
         }
 
-        if(indicatorTimer > timeBetweenIndicatorAttacks)
+        if (indicatorTimer > timeBetweenIndicatorAttacks)
         {
             indicatorTimer = 0;
             Instantiate(IndicatorAttack, indicatorSpawn.transform.position, Quaternion.identity);
@@ -108,8 +117,24 @@ public class BossStats : MonoBehaviour
 
     public void Hit(float damage)
     {
-        currentHealth -= damage;
-
-        //Checks for phases
+        UpdateHealth(-damage);
     }
+
+    public void UpdateHealth(float amount)
+    {
+        healthBar.value = currentHealth+ amount;
+        currentHealth = healthBar.value;
+
+        if(currentHealth > 100)
+        {
+            currentHealth = 100;
+            healthBar.value = 100;
+        }
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
 }

@@ -22,6 +22,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Collectables")]
     [SerializeField] private int numCoins = 0;
     [SerializeField] private bool coinPickedUp = false;
+    [SerializeField] private int maxCoins = 3;
 
     [Header("Health")]
     [SerializeField] private float health = 3;
@@ -31,6 +32,11 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float lowHealthAlertTimer = 5f;
     [SerializeField] private bool alerting = false;
+
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
     private bool _canFire = true;
 
@@ -42,6 +48,8 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(inCutscene) { return; }
+
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
@@ -147,7 +155,7 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Coin")
+        if (collision.tag == "Coin" && numCoins < maxCoins)
         {
             Destroy(collision.gameObject);
 

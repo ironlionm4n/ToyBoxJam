@@ -14,6 +14,11 @@ public class BossAnimations : MonoBehaviour
     [Header("Variables")]
     [SerializeField] private bool attacking = false;
 
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -23,7 +28,9 @@ public class BossAnimations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player.transform.position.x < transform.position.x)
+        if (inCutscene) { return; }
+
+        if (player.transform.position.x < transform.position.x)
         {
             spriteRenderer.flipX= true;
         }
@@ -58,6 +65,11 @@ public class BossAnimations : MonoBehaviour
     public void Dead()
     {
 
+    }
+
+    public void SwitchAttacking()
+    {
+        attacking = !attacking;
     }
 
     public IEnumerator Vibrate()
