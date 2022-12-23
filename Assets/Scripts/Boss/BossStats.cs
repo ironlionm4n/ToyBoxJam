@@ -58,7 +58,6 @@ public class BossStats : MonoBehaviour
     void Update()
     {
         if (inCutscene || defeated) { return; }
-        Dead();
 
         //Changes music based on boss health
         if (currentHealth <= 30)

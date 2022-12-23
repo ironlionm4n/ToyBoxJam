@@ -1,0 +1,249 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class PlayerDeathManager : MonoBehaviour
+{
+    [Header("Player")]
+    [SerializeField] private GameObject player;
+    private PlayerStats pstats;
+    private PlayerMovement pmove;
+    private Aim paim;
+    private Rigidbody2D prb;
+
+    [SerializeField] private GameObject pivotPoint;
+    [SerializeField] private bool waitingRespawn = false;
+
+    [Header("Boss (Only Assign in Boss Fight Scene)")]
+    [SerializeField] private GameObject boss;
+    private BossAnimations banim;
+    private BossStats bstats;
+    [SerializeField] private GameObject bossHealthbar;
+
+    [Header("Camera")]
+    [SerializeField] private GameObject camera;
+    [SerializeField] private float cameraMoveTime = 2f;
+    [SerializeField] private float elapsedTime = 0f;
+
+    [Header("Death Background")]
+    [SerializeField] private SpriteRenderer gameOverBackground;
+    [SerializeField] private float fadeSpeed = 5f;
+
+    [Header("Checkpoints")]
+    [SerializeField] private Vector3 currentCheckpoint;
+
+    [Header("Text")]
+    [SerializeField] private Image[] Rise;
+    [SerializeField] private Image[] respawn;
+
+    [Header("General")]
+    [SerializeField] private bool inCutscene = false;
+
+    // Start is called before the first frame update
+    void OnEnable()
+    {
+        pstats = player.GetComponent<PlayerStats>();
+        pmove= player.GetComponent<PlayerMovement>();
+        paim = player.GetComponent<Aim>();
+        prb = player.GetComponent<Rigidbody2D>();
+
+        if(boss != null)
+        {
+            banim = boss.GetComponent<BossAnimations>();
+            bstats = boss.GetComponent<BossStats>();
+        }
+
+        currentCheckpoint = player.transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (waitingRespawn)
+        {
+            prb.velocity = new Vector2(0, 0);
+            pmove.StopSounds();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space) && inCutscene)
+        {
+            inCutscene= false;
+            StopAllCoroutines();
+
+            StartCoroutine(PlayerRespawn());
+        }
+    }
+
+    //When the player dies from low health
+    public void PlayerDied()
+    {
+        paim.enabled = false;
+        pivotPoint.SetActive(false);
+
+        if(bossHealthbar!= null) {
+            bossHealthbar.SetActive(false);
+
+        }
+
+        pstats.InCutscene = true;
+        pmove.InCutscene = true;
+
+        if (boss != null)
+        {
+            banim.InCutscene = true;
+            bstats.InCutscene = true;
+            if(camera.GetComponent<BossCamera>() != null)
+            {
+                camera.GetComponent<BossCamera>().PlayerDying = true;
+            }
+        }
+
+        StartCoroutine(DeathCutscene());
+    }
+
+    public IEnumerator DeathCutscene()
+    {
+        inCutscene= true;
+        waitingRespawn = true;
+        pmove.StopSounds();
+
+        //Makes player float
+        prb.gravityScale = 0;
+        prb.velocity = new Vector2(0, 0);
+
+        player.GetComponent<Animator>().SetBool("Dead", true);
+        gameOverBackground.sortingOrder = 11;
+
+        while (gameOverBackground.color.a < 1)
+        {
+            Color color = gameOverBackground.color;
+            float fadeAmount = color.a + (fadeSpeed / 10 * Time.deltaTime);
+
+            color = new Color(gameOverBackground.color.r, gameOverBackground.color.g, gameOverBackground.color.b, fadeAmount);
+            gameOverBackground.color = color;
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        while (respawn[0].color.a < 1)
+        {
+            for (int i = 0; i < respawn.Length; i++)
+            {
+                Color color = respawn[i].color;
+                float fadeAmount = color.a + (fadeSpeed * Time.deltaTime);
+
+                color = new Color(respawn[i].color.r, respawn[i].color.g, respawn[i].color.b, fadeAmount);
+                respawn[i].color = color;
+
+            }
+            
+            yield return null;
+
+        }
+
+        Debug.Log("Waiting respawn");
+
+        while(waitingRespawn )
+        {
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, 0);
+
+            yield return new WaitForSeconds(0.5f);
+
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, 0);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public IEnumerator PlayerRespawn()
+    {
+        waitingRespawn = false;
+
+        for (int i = 0; i < Rise.Length; i++)
+        {
+            while (Rise[i].color.a < 1)
+            {
+                Color color = Rise[i].color;
+                float fadeAmount = color.a + (fadeSpeed * Time.deltaTime);
+
+                color = new Color(Rise[i].color.r, Rise[i].color.g, Rise[i].color.b, fadeAmount);
+                Rise[i].color = color;
+                yield return null;
+            }
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (boss != null)
+        {
+            SceneManager.LoadScene("BossBattle");
+        }
+        else
+        {
+
+            RespawnAtLastCheckpoint();
+
+            yield return new WaitForSeconds(1f);
+
+            while (gameOverBackground.color.a > 0)
+            {
+                Color color = gameOverBackground.color;
+                float fadeAmount = color.a - (fadeSpeed / 10 * Time.deltaTime);
+
+                color = new Color(gameOverBackground.color.r, gameOverBackground.color.g, gameOverBackground.color.b, fadeAmount);
+                gameOverBackground.color = color;
+
+                yield return null;
+            }
+
+            yield return null;
+
+            CutsceneOver();
+        }
+    }
+
+    public void RespawnAtLastCheckpoint()
+    {
+        elapsedTime = 0f;
+        player.transform.position = currentCheckpoint;
+        player.GetComponent<Animator>().SetBool("Dead", false);
+    }
+
+    public void SetCurrentCheckpoint(GameObject checkpoint)
+    {
+        currentCheckpoint = checkpoint.transform.position;
+    }
+
+    public void CutsceneOver()
+    {
+        paim.enabled = true;
+        pivotPoint.SetActive(true);
+
+        pstats.InCutscene = false;
+        pmove.SetIsJumping(false);
+        pmove.InCutscene = false;
+
+        if (boss != null)
+        {
+            banim.InCutscene = false;
+            bstats.InCutscene = false;
+
+            if (camera.GetComponent<BossCamera>() != null)
+            {
+                camera.GetComponent<BossCamera>().PlayerDying = false;
+            }
+        }
+    }
+
+    public void Respawn()
+    {
+        waitingRespawn = false;
+    }
+}

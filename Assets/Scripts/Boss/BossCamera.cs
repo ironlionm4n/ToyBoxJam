@@ -20,9 +20,12 @@ public class BossCamera : MonoBehaviour
     [SerializeField] private GameObject cameraStopPosition;
     [SerializeField] private Vector3 cameraStartPosition;
     [SerializeField] private GameObject bossDeathPosition;
+    [SerializeField] private bool playerDying = false;
 
     public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
     public bool BossDying { get { return bossDying; } set { bossDying = value; } }  
+
+    public bool PlayerDying { get { return playerDying; } set { playerDying = value; } }
 
     private void OnEnable()
     {
@@ -33,6 +36,8 @@ public class BossCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerDying) return;
+
         if(inCutscene && bossDying)
         {
             elapsedTime += Time.deltaTime;

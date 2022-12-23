@@ -228,5 +228,12 @@ public class PlayerMovement : MonoBehaviour
     {
         isJumping = value;
     }
+
+    public void StopSounds()
+    {
+        playerRun.Stop();
+        playerJump.Stop();
+        playerLand.Stop();
+    }
     
 }

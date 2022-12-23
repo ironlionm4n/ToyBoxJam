@@ -35,6 +35,7 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
+    [SerializeField] PlayerDeathManager deathManager;
 
     public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
@@ -103,7 +104,8 @@ public class PlayerStats : MonoBehaviour
         if(health <= 0)
         {
             playerMovement.IsDead = true;
-            
+            StopAllCoroutines();
+            deathManager.PlayerDied();
             return;
         }
 
