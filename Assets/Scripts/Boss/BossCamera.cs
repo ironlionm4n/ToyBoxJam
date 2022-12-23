@@ -24,6 +24,7 @@ public class BossCamera : MonoBehaviour
     private void OnEnable()
     {
         cameraStartPosition = transform.position;
+        cameraStartPosition.z = -10;
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class BossCamera : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float percentComplete = elapsedTime / cameraMoveTime;
 
-            transform.position = Vector3.Lerp(cameraStopPosition.transform.position, new Vector3(minX, minY), percentComplete);
+            transform.position = Vector3.Lerp(cameraStopPosition.transform.position, new Vector3(minX, minY, -10), percentComplete);
 
             if(transform.position.x <= minX)
             {

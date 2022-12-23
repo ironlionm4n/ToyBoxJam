@@ -152,8 +152,8 @@ MonoBehaviour:
   player: {fileID: 0}
   rigidbody: {fileID: 2674791429354450703}
   collider: {fileID: 2674791429354450702}
-  speed: 7
-  chaseTime: 4
+  speed: 10
+  chaseTime: 7
   chaseTimer: 0
   currentSize: 5
   sizeChangeAmount: 0.1

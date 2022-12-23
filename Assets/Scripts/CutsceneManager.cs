@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,12 +25,14 @@ public class CutsceneManager : MonoBehaviour
 
     [SerializeField] private GameObject bossSurprised;
     [SerializeField] private GameObject bossHealthBar;
+    [SerializeField] private TMP_Text skipCutscene;
 
     [Header("Variables")]
     [SerializeField] private float fadeSpeed = 5f;
     [SerializeField] private float playerMoveTime = 3f;
     [SerializeField] private float elapsedTime = 0f;
     [SerializeField] private bool cutsceneInProgress = false;
+    [SerializeField] private bool playerWalking = true;
     [SerializeField] private float healthIncreaseSpeed = 10f;
     Vector3 playerStartingPosition;
 
@@ -59,7 +62,7 @@ public class CutsceneManager : MonoBehaviour
         StartCoroutine(PlayCutscene());
     }
 
-   public IEnumerator PlayCutscene()
+    public IEnumerator PlayCutscene()
     {
         player.GetComponent<Animator>().SetBool("Cutscene", true);
         boss.GetComponent<Animator>().SetBool("Sleep", true);
@@ -77,7 +80,7 @@ public class CutsceneManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitUntil(()=> !cutsceneInProgress);
+        yield return new WaitUntil(()=> !playerWalking);
 
         player.GetComponent<Animator>().SetBool("Cutscene", false);
 
@@ -125,6 +128,16 @@ public class CutsceneManager : MonoBehaviour
     {
         if(!cutsceneInProgress) { return; }
 
+        if (skipCutscene.alpha > 0)
+        {
+            skipCutscene.alpha -= 0.5f * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && cutsceneInProgress)
+        {
+            SkipCutscene();
+        }
+
         elapsedTime += Time.deltaTime;
         float percentComplete = elapsedTime / playerMoveTime;
 
@@ -132,7 +145,7 @@ public class CutsceneManager : MonoBehaviour
 
         if(player.transform.position.x >= playerStopPosition.transform.position.x)
         {
-            cutsceneInProgress= false;
+            playerWalking= false;
         }
     }
 
@@ -148,5 +161,19 @@ public class CutsceneManager : MonoBehaviour
         banim.InCutscene = false;
         bstats.InCutscene = false;
         bcamera.InCutscene = false;
+    }
+
+    public void SkipCutscene()
+    {
+        StopAllCoroutines();
+        skipCutscene.alpha = 0;
+        fadeImage.enabled = false;
+        player.GetComponent<Animator>().SetBool("Cutscene", false);
+        boss.GetComponent<Animator>().SetBool("Sleep", false);
+        boss.GetComponent<Animator>().SetBool("Surprised", false);
+        bossHealthBar.SetActive(true);
+
+        bstats.UpdateHealth(100);
+        CutsceneOver();
     }
 }

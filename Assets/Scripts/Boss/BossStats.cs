@@ -19,16 +19,18 @@ public class BossStats : MonoBehaviour
     [SerializeField] private GameObject IndicatorAttack;
 
     [Header("Homing")]
-    [SerializeField] private float timeBetweenHomingShots = 8f;
-    [SerializeField] private float homeShotTimer = 6f;
+    [SerializeField] private float timeBetweenHomingShots = 4f;
+    [SerializeField] private float homeShotTimer = 3f;
 
     [Header("Four Way")]
     [SerializeField] private float timeBetweenFourWayAttacks = 20f;
     [SerializeField] private float fourWayTimer = 19f;
+    [SerializeField] private bool fourWaySpawned = false;
+    private Spinner currentSpinner;
 
     [Header("Indicator")]
     [SerializeField] private float timeBetweenIndicatorAttacks = 5f;
-    [SerializeField] private float indicatorTimer = 4f;
+    [SerializeField] private float indicatorTimer = 3f;
 
     [Header("Stats")]
     [SerializeField] private float currentHealth = 0f;
@@ -54,7 +56,7 @@ public class BossStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inCutscene) { return; }
+        if (inCutscene || defeated) { return; }
 
         //Changes music based on boss health
         if (currentHealth <= 30)
@@ -75,13 +77,14 @@ public class BossStats : MonoBehaviour
                 break;
 
             case 2:
-                homeShotTimer += Time.deltaTime;
+                //homeShotTimer += Time.deltaTime;
                 fourWayTimer += Time.deltaTime;
                 break;
 
             case 3:
+                currentSpinner.DeactivateSpinner();
                 homeShotTimer += Time.deltaTime;
-                fourWayTimer += Time.deltaTime;
+                //fourWayTimer += Time.deltaTime;
                 indicatorTimer += Time.deltaTime;
                 break;
         }
@@ -93,11 +96,12 @@ public class BossStats : MonoBehaviour
             animations.Attack();
         }
 
-        if (fourWayTimer > timeBetweenFourWayAttacks)
+        if (fourWayTimer > timeBetweenFourWayAttacks && !fourWaySpawned)
         {
             fourWayTimer = 0;
-            Instantiate(FourWayAttack, fourWaySpawn.transform.position, Quaternion.identity);
+            currentSpinner = Instantiate(FourWayAttack, fourWaySpawn.transform.position, Quaternion.identity).GetComponent<Spinner>();
             animations.Attack();
+            fourWaySpawned = true;
         }
 
         if (indicatorTimer > timeBetweenIndicatorAttacks)
@@ -122,13 +126,22 @@ public class BossStats : MonoBehaviour
 
     public void UpdateHealth(float amount)
     {
-        healthBar.value = currentHealth+ amount;
-        currentHealth = healthBar.value;
-
-        if(currentHealth > 100)
+        if (!defeated)
         {
-            currentHealth = 100;
-            healthBar.value = 100;
+            healthBar.value = currentHealth + amount;
+            currentHealth = healthBar.value;
+
+            if (currentHealth > 100)
+            {
+                currentHealth = 100;
+                healthBar.value = 100;
+            }
+
+            if (currentHealth <= 0)
+            {
+                healthBar.gameObject.SetActive(false);
+                defeated= true;
+            }
         }
     }
 

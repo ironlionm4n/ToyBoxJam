@@ -9,8 +9,8 @@ public class Spinner : MonoBehaviour
     [SerializeField] private GameObject target;
 
     [Header("Variables")]
-    [SerializeField] private float spinSpeed = 5f;
-    [SerializeField] private float spinTime = 10f;
+    [SerializeField] private float spinSpeed = 75f;
+    [SerializeField] private float spinTime = 9f;
     [SerializeField] private float spinTimer = 0f;
     [SerializeField] private bool activated = false;
 
@@ -36,12 +36,6 @@ public class Spinner : MonoBehaviour
     {
         if (activated)
         {
-            if(spinTimer >= spinTime)
-            {
-                activated = false;
-                StartCoroutine(Deactivate());
-            }
-
             Vector2 direction = (Vector2)target.transform.position - rb.position;
             direction.Normalize();
 
@@ -93,12 +87,15 @@ public class Spinner : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        yield return new WaitForSeconds(0.75f);
+
         activated = true;
-        StartCoroutine(Flash());
+        //StartCoroutine(Flash());
     }
 
     public IEnumerator Deactivate()
     {
+        activated= false;
         for (int i = NorthRow.Length-1; i > -1; i--)
         {
             NorthRow[i].gameObject.SetActive(false);
@@ -106,6 +103,14 @@ public class Spinner : MonoBehaviour
             SouthRow[i].gameObject.SetActive(false);
             WestRow[i].gameObject.SetActive(false);
             yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void DeactivateSpinner()
+    {
+        if (activated)
+        {
+            StartCoroutine(Deactivate());
         }
     }
 }

@@ -2750,7 +2750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6671852822925932259}
   target: {fileID: 6671852823871913467}
-  spinSpeed: 60
+  spinSpeed: 75
   spinTime: 10
   spinTimer: 0
   activated: 0

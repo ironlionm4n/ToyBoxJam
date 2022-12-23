@@ -34,10 +34,6 @@ public class Enemy : MonoBehaviour
             {
                 gameObject.GetComponent<BatController>().Dead();
             }
-            else if(gameObject.GetComponent<BossStats>() != null)
-            {
-                gameObject.GetComponent<BossStats>().Dead();
-            }
         }
     }
 }
