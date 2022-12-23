@@ -40,6 +40,7 @@ public class BossStats : MonoBehaviour
 
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
+    [SerializeField] private CutsceneManager cutscene;
 
     public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
@@ -57,6 +58,7 @@ public class BossStats : MonoBehaviour
     void Update()
     {
         if (inCutscene || defeated) { return; }
+        Dead();
 
         //Changes music based on boss health
         if (currentHealth <= 30)
@@ -116,7 +118,8 @@ public class BossStats : MonoBehaviour
     public void Dead()
     {
         defeated = true;
-        animations.Dead();
+       // animations.Dead();
+        cutscene.BossDead();
     }
 
     public void Hit(float damage)

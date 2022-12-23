@@ -62,11 +62,6 @@ public class BossAnimations : MonoBehaviour
         StartCoroutine(Vibrate());
     }
 
-    public void Dead()
-    {
-
-    }
-
     public void SwitchAttacking()
     {
         attacking = !attacking;
