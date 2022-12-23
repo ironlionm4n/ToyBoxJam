@@ -7,6 +7,5 @@ public class CheckpointManager : MonoBehaviour
     [SerializeField] private GameObject[] checkpoints;
     
     private GameObject _currentCheckpoint;
-
     public GameObject CurrentCheckpoint => _currentCheckpoint;
 }
