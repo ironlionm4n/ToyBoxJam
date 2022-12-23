@@ -56,7 +56,9 @@ public class Spinner : MonoBehaviour
 
     public IEnumerator Flash()
     {
-        while(activated)
+        yield return new WaitForSeconds(0.5f);
+
+        while (activated)
         {
             for (int i = NorthRow.Length - 1; i > -1; i--)
             {
