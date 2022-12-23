@@ -207,6 +207,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &97645709 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5836090384762215793, guid: 0497c76e8e647954cb09559d5a54085a, type: 3}
+  m_PrefabInstance: {fileID: 5836090384698239484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &126231896
 GameObject:
   m_ObjectHideFlags: 0
@@ -36078,6 +36083,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1560364615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1560364616}
+  - component: {fileID: 1560364617}
+  m_Layer: 0
+  m_Name: CoinSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1560364616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560364615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.88734, y: 0.57472944, z: -0.0029815936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1560364617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560364615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c37f01516f0414486676d9b624964f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1044909736}
+  coin: {fileID: 97645709}
+  coinSpawns:
+  - {fileID: 1181137777}
+  - {fileID: 2056095252}
+  - {fileID: 1219125825}
+  - {fileID: 1263375326}
+  - {fileID: 2008640977}
+  - {fileID: 332671016}
+  - {fileID: 486792442}
+  middleSpawnPoint: {fileID: 1263375326}
 --- !u!1 &1561588221
 GameObject:
   m_ObjectHideFlags: 0

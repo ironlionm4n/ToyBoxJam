@@ -13,11 +13,15 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private PlayerMovement playerMovement;
 
+    [Header("Only asign in boss level")]
+    [SerializeField] private CoinSpawner coinSpawner;
+
     [Header("Preabs")]
     [SerializeField] private GameObject throwableCoin;
 
     [Header("Collectables")]
     [SerializeField] private int numCoins = 0;
+    [SerializeField] private bool coinPickedUp = false;
 
     [Header("Health")]
     [SerializeField] private float health = 3;
@@ -50,6 +54,11 @@ public class PlayerStats : MonoBehaviour
                 StartCoroutine(LowHealthAlert());
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        coinPickedUp = false;
     }
 
     public void SetCanFire(bool ableToFire)
@@ -134,14 +143,23 @@ public class PlayerStats : MonoBehaviour
         alerting = false;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Coin")
+        if (collision.tag == "Coin")
         {
             CoinPickedUp();
             Destroy(collision.gameObject);
+
+            if (coinSpawner != null && !coinPickedUp)
+            {
+                coinPickedUp = true;
+                coinSpawner.RespawnCoin();
+            }
         }
-        
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {   
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")
         {
             if (!invincible)
