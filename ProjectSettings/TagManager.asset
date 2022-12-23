@@ -9,6 +9,9 @@ TagManager:
   - Enemy
   - Fireball
   - DeathBarrier
+  - SpinningFireball
+  - Despawn
+  - Coin
   layers:
   - Default
   - TransparentFX

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2883632627060923045}
   - component: {fileID: 2883632627060923046}
   - component: {fileID: 2883632627060923049}
+  - component: {fileID: -1766267716932610807}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Enemy
@@ -145,3 +146,17 @@ CircleCollider2D:
   m_Offset: {x: 0.04, y: -0.04}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!114 &-1766267716932610807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883632627060923042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c347d8dc2c0e7544b025bb52dade817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+  health: 10

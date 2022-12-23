@@ -13,20 +13,30 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private PlayerMovement playerMovement;
 
+    [Header("Only asign in boss level")]
+    [SerializeField] private CoinSpawner coinSpawner;
+
     [Header("Preabs")]
     [SerializeField] private GameObject throwableCoin;
 
     [Header("Collectables")]
     [SerializeField] private int numCoins = 0;
+    [SerializeField] private bool coinPickedUp = false;
+    [SerializeField] private int maxCoins = 3;
 
     [Header("Health")]
     [SerializeField] private float health = 3;
     [SerializeField] private bool invincible = false;
-    [SerializeField] private float invulnerableTimer = 3f;
+    [SerializeField] private float invulnerableTimer = 1f;
     [SerializeField] private float invulFrameTimer = 0f;
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float lowHealthAlertTimer = 5f;
     [SerializeField] private bool alerting = false;
+
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
     private bool _canFire = true;
 
@@ -38,6 +48,8 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(inCutscene) { return; }
+
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
@@ -52,6 +64,12 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    //Keeps player from picking up multiple coins at once
+    private void LateUpdate()
+    {
+        coinPickedUp = false;
+    }
+
     public void SetCanFire(bool ableToFire)
     {
         _canFire = ableToFire;
@@ -60,8 +78,9 @@ public class PlayerStats : MonoBehaviour
     //Fires a coin as long as the player has some available
     private void Fire()
     {
-        if (!_canFire) return;
+        if (numCoins <= 0) return;
 
+        numCoins--;
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
         coinThrow.Play();
     }
@@ -88,17 +107,19 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
+
         invulFrameTimer = 0f;
 
         playerMovement.SetKnockbacked(true);
         playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
         playerRigidbody.AddForce(new Vector2(knockbackDir * knockbackForce, 5), ForceMode2D.Impulse);
-
+        
         StartCoroutine(InvulnTime());
     }
 
     public IEnumerator InvulnTime()
     {
+
         while(invulFrameTimer < invulnerableTimer)
         {
             Flash();
@@ -132,12 +153,29 @@ public class PlayerStats : MonoBehaviour
         alerting = false;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball")
+        if (collision.tag == "Coin" && numCoins < maxCoins)
+        {
+            Destroy(collision.gameObject);
+
+            if (coinSpawner != null && !coinPickedUp)
+            {
+                CoinPickedUp();
+                coinPickedUp = true;
+                coinSpawner.RespawnCoin();
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {   
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")
         {
             if (!invincible)
             {
+                invincible = true;
+
                 //Figures out which way to knock player 
                 float knockbackDirection = 0f;
 
@@ -164,12 +202,15 @@ public class PlayerStats : MonoBehaviour
                 }
 
                 Debug.Log("Hurt");
-                invincible = true;
                 Hurt(knockbackDirection);
 
                 if(collision.tag == "Fireball")
                 {
                     Destroy(collision.gameObject);
+                }
+                else if(collision.tag == "SpinningFireball")
+                {
+                    collision.gameObject.SetActive(false);
                 }
             }
         }

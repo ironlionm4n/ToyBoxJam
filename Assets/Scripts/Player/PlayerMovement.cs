@@ -37,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
 
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
+
     public bool IsDead
     {
         get => isDead;
@@ -56,7 +61,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isDead) return;
+        if (inCutscene) { return; }
+
+        if (isDead)
+        {
+            if(playerRun.isPlaying)
+            {
+                playerRun.Stop();
+            }
+
+            playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
+
+            return;
+        }
         
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
@@ -175,6 +192,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
+            if(inCutscene) { return; }
+
             playerRun.Stop();
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
@@ -202,6 +221,12 @@ public class PlayerMovement : MonoBehaviour
     public void SetKnockbacked(bool kb)
     {
         knockbacked = kb;
+    }
+
+    //Used for after cutscene so player can jump
+    public void SetIsJumping(bool value)
+    {
+        isJumping = value;
     }
     
 }

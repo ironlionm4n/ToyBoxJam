@@ -14,16 +14,23 @@ public class BossAnimations : MonoBehaviour
     [Header("Variables")]
     [SerializeField] private bool attacking = false;
 
+    [Header("Cutscene Management")]
+    [SerializeField] private bool inCutscene = false;
+
+    public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
+
     // Start is called before the first frame update
     void OnEnable()
     {
-        StartCoroutine(TestAnimations());
+        //StartCoroutine(TestAnimations());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(player.transform.position.x < transform.position.x)
+        if (inCutscene) { return; }
+
+        if (player.transform.position.x < transform.position.x)
         {
             spriteRenderer.flipX= true;
         }
@@ -49,6 +56,22 @@ public class BossAnimations : MonoBehaviour
         StartCoroutine(TestAnimations());
     }
 
+    public void Attack()
+    {
+        bossAnimator.SetBool("Attacking", true);
+        StartCoroutine(Vibrate());
+    }
+
+    public void Dead()
+    {
+
+    }
+
+    public void SwitchAttacking()
+    {
+        attacking = !attacking;
+    }
+
     public IEnumerator Vibrate()
     {
         while (attacking)
@@ -68,5 +91,7 @@ public class BossAnimations : MonoBehaviour
             transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, 0f);
 
         }
+
+        bossAnimator.SetBool("Attacking", false);
     }
 }
