@@ -27,6 +27,6 @@ public class FallingFireball : MonoBehaviour
 
     private void OnDestroy()
     {
-        gameObject.GetComponentInParent<Indicator>().Destroy();
+        gameObject.GetComponentInParent<Indicator>()?.Destroy();
     }
 }

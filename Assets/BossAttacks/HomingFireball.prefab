@@ -134,9 +134,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.25}
   serializedVersion: 2
-  m_Radius: 0.46875
+  m_Radius: 0.2
 --- !u!114 &2674791429354450800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   player: {fileID: 0}
   rigidbody: {fileID: 2674791429354450703}
   collider: {fileID: 2674791429354450702}
-  speed: 10
+  speed: 7
   chaseTime: 7
   chaseTimer: 0
   currentSize: 5
