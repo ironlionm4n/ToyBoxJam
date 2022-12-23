@@ -56,6 +56,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    //Keeps player from picking up multiple coins at once
     private void LateUpdate()
     {
         coinPickedUp = false;
@@ -69,8 +70,9 @@ public class PlayerStats : MonoBehaviour
     //Fires a coin as long as the player has some available
     private void Fire()
     {
-        if (!_canFire) return;
+        if (numCoins <= 0) return;
 
+        numCoins--;
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
         coinThrow.Play();
     }
