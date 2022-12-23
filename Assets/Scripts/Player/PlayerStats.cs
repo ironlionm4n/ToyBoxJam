@@ -149,11 +149,11 @@ public class PlayerStats : MonoBehaviour
     {
         if (collision.tag == "Coin")
         {
-            CoinPickedUp();
             Destroy(collision.gameObject);
 
             if (coinSpawner != null && !coinPickedUp)
             {
+                CoinPickedUp();
                 coinPickedUp = true;
                 coinSpawner.RespawnCoin();
             }
