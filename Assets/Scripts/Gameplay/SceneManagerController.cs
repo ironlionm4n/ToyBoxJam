@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,16 +8,22 @@ public class SceneManagerController : MonoBehaviour
 {
     public void LoadMainGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("PlatformSection");
     }
     
     public void LoadOptions()
     {
-        SceneManager.LoadScene("Options");
+        SceneManager.LoadScene("Options", LoadSceneMode.Additive);
     }
 
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void UnloadOptions()
+    {
+        GameObject.FindGameObjectWithTag("MainMenuCanvas").SetActive(true);
+        SceneManager.UnloadSceneAsync("Options");
     }
 }

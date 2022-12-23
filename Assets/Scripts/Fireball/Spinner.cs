@@ -62,7 +62,7 @@ public class Spinner : MonoBehaviour
                 WestRow[i].gameObject.SetActive(false);
             }
                 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.75f);
 
             for (int i = 0; i < NorthRow.Length; i++)
             {
@@ -72,7 +72,7 @@ public class Spinner : MonoBehaviour
                 WestRow[i].gameObject.SetActive(true);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -90,7 +90,7 @@ public class Spinner : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
 
         activated = true;
-        //StartCoroutine(Flash());
+        StartCoroutine(Flash());
     }
 
     public IEnumerator Deactivate()
