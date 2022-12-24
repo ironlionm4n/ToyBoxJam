@@ -15,6 +15,8 @@ public class PlayerDeathManager : MonoBehaviour
 
     [SerializeField] private GameObject pivotPoint;
     [SerializeField] private bool waitingRespawn = false;
+    [SerializeField] private GameObject coinUI;
+    [SerializeField] private GameObject healthUI;
 
     [Header("Boss (Only Assign in Boss Fight Scene)")]
     [SerializeField] private GameObject boss;
@@ -82,6 +84,8 @@ public class PlayerDeathManager : MonoBehaviour
     {
         paim.enabled = false;
         pivotPoint.SetActive(false);
+        coinUI.SetActive(false);
+        healthUI.SetActive(false);
 
         if(bossHealthbar!= null) {
             bossHealthbar.SetActive(false);
@@ -254,6 +258,9 @@ public class PlayerDeathManager : MonoBehaviour
     {
         paim.enabled = true;
         pivotPoint.SetActive(true);
+        coinUI.SetActive(true);
+        healthUI.SetActive(true);
+
         prb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         pstats.InCutscene = false;

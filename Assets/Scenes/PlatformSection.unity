@@ -5278,6 +5278,8 @@ MonoBehaviour:
   player: {fileID: 1918891646}
   pivotPoint: {fileID: 202236029}
   waitingRespawn: 0
+  coinUI: {fileID: 176818966}
+  healthUI: {fileID: 1773057498}
   boss: {fileID: 0}
   bossHealthbar: {fileID: 0}
   camera: {fileID: 519420028}
@@ -92535,6 +92537,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: hearts.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: invulnerableTimer
       value: 1
       objectReference: {fileID: 0}
@@ -92550,6 +92556,18 @@ PrefabInstance:
       propertyPath: coins.Array.data[2]
       value: 
       objectReference: {fileID: 1696207580}
+    - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: hearts.Array.data[0]
+      value: 
+      objectReference: {fileID: 1243080549}
+    - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: hearts.Array.data[1]
+      value: 
+      objectReference: {fileID: 105091605}
+    - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: hearts.Array.data[2]
+      value: 
+      objectReference: {fileID: 1634577065}
     - target: {fileID: 101188707672128513, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: mainCamera
       value: 

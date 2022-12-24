@@ -112,6 +112,8 @@ public class PlayerStats : MonoBehaviour
     public void Hurt(float knockbackDir)
     {
         health--;
+
+        hearts[(int)health].gameObject.SetActive(false);
         
         if(health <= 0)
         {
@@ -249,6 +251,9 @@ public class PlayerStats : MonoBehaviour
 
     public void UpdateHealthUI()
     {
-        
+        for(int i = 0; i < health; i++)
+        {
+            hearts[i].gameObject.SetActive(true);
+        }
     }
 }
