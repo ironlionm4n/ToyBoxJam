@@ -92018,6 +92018,10 @@ PrefabInstance:
       propertyPath: knockbackForce
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 101188707672128512, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: invulnerableTimer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 101188707672128513, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: mainCamera
       value: 
