@@ -27,6 +27,8 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private GameObject bossSurprised;
     [SerializeField] private GameObject bossHealthBar;
     [SerializeField] private TMP_Text skipCutscene;
+    [SerializeField] private GameObject coinUI;
+    [SerializeField] private GameObject healthUI;
 
     [Header("Variables")]
     [SerializeField] private float fadeSpeed = 5f;
@@ -55,6 +57,8 @@ public class CutsceneManager : MonoBehaviour
         prb = player.GetComponent<Rigidbody2D>();
         banim = boss.GetComponent<BossAnimations>();
         bstats = boss.GetComponent<BossStats>();
+        coinUI.SetActive(false);
+        healthUI.SetActive(false);
 
         paim.enabled = false;
         pivotPoint.SetActive(false);
@@ -138,6 +142,8 @@ public class CutsceneManager : MonoBehaviour
         bossDying = true;
         paim.enabled = false;
         pivotPoint.SetActive(false);
+        coinUI.SetActive(false);
+        healthUI.SetActive(false);
 
         pstats.MakeInvincible();
         pstats.InCutscene = true;
@@ -253,6 +259,8 @@ public class CutsceneManager : MonoBehaviour
         cutsceneInProgress= false;
         paim.enabled = true;
         pivotPoint.SetActive(true);
+        coinUI.SetActive(true);
+        healthUI.SetActive(true);
 
         pstats.InCutscene = false;
         pmove.SetIsJumping(false);
