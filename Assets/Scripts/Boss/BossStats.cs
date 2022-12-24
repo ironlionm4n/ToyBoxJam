@@ -142,7 +142,7 @@ public class BossStats : MonoBehaviour
             if (currentHealth <= 0)
             {
                 healthBar.gameObject.SetActive(false);
-                defeated= true;
+                Dead();
             }
         }
     }

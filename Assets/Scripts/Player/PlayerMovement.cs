@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
+    [SerializeField] private bool canPlaySounds = true;
 
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
@@ -231,6 +232,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void StopSounds()
     {
+        moveHorizontal = 0;
         playerRun.Stop();
         playerJump.Stop();
         playerLand.Stop();

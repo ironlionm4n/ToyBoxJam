@@ -139,6 +139,7 @@ public class CutsceneManager : MonoBehaviour
 
     public IEnumerator BossDefeated()
     {
+        cutsceneInProgress = true;
         bossDying = true;
         paim.enabled = false;
         pivotPoint.SetActive(false);
@@ -147,13 +148,15 @@ public class CutsceneManager : MonoBehaviour
 
         pstats.MakeInvincible();
         pstats.InCutscene = true;
+        pmove.StopSounds();
+        prb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+
         pmove.InCutscene = true;
         banim.InCutscene = true;
         bstats.InCutscene = true;
         bcamera.InCutscene = true;
 
         playerStartingPosition = player.transform.position;
-        cutsceneInProgress = true;
 
         boss.GetComponent<Animator>().SetBool("Dead", true);
         bcamera.BossDead();
