@@ -10,9 +10,9 @@ public class ResetGame : MonoBehaviour
 
     void Update()
     {
-        if (playerMovement.IsDead)
+        /*if (playerMovement.IsDead)
         {
             SceneManager.LoadScene(sceneName);
-        }
+        }*/
     }
 }

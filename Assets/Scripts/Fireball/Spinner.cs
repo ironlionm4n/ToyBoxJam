@@ -110,6 +110,7 @@ public class Spinner : MonoBehaviour
     {
         if (activated)
         {
+            StopCoroutine(Flash());
             StartCoroutine(Deactivate());
         }
     }

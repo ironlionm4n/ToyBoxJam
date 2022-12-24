@@ -235,5 +235,10 @@ public class PlayerMovement : MonoBehaviour
         playerJump.Stop();
         playerLand.Stop();
     }
+
+    public void Respawned()
+    {
+        isDead= false;
+    }
     
 }

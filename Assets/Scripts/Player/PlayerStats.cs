@@ -208,7 +208,6 @@ public class PlayerStats : MonoBehaviour
                     }
                 }
 
-                Debug.Log("Hurt");
                 Hurt(knockbackDirection);
 
                 if(collision.tag == "Fireball")
@@ -221,5 +220,18 @@ public class PlayerStats : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Respawned()
+    {
+        health = 3;
+        invincible = false;
+        alerting= false;
+        UpdateHealthUI();
+    }
+
+    public void UpdateHealthUI()
+    {
+        
     }
 }

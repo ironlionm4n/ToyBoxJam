@@ -85,7 +85,6 @@ public class PlayerDeathManager : MonoBehaviour
 
         if(bossHealthbar!= null) {
             bossHealthbar.SetActive(false);
-
         }
 
         pstats.InCutscene = true;
@@ -111,7 +110,7 @@ public class PlayerDeathManager : MonoBehaviour
         pmove.StopSounds();
 
         //Makes player float
-        prb.gravityScale = 0;
+        prb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         prb.velocity = new Vector2(0, 0);
 
         player.GetComponent<Animator>().SetBool("Dead", true);
@@ -162,6 +161,18 @@ public class PlayerDeathManager : MonoBehaviour
 
     public IEnumerator PlayerRespawn()
     {
+        for(int i = 0; i < respawn.Length; i++)
+            {
+            Color color = respawn[i].color;
+            float fadeAmount = 0;
+
+            color = new Color(respawn[i].color.r, respawn[i].color.g, respawn[i].color.b, fadeAmount);
+            respawn[i].color = color;
+
+        }
+
+        yield return new WaitForSeconds(1f);
+
         waitingRespawn = false;
 
         for (int i = 0; i < Rise.Length; i++)
@@ -189,8 +200,11 @@ public class PlayerDeathManager : MonoBehaviour
         {
 
             RespawnAtLastCheckpoint();
+           // prb.gravityScale = 1;
 
             yield return new WaitForSeconds(1f);
+
+            CutsceneOver();
 
             while (gameOverBackground.color.a > 0)
             {
@@ -203,9 +217,23 @@ public class PlayerDeathManager : MonoBehaviour
                 yield return null;
             }
 
-            yield return null;
+            yield return new WaitForSeconds(0.5f);
 
-            CutsceneOver();
+            for (int i = 0; i < Rise.Length; i++)
+            {
+                while (Rise[i].color.a > 0)
+                {
+                    Color color = Rise[i].color;
+                    float fadeAmount = color.a - (fadeSpeed * Time.deltaTime);
+
+                    color = new Color(Rise[i].color.r, Rise[i].color.g, Rise[i].color.b, fadeAmount);
+                    Rise[i].color = color;
+                    yield return null;
+                }
+
+                yield return null;
+            }
+
         }
     }
 
@@ -213,6 +241,7 @@ public class PlayerDeathManager : MonoBehaviour
     {
         elapsedTime = 0f;
         player.transform.position = currentCheckpoint;
+        camera.transform.position = currentCheckpoint;
         player.GetComponent<Animator>().SetBool("Dead", false);
     }
 
@@ -225,10 +254,14 @@ public class PlayerDeathManager : MonoBehaviour
     {
         paim.enabled = true;
         pivotPoint.SetActive(true);
+        prb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         pstats.InCutscene = false;
         pmove.SetIsJumping(false);
+        pmove.Respawned();
+        pstats.Respawned();
         pmove.InCutscene = false;
+        waitingRespawn = false;
 
         if (boss != null)
         {
@@ -240,6 +273,8 @@ public class PlayerDeathManager : MonoBehaviour
                 camera.GetComponent<BossCamera>().PlayerDying = false;
             }
         }
+
+       
     }
 
     public void Respawn()
