@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int numCoins = 0;
     [SerializeField] private bool coinPickedUp = false;
     [SerializeField] private int maxCoins = 3;
+    [SerializeField] private Image[] coins;
 
     [Header("Health")]
     [SerializeField] private float health = 3;
@@ -32,6 +34,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float lowHealthAlertTimer = 5f;
     [SerializeField] private bool alerting = false;
+    [SerializeField] private Image[] hearts;
 
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
@@ -43,7 +46,10 @@ public class PlayerStats : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        for(int i = 0; i < coins.Length; i++)
+        {
+            coins[i].color = Color.gray;
+        }
     }
 
     // Update is called once per frame
@@ -79,15 +85,21 @@ public class PlayerStats : MonoBehaviour
     //Fires a coin as long as the player has some available
     private void Fire()
     {
-        if (numCoins <= 0) return;
+        if (numCoins <= 0) { 
+
+            coins[0].color = Color.gray;
+            return;
+        }
 
         numCoins--;
+        coins[numCoins].color = Color.gray;
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
         coinThrow.Play();
     }
 
     public void CoinPickedUp()
     {
+        coins[numCoins].color = Color.white;
         numCoins++;
         coinPickup.Play();
     }
@@ -166,6 +178,11 @@ public class PlayerStats : MonoBehaviour
                 CoinPickedUp();
                 coinPickedUp = true;
                 coinSpawner.RespawnCoin();
+            }
+            else if (!coinPickedUp)
+            {
+                CoinPickedUp();
+                coinPickedUp = true;
             }
         }
     }
