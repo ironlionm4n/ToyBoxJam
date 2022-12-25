@@ -46,6 +46,8 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private Image[] YouWin;
     [SerializeField] private bool bossDying = false;
     [SerializeField] private Button QuitButton;
+    [SerializeField] private AudioSource winMusic;
+    [SerializeField] private AudioSource levelMusic;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -139,6 +141,7 @@ public class CutsceneManager : MonoBehaviour
 
     public IEnumerator BossDefeated()
     {
+        levelMusic.Stop();
         cutsceneInProgress = true;
         bossDying = true;
         paim.enabled = false;
@@ -192,6 +195,7 @@ public class CutsceneManager : MonoBehaviour
         }
 
         //Move back to player and show victory text
+        winMusic.Play();
 
         yield return new WaitForSeconds(1f);
 
