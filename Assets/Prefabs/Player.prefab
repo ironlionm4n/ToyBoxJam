@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea573f1ab2d53304696e90ba61f66671, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -407,6 +407,7 @@ MonoBehaviour:
   dashSpeed: 10
   dashDirection: 0
   isDead: 0
+  canPlaySounds: 1
   inCutscene: 0
 --- !u!114 &101188707672128512
 MonoBehaviour:
@@ -432,6 +433,7 @@ MonoBehaviour:
   numCoins: 0
   coinPickedUp: 0
   maxCoins: 3
+  coins: []
   health: 3
   invincible: 0
   invulnerableTimer: 0.5
@@ -439,7 +441,9 @@ MonoBehaviour:
   knockbackForce: 10
   lowHealthAlertTimer: 5
   alerting: 0
+  hearts: []
   inCutscene: 0
+  deathManager: {fileID: 0}
 --- !u!82 &101188707672128539
 AudioSource:
   m_ObjectHideFlags: 0
