@@ -196,6 +196,7 @@ public class CutsceneManager : MonoBehaviour
 
         //Move back to player and show victory text
         winMusic.Play();
+        boss.SetActive(false);
 
         yield return new WaitForSeconds(1f);
 
