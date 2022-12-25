@@ -12,6 +12,15 @@ public class BatController : MonoBehaviour
     [SerializeField] private float maxDistanceDelta;
     [Tooltip("Determines if the bat will follow a linear path or a random one")]
     [SerializeField] private bool isWaypointBat;
+    [SerializeField] private GameObject player;
+
+    [Header("Blocking")]
+    [SerializeField] private bool isBlockingBat;
+    [SerializeField] private float minY = -16.7f;
+    [SerializeField] private float maxY = -14.43f;
+    [SerializeField] private float elapsedTime = 0;
+    [SerializeField] private float blockTime = 3f;
+
     private BatStates _currentState;
     private Vector3 _currentDestination;
     private int _waypointIndex;
@@ -20,13 +29,21 @@ public class BatController : MonoBehaviour
     enum BatStates
     {
         Patrolling,
-        Chasing
+        Chasing,
+        Blocking
     }
 
     private void Start()
     {
         _waypointIndex = Random.Range(0, waypoints.Length);
-        _currentState = BatStates.Patrolling;
+        if (!isBlockingBat)
+        {
+            _currentState = BatStates.Patrolling;
+        }
+        else
+        {
+            _currentState= BatStates.Blocking;
+        }
         _currentDestination = waypoints[_waypointIndex].position;
 
     }
@@ -45,6 +62,12 @@ public class BatController : MonoBehaviour
             {
                 break;
             }
+            case BatStates.Blocking:
+            {
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, Mathf.Clamp(player.transform.position.y, minY, maxY)), blockTime);
+                break;
+            }
+
             default: Debug.Break(); break;
         }
     }
