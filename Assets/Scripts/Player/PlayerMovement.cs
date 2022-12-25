@@ -30,9 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dashing")]
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashTimer = 0f;
+    [SerializeField] private float dashDuration = 0.5f;
+    [SerializeField] private float dashTime = 0f; 
     [SerializeField] private bool dashing = false;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] float dashDirection = 0;
+    [SerializeField] private bool canDash = true;
 
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
@@ -75,31 +78,34 @@ public class PlayerMovement : MonoBehaviour
 
             return;
         }
+
+        if(dashTime < dashDuration && dashing)
+        {
+            dashTime += Time.deltaTime;
+        }
         
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashing)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
-            playerAnimator.SetBool("Dashing", true);
-            spriteRenderer.color = Color.yellow;
+            canDash = false;
 
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
 
             dashing = true;
             dashTimer = dashCooldown;
-            gameObject.GetComponent<PlayerStats>().SetInvicible(true);
             StartCoroutine(Dashing());
         }
 
         //Manages dash cooldown
-        if (dashing)
+        if (!dashing)
         {
             dashTimer -= Time.deltaTime;
 
             if(dashTimer <= 0)
             {
-                dashing = false;
+                canDash = true;
             }
 
         }
@@ -216,10 +222,16 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dashing()
     {
-        yield return new WaitWhile(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Dashing"));
+        playerAnimator.SetBool("Dashing", true);
+        spriteRenderer.color = Color.yellow;
 
-        yield return new WaitWhile(() => playerAnimator.GetCurrentAnimatorStateInfo(0).length > playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        //Makes player invicible while dashing
+        gameObject.GetComponent<PlayerStats>().SetInvicible(true);
 
+        yield return new WaitWhile(() => dashTime < dashDuration);
+
+        dashing = false;
+        dashTime = 0;
         spriteRenderer.color = Color.white;
         gameObject.GetComponent<PlayerStats>().SetInvicible(false);
         playerAnimator.SetBool("Dashing", false);
