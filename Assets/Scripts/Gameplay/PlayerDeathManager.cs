@@ -42,6 +42,8 @@ public class PlayerDeathManager : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private bool inCutscene = false;
+    [SerializeField] private AudioSource levelMusic;
+    [SerializeField] private AudioSource deathMusic;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -82,6 +84,7 @@ public class PlayerDeathManager : MonoBehaviour
     //When the player dies from low health
     public void PlayerDied()
     {
+        levelMusic.Stop();
         paim.enabled = false;
         pivotPoint.SetActive(false);
         coinUI.SetActive(false);
@@ -130,6 +133,8 @@ public class PlayerDeathManager : MonoBehaviour
 
             yield return null;
         }
+
+        deathMusic.Play();
 
         yield return new WaitForSeconds(0.2f);
 
@@ -194,6 +199,8 @@ public class PlayerDeathManager : MonoBehaviour
             yield return null;
         }
 
+        deathMusic.Stop();
+
         yield return new WaitForSeconds(0.5f);
 
         if (boss != null)
@@ -202,7 +209,7 @@ public class PlayerDeathManager : MonoBehaviour
         }
         else
         {
-
+            levelMusic.Play();
             RespawnAtLastCheckpoint();
            // prb.gravityScale = 1;
 
