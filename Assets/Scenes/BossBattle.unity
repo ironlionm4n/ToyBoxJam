@@ -36492,10 +36492,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: dashDuration
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 101188707672128526, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -36543,6 +36539,34 @@ PrefabInstance:
     - target: {fileID: 101188707672128527, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_SortingOrder
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049474186992599452, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1621982330951907184, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947072781912171559, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764714293892587891, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1581606537}
+    - target: {fileID: 5019635917362237225, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6009136197069733125, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666564802069300921, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50c2e67444f392f47934919f1da25331, type: 3}
@@ -39418,7 +39442,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1918510547}
   m_FillRect: {fileID: 1910728783}
   m_HandleRect: {fileID: 0}

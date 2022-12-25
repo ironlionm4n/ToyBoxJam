@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Required Components")]
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] float dashDirection = 0;
     [SerializeField] private bool canDash = true;
+    [SerializeField] private Image[] dashIndicators;
 
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
@@ -87,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
             canDash = false;
 
@@ -235,6 +238,25 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer.color = Color.white;
         gameObject.GetComponent<PlayerStats>().SetInvicible(false);
         playerAnimator.SetBool("Dashing", false);
+
+        StartCoroutine(DashIndicator());
+    }
+
+    //Controls dash indicators showing when player can dash again
+    public IEnumerator DashIndicator()
+    {
+        for(int i = 0; i < dashIndicators.Length; i++)
+        {
+            dashIndicators[i].gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(dashCooldown / dashIndicators.Length);
+        }
+
+
+        for (int i = 0; i < dashIndicators.Length; i++)
+        {
+            dashIndicators[i].gameObject.SetActive(false);
+        }
     }
 
     public void SetKnockbacked(bool kb)
