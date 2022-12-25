@@ -125,15 +125,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveVertical > 0 && !isJumping && !jumpQueued)
         {
-            if (playerRigidbody.velocity.y == 0f)
+            if (playerRigidbody.velocity.y != 0f)
             {
-                playerAnimator.SetBool("Jumping", true);
-                _shouldJump = true;
+                jumpQueued = true;
+                return;
             }
             else
             {
-                jumpQueued = true;
             }
+
+            playerAnimator.SetBool("Jumping", true);
+            _shouldJump = true;
         }
     }
 
