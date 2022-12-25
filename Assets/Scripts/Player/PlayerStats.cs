@@ -194,6 +194,11 @@ public class PlayerStats : MonoBehaviour
         invincible= true;
     }
 
+    public void SetInvicible(bool value)
+    {
+        invincible= value;
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {   
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Required Components")]
@@ -30,9 +32,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dashing")]
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashTimer = 0f;
+    [SerializeField] private float dashDuration = 0.3f;
+    [SerializeField] private float dashTime = 0f; 
     [SerializeField] private bool dashing = false;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] float dashDirection = 0;
+    [SerializeField] private bool canDash = true;
+    [SerializeField] private Image[] dashIndicators;
 
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
@@ -75,13 +81,18 @@ public class PlayerMovement : MonoBehaviour
 
             return;
         }
+
+        if(dashTime < dashDuration && dashing)
+        {
+            dashTime += Time.deltaTime;
+        }
         
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashing)
+        if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
-            playerAnimator.SetBool("Dashing", true);
+            canDash = false;
 
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
 
@@ -91,13 +102,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Manages dash cooldown
-        if (dashing)
+        if (!dashing)
         {
             dashTimer -= Time.deltaTime;
 
             if(dashTimer <= 0)
             {
-                dashing = false;
+                canDash = true;
             }
 
         }
@@ -123,15 +134,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveVertical > 0 && !isJumping && !jumpQueued)
         {
-            if (playerRigidbody.velocity.y == 0f)
+            if (playerRigidbody.velocity.y != 0f)
             {
-                playerAnimator.SetBool("Jumping", true);
-                _shouldJump = true;
+                jumpQueued = true;
+                return;
             }
             else
             {
-                jumpQueued = true;
             }
+
+            playerAnimator.SetBool("Jumping", true);
+            _shouldJump = true;
         }
     }
 
@@ -212,11 +225,38 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dashing()
     {
-        yield return new WaitWhile(() => !playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Dashing"));
+        playerAnimator.SetBool("Dashing", true);
+        spriteRenderer.color = Color.yellow;
 
-        yield return new WaitWhile(() => playerAnimator.GetCurrentAnimatorStateInfo(0).length > playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        //Makes player invicible while dashing
+        gameObject.GetComponent<PlayerStats>().SetInvicible(true);
 
+        yield return new WaitWhile(() => dashTime < dashDuration);
+
+        dashing = false;
+        dashTime = 0;
+        spriteRenderer.color = Color.white;
+        gameObject.GetComponent<PlayerStats>().SetInvicible(false);
         playerAnimator.SetBool("Dashing", false);
+
+        StartCoroutine(DashIndicator());
+    }
+
+    //Controls dash indicators showing when player can dash again
+    public IEnumerator DashIndicator()
+    {
+        for(int i = 0; i < dashIndicators.Length; i++)
+        {
+            dashIndicators[i].gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(dashCooldown / dashIndicators.Length);
+        }
+
+
+        for (int i = 0; i < dashIndicators.Length; i++)
+        {
+            dashIndicators[i].gameObject.SetActive(false);
+        }
     }
 
     public void SetKnockbacked(bool kb)

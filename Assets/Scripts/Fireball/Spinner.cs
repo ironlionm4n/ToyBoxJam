@@ -104,6 +104,8 @@ public class Spinner : MonoBehaviour
             WestRow[i].gameObject.SetActive(false);
             yield return new WaitForSeconds(0.1f);
         }
+
+        Destroy(gameObject);
     }
 
     public void DeactivateSpinner()
