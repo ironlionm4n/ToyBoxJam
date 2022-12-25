@@ -82,11 +82,13 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && !dashing)
         {
             playerAnimator.SetBool("Dashing", true);
+            spriteRenderer.color = Color.yellow;
 
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
 
             dashing = true;
             dashTimer = dashCooldown;
+            gameObject.GetComponent<PlayerStats>().SetInvicible(true);
             StartCoroutine(Dashing());
         }
 
@@ -216,6 +218,8 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitWhile(() => playerAnimator.GetCurrentAnimatorStateInfo(0).length > playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
+        spriteRenderer.color = Color.white;
+        gameObject.GetComponent<PlayerStats>().SetInvicible(false);
         playerAnimator.SetBool("Dashing", false);
     }
 
