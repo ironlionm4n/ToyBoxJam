@@ -13,6 +13,7 @@ public class BossStats : MonoBehaviour
     [SerializeField] private BossAnimations animations;
     [SerializeField] private Slider healthBar;
     [SerializeField] ParticleSystem bossHitParticles;
+    [SerializeField] AudioSource bossHitAudioSource;
 
     [Header("Attacks")]
     [SerializeField] private GameObject HomingAttack;
@@ -125,6 +126,7 @@ public class BossStats : MonoBehaviour
     public void Hit(float damage)
     {
         bossHitParticles.Play();
+        bossHitAudioSource.Play();
         UpdateHealth(-damage);
     }
 

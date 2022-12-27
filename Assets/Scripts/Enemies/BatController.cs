@@ -26,6 +26,9 @@ public class BatController : MonoBehaviour
     [SerializeField] Collider2D batCollider;
     [SerializeField] SpriteRenderer batRenderer;
 
+    [Header("Audio Source Section")]
+    [SerializeField] AudioSource batDeathAudioSource;
+
     private BatStates _currentState;
     private Vector3 _currentDestination;
     private int _waypointIndex;
@@ -113,6 +116,7 @@ public class BatController : MonoBehaviour
     }
     private IEnumerator PlayDeathParticles()
     {
+        batDeathAudioSource.Play();
         batDeathParticles.Play();
         batCollider.enabled = false;
         batRenderer.enabled = false;
