@@ -130,9 +130,14 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = false;
             dashDirection= 1;
         }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            moveVertical = 1;
+        }
       
 
-        if (moveVertical > 0 && !isJumping && !jumpQueued)
+        if ((moveVertical > 0 && !isJumping && !jumpQueued))
         {
             if (playerRigidbody.velocity.y != 0f)
             {
