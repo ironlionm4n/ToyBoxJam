@@ -10,6 +10,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private AudioSource coinPickup;
     [SerializeField] private AudioSource coinThrow;
     [SerializeField] private AudioSource lowHealth;
+    [SerializeField] AudioSource playerHitAudioSource;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private PlayerMovement playerMovement;
@@ -111,6 +112,7 @@ public class PlayerStats : MonoBehaviour
 
     public void Hurt(float knockbackDir)
     {
+        playerHitAudioSource.Play();
         health--;
 
         hearts[(int)health].gameObject.SetActive(false);
