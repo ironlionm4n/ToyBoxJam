@@ -130,9 +130,14 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = false;
             dashDirection= 1;
         }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            moveVertical = 1;
+        }
       
 
-        if (moveVertical > 0 && !isJumping && !jumpQueued)
+        if ((moveVertical > 0 && !isJumping && !jumpQueued))
         {
             if (playerRigidbody.velocity.y != 0f)
             {
@@ -225,6 +230,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dashing()
     {
+        StartCoroutine(Flash());
         playerAnimator.SetBool("Dashing", true);
         spriteRenderer.color = Color.yellow;
 
@@ -281,6 +287,23 @@ public class PlayerMovement : MonoBehaviour
     public void Respawned()
     {
         isDead= false;
+    }
+
+    public IEnumerator Flash()
+    {
+        while (dashing)
+        {
+            spriteRenderer.enabled= false;
+
+            yield return new WaitForSeconds(0.05f);
+
+            spriteRenderer.enabled = true;
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        //Makes sure the rendered is enabled after dashing
+        spriteRenderer.enabled = true;
     }
     
 }
