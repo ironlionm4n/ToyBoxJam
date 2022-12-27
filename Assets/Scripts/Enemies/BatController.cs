@@ -21,6 +21,11 @@ public class BatController : MonoBehaviour
     [SerializeField] private float elapsedTime = 0;
     [SerializeField] private float blockTime = 3f;
 
+    [Header("Death Particle System Section")]
+    [SerializeField] ParticleSystem batDeathParticles;
+    [SerializeField] Collider2D batCollider;
+    [SerializeField] SpriteRenderer batRenderer;
+
     private BatStates _currentState;
     private Vector3 _currentDestination;
     private int _waypointIndex;
@@ -104,7 +109,14 @@ public class BatController : MonoBehaviour
     public void Dead()
     {
         //Death animation?
-
+        StartCoroutine(PlayDeathParticles());
+    }
+    private IEnumerator PlayDeathParticles()
+    {
+        batDeathParticles.Play();
+        batCollider.enabled = false;
+        batRenderer.enabled = false;
+        while (batDeathParticles.isPlaying) yield return null;
         Destroy(gameObject);
     }
 }
