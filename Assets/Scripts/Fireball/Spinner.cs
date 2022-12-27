@@ -90,7 +90,7 @@ public class Spinner : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
 
         activated = true;
-        StartCoroutine(Flash());
+        //StartCoroutine(Flash());
     }
 
     public IEnumerator Deactivate()
