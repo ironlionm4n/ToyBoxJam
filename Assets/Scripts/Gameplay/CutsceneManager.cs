@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -204,7 +205,7 @@ public class CutsceneManager : MonoBehaviour
 
         bcamera.MoveToPlayer();
 
-        yield return new WaitUntil(() => bcamera.transform.position.x == player.transform.position.x);
+        yield return new WaitUntil(() => Math.Abs(bcamera.transform.position.x - player.transform.position.x) < .05);
 
         bossHealthBar.SetActive(false);
 
