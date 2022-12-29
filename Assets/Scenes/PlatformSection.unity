@@ -4903,7 +4903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -513.6, y: -190.9}
+  m_AnchoredPosition: {x: -513.6, y: -190.6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &143656851
@@ -4926,10 +4926,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: W to jump
+  m_text: W To jump
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5662,8 +5662,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: A + D to run
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5979,8 +5979,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Left Shift to dash
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9168,8 +9168,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Climb and Collect Checkpoints to save progress
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10150,8 +10150,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Avoid Spikes and Enemies
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -95214,8 +95214,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Pickup a max of 3 coins to throw at enemies [Left Mouse Click]
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
+  m_sharedMaterial: {fileID: -9073845787036319943, guid: 5b0dd98cfbedbd9489065eb063ed533c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
