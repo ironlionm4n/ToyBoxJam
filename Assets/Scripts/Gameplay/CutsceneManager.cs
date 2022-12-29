@@ -177,6 +177,8 @@ public class CutsceneManager : MonoBehaviour
             yield return null;
         }
 
+        player.GetComponent<Animator>().SetTrigger("Won");
+    
         yield return new WaitForSeconds(0.8f);
 
         boss.GetComponent<Animator>().SetBool("Dead", false);
