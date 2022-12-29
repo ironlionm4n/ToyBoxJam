@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashDirection = 0;
     [SerializeField] private bool canDash = true;
     [SerializeField] private Image[] dashIndicators;
+    [SerializeField] private AudioSource playerDashAudioSource;
 
     [Header("General Variables")]
     [SerializeField] private bool isDead = false;
@@ -55,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         set => isDead = value;
     }
     private bool _shouldJump;
+    
 
     private void Awake()
     {
@@ -93,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
             canDash = false;
-
+            playerDashAudioSource.Play();
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
 
             dashing = true;
