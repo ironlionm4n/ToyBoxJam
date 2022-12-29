@@ -49,6 +49,7 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private Button QuitButton;
     [SerializeField] private AudioSource winMusic;
     [SerializeField] private AudioSource levelMusic;
+    [SerializeField] private ParticleSystem wonParticles;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -206,9 +207,9 @@ public class CutsceneManager : MonoBehaviour
         bcamera.MoveToPlayer();
 
         yield return new WaitUntil(() => Math.Abs(bcamera.transform.position.x - player.transform.position.x) < .05);
-
+        
         bossHealthBar.SetActive(false);
-
+        wonParticles.Play();
         for(int i = 0; i < YouWin.Length; i++)
         {
             while (YouWin[i].color.a < 1)
