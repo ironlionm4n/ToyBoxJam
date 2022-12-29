@@ -70,7 +70,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (inCutscene) { return; }
+        if (inCutscene) { 
+            
+            playerAnimator.SetFloat("VerticalMovement", 0);
+            
+            return; }
 
         if (isDead)
         {
@@ -80,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
-
             return;
         }
 
