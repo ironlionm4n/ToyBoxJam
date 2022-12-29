@@ -121,6 +121,7 @@ public class PlayerDeathManager : MonoBehaviour
         prb.velocity = new Vector2(0, 0);
 
         player.GetComponent<Animator>().SetBool("Dead", true);
+        player.GetComponent<Animator>().SetTrigger("Died");
         gameOverBackground.sortingOrder = 11;
 
         while (gameOverBackground.color.a < 1)
@@ -156,7 +157,7 @@ public class PlayerDeathManager : MonoBehaviour
 
         Debug.Log("Waiting respawn");
 
-        while(waitingRespawn )
+        /*while(waitingRespawn )
         {
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, 0);
 
@@ -165,7 +166,7 @@ public class PlayerDeathManager : MonoBehaviour
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, 0);
 
             yield return new WaitForSeconds(0.5f);
-        }
+        }*/
     }
 
     public IEnumerator PlayerRespawn()
