@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerController : MonoBehaviour
 {
+    [SerializeField] private float optionsUnloadDelay;
+
     public void LoadMainGame()
     {
         var playButtonAudioSource = GetComponent<AudioSource>();
@@ -33,6 +35,12 @@ public class SceneManagerController : MonoBehaviour
     public void UnloadOptions()
     {
         GameObject.FindGameObjectWithTag("MainMenuCanvas").SetActive(true);
+        StartCoroutine(DelayUnloadOptions());
+    }
+
+    private IEnumerator DelayUnloadOptions()
+    {
+        yield return new WaitForSeconds(optionsUnloadDelay);
         SceneManager.UnloadSceneAsync("Options");
     }
 }

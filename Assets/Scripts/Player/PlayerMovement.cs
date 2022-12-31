@@ -70,7 +70,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (inCutscene) { return; }
+        if (inCutscene) { 
+            
+            playerAnimator.SetFloat("VerticalMovement", 0);
+            
+            return; }
 
         if (isDead)
         {
@@ -80,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
-
             return;
         }
 
@@ -92,15 +95,17 @@ public class PlayerMovement : MonoBehaviour
         //Used for debugging
         velocityY = playerRigidbody.velocity.y;
 
-        if (Input.GetKey(KeyCode.LeftShift) && canDash)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             canDash = false;
             playerDashAudioSource.Play();
+            playerAnimator.SetTrigger("TriggerDash");
+            playerAnimator.SetBool("Dashing", true);
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
-
             dashing = true;
             dashTimer = dashCooldown;
             StartCoroutine(Dashing());
+         
         }
 
         //Manages dash cooldown
@@ -232,11 +237,12 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dashing()
     {
+        
         StartCoroutine(Flash());
-        playerAnimator.SetBool("Dashing", true);
+
         spriteRenderer.color = Color.yellow;
 
-        //Makes player invicible while dashing
+        // Makes player invincible while dashing
         gameObject.GetComponent<PlayerStats>().SetInvicible(true);
 
         yield return new WaitWhile(() => dashTime < dashDuration);
@@ -245,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
         dashTime = 0;
         spriteRenderer.color = Color.white;
         gameObject.GetComponent<PlayerStats>().SetInvicible(false);
-        playerAnimator.SetBool("Dashing", false);
+        
 
         StartCoroutine(DashIndicator());
     }
@@ -253,6 +259,7 @@ public class PlayerMovement : MonoBehaviour
     //Controls dash indicators showing when player can dash again
     public IEnumerator DashIndicator()
     {
+        playerAnimator.SetBool("Dashing", false);
         for(int i = 0; i < dashIndicators.Length; i++)
         {
             dashIndicators[i].gameObject.SetActive(true);
