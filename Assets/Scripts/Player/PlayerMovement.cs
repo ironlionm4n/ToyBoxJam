@@ -157,15 +157,19 @@ public class PlayerMovement : MonoBehaviour
 
         if(moveVertical < 0)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 1f, oneway);
+            RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, -transform.up, 0.75f);
 
-            if(hit && hit.transform != transform)
+            foreach (RaycastHit2D item in hit)
             {
-                if(hit.transform.GetComponent<PlatformEffector2D>() != null)
+
+                if (item && item.transform != transform)
                 {
-                    Debug.Log("Hit");
-                    PlatformEffector2D hitEffector = hit.transform.GetComponent<PlatformEffector2D>();
-                    StartCoroutine(GoDown(hitEffector));
+                    if (item.transform.GetComponent<PlatformEffector2D>() != null)
+                    {
+                        Debug.Log("Hit");
+                        PlatformEffector2D hitEffector = item.transform.GetComponent<PlatformEffector2D>();
+                        item.transform.GetComponent<OneWay>().FallThrough();
+                    }
                 }
             }
         }      

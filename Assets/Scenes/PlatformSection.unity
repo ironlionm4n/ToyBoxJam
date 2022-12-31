@@ -8705,6 +8705,7 @@ GameObject:
   - component: {fileID: 1110094082}
   - component: {fileID: 1110094085}
   - component: {fileID: 1110094084}
+  - component: {fileID: 1110094086}
   m_Layer: 8
   m_Name: OneWayPlatforms
   m_TagString: Ground
@@ -9273,6 +9274,20 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!114 &1110094086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110094080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035a69acb7047244a8dc8225e544c5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effector: {fileID: 1110094084}
+  fallThrough: 0
 --- !u!1001 &1181422585
 PrefabInstance:
   m_ObjectHideFlags: 0
