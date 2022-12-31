@@ -45296,8 +45296,8 @@ MonoBehaviour:
   timeBetweenFourWayAttacks: 20
   fourWayTimer: 19
   fourWaySpawned: 0
-  timeBetweenIndicatorAttacks: 1
-  indicatorTimer: 0
+  timeBetweenIndicatorAttacks: 2
+  indicatorTimer: 1
   currentHealth: 0
   phase: 1
   defeated: 0

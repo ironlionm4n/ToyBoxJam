@@ -32,7 +32,7 @@ public class BossStats : MonoBehaviour
     private Spinner currentSpinner;
 
     [Header("Indicator")]
-    [SerializeField] private float timeBetweenIndicatorAttacks = 3f;
+    [SerializeField] private float timeBetweenIndicatorAttacks = 2f;
     [SerializeField] private float indicatorTimer = 1f;
 
     [Header("Stats")]

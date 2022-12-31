@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioSource playerJump;
     [SerializeField] private AudioSource playerLand;
     [SerializeField] private AudioSource playerRun;
+    [SerializeField] private LayerMask oneway;
+    [SerializeField] private Collider2D groundChecker;
 
     [Header("Running")]
     [Range(0f, 1f)]
@@ -125,6 +127,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        if(playerRigidbody.velocity.y <= 0)
+        {
+            groundChecker.enabled = true;
+        }
+
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
 
@@ -147,19 +154,24 @@ public class PlayerMovement : MonoBehaviour
         {
             moveVertical = 1;
         }
-      
+
+        if(moveVertical < 0)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 1f, oneway);
+
+            if(hit && hit.transform != transform)
+            {
+                if(hit.transform.GetComponent<PlatformEffector2D>() != null)
+                {
+                    Debug.Log("Hit");
+                    PlatformEffector2D hitEffector = hit.transform.GetComponent<PlatformEffector2D>();
+                    StartCoroutine(GoDown(hitEffector));
+                }
+            }
+        }      
 
         if ((moveVertical > 0 && !isJumping && !jumpQueued))
         {
-            if (playerRigidbody.velocity.y != 0f)
-            {
-                jumpQueued = true;
-                return;
-            }
-            else
-            {
-            }
-
             playerAnimator.SetBool("Jumping", true);
             _shouldJump = true;
         }
@@ -210,10 +222,20 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public IEnumerator GoDown(PlatformEffector2D pe)
+    {
+        pe.surfaceArc = 0;
+
+        yield return new WaitForSeconds(0.2f);
+
+        pe.surfaceArc = 180;
+    }
+
     private void Jump()
     {
         playerRun.Stop();
         playerJump.Play();
+        groundChecker.enabled = false;
 
         playerRigidbody.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
         _shouldJump = false;

@@ -375,7 +375,7 @@ MonoBehaviour:
   rotZ: 0
   groundLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
 --- !u!114 &101188707672128525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +394,9 @@ MonoBehaviour:
   playerJump: {fileID: 101188707672128539}
   playerLand: {fileID: 101188707672128516}
   playerRun: {fileID: 101188707672128517}
+  oneway:
+    serializedVersion: 2
+    m_Bits: 0
   moveSpeed: 1.15
   maxXVelocity: 12
   maxYVelocity: 20
