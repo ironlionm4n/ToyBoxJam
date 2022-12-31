@@ -36606,6 +36606,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+--- !u!114 &591771534 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+  m_PrefabInstance: {fileID: 591771533}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044909736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73d5595835c418b48a31807f0dba850a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &601542339
 GameObject:
   m_ObjectHideFlags: 0
@@ -45276,6 +45287,7 @@ MonoBehaviour:
   healthBar: {fileID: 1535316295}
   bossHitParticles: {fileID: 1750041488}
   bossHitAudioSource: {fileID: 1681127822}
+  pmove: {fileID: 591771534}
   HomingAttack: {fileID: 2674791429354450697, guid: 917e62b27b9d6eb4e87a10b16e04d343, type: 3}
   FourWayAttack: {fileID: 6671852822925932260, guid: a31e1d8a22127894696a65a0e6458e71, type: 3}
   IndicatorAttack: {fileID: 4951817776641251269, guid: 72a20c8fa2c60734ea0fd84194f70593, type: 3}
@@ -45284,8 +45296,8 @@ MonoBehaviour:
   timeBetweenFourWayAttacks: 20
   fourWayTimer: 19
   fourWaySpawned: 0
-  timeBetweenIndicatorAttacks: 3
-  indicatorTimer: 2
+  timeBetweenIndicatorAttacks: 1
+  indicatorTimer: 0
   currentHealth: 0
   phase: 1
   defeated: 0

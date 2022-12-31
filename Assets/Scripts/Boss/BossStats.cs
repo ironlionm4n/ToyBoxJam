@@ -14,6 +14,7 @@ public class BossStats : MonoBehaviour
     [SerializeField] private Slider healthBar;
     [SerializeField] ParticleSystem bossHitParticles;
     [SerializeField] AudioSource bossHitAudioSource;
+    [SerializeField] private PlayerMovement pmove;
 
     [Header("Attacks")]
     [SerializeField] private GameObject HomingAttack;
@@ -31,8 +32,8 @@ public class BossStats : MonoBehaviour
     private Spinner currentSpinner;
 
     [Header("Indicator")]
-    [SerializeField] private float timeBetweenIndicatorAttacks = 5f;
-    [SerializeField] private float indicatorTimer = 3f;
+    [SerializeField] private float timeBetweenIndicatorAttacks = 3f;
+    [SerializeField] private float indicatorTimer = 1f;
 
     [Header("Stats")]
     [SerializeField] private float currentHealth = 0f;
@@ -110,7 +111,7 @@ public class BossStats : MonoBehaviour
         if (indicatorTimer > timeBetweenIndicatorAttacks)
         {
             indicatorTimer = 0;
-            Instantiate(IndicatorAttack, indicatorSpawn.transform.position, Quaternion.identity);
+            Instantiate(IndicatorAttack, new Vector3(indicatorSpawn.transform.position.x + pmove.GetHorizontalMoveDirection() * 3, indicatorSpawn.transform.position.y), Quaternion.identity);
             animations.Attack();
         }
 

@@ -68,6 +68,11 @@ public class PlayerMovement : MonoBehaviour
         isDead = false;
     }
 
+    public float GetHorizontalMoveDirection()
+    {
+        return moveHorizontal;
+    }
+
     private void Update()
     {
         if (inCutscene) { 
