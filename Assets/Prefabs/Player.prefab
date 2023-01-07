@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 101188707672128518}
   - component: {fileID: 101188707672128519}
   - component: {fileID: 101188707672128537}
-  - component: {fileID: 101188707672128538}
   - component: {fileID: 5805093554785679318}
   - component: {fileID: 7200820556332345846}
   m_Layer: 6
@@ -397,6 +396,7 @@ MonoBehaviour:
   oneway:
     serializedVersion: 2
     m_Bits: 0
+  groundChecker: {fileID: 101188707672128515}
   moveSpeed: 1.15
   maxXVelocity: 12
   maxYVelocity: 20
@@ -451,7 +451,10 @@ MonoBehaviour:
   numCoins: 0
   coinPickedUp: 0
   maxCoins: 3
-  coins: []
+  coins:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   health: 3
   invincible: 0
   invulnerableTimer: 0.5
@@ -1038,22 +1041,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!70 &101188707672128538
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101188707672128522}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 0.0001}
-  m_Direction: 0
 --- !u!82 &5805093554785679318
 AudioSource:
   m_ObjectHideFlags: 0
