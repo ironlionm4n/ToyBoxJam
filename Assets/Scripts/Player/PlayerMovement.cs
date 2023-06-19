@@ -50,6 +50,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
 
+    [Header("Respawn Point")]
+    [SerializeField] private GameObject currentRespawnPoint;
+
     public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
     public bool IsDead
@@ -251,10 +254,33 @@ public class PlayerMovement : MonoBehaviour
         {
             if(inCutscene) { return; }
 
+            GameObject[] respawnPoints = GameObject.FindGameObjectsWithTag("PlatformRespawnPoint");
+
+            if (respawnPoints.Length > 0)
+            {
+                float smallestDistance = Vector3.Distance(transform.position, respawnPoints[0].transform.position);
+                currentRespawnPoint = respawnPoints[0];
+
+                foreach (GameObject currentPoint in respawnPoints)
+                {
+                    float distance = Vector3.Distance(transform.position, currentPoint.transform.position);
+
+                    if(distance < smallestDistance)
+                    {
+                        currentRespawnPoint = currentPoint;
+                        smallestDistance = distance;
+                    }
+                }
+            }
+
             playerRun.Stop();
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
             playerLand.Play();
+        }
+        else if(collision.gameObject.tag == "AngelRespawn")
+        {
+            transform.position = currentRespawnPoint.transform.position;
         }
     }
 
