@@ -486,9 +486,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
-  jumpHeight: 3
+  jumpHeight: 6
   maxAirJumps: 0
-  downwardMovementMultiplier: 3
+  downwardMovementMultiplier: 4
   upwardMovementMultiplier: 1.7
   coyoteTime: 0.25
   jumpBuffer: 0.25

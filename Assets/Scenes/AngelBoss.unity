@@ -47121,10 +47121,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6624539215822150411, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: jumpHeight
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 6666564802069300921, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_IsActive
       value: 0
