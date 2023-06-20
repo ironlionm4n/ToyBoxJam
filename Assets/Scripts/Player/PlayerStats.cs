@@ -65,10 +65,7 @@ public class PlayerStats : MonoBehaviour
 
         if(health == 1)
         {
-            if (!alerting)
-            {
-                StartCoroutine(LowHealthAlert());
-            }
+            lowHealth.Play();
         }
     }
 
@@ -156,19 +153,6 @@ public class PlayerStats : MonoBehaviour
             spriteRenderer.enabled = true;  
         }
         invincible = false;
-    }
-
-    public IEnumerator LowHealthAlert()
-    {
-        alerting = true;
-        
-        if(health == 1)
-        {
-            lowHealth.Play();
-        }
-        yield return new WaitForSeconds(lowHealthAlertTimer);
-
-        alerting = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
