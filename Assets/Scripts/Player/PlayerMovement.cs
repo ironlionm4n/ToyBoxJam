@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask oneway;
     [SerializeField] private Collider2D groundChecker;
 
+    [SerializeField] private InputController inputController = null;
+    [SerializeField][Range(0f, 100f)] private float maxSpeed = 4f;
+    [SerializeField][Range(0f, 100f)] private float maxGroundAcc = 35f;
+    [SerializeField][Range(0f, 100f)] private float maxAirAcc = 20f;
+
+    private Vector2 _direction;
+    private Vector2 _desiredVelocity;
+    private Vector2 _currentVelocity;
+    private CollisionDataRetrieving _collisionDataRetrieving;
+    private float _maxSpeedChange;
+    private float _acceleration;
+    private bool _onGround;
+
     [Header("Running")]
-    [Range(0f, 1f)]
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float maxXVelocity = 12f;
-    [SerializeField] private float maxYVelocity = 10f;
-    [SerializeField] private float moveHorizontal;
     [SerializeField] private bool knockbacked = false;
 
     [Header("Jumping")]
@@ -66,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerRigidbody.gravityScale = fallForce;
+        _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
     }
 
     private void OnEnable()
@@ -75,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float GetHorizontalMoveDirection()
     {
-        return moveHorizontal;
+        return _currentVelocity.x;
     }
 
     private void Update()
@@ -84,7 +94,8 @@ public class PlayerMovement : MonoBehaviour
             
             playerAnimator.SetFloat("VerticalMovement", 0);
             
-            return; }
+            return; 
+        }
 
         if (isDead)
         {
@@ -135,19 +146,21 @@ public class PlayerMovement : MonoBehaviour
             groundChecker.enabled = true;
         }
 
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveVertical = Input.GetAxisRaw("Vertical");
+        _direction.x = inputController.RetrieveMovementInput();
+        _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(maxSpeed - _collisionDataRetrieving.Friction, 0f);
+
+        //moveHorizontal = Input.GetAxisRaw("Horizontal");
+       // moveVertical = Input.GetAxisRaw("Vertical");
 
         //Sets animator values
-        playerAnimator.SetFloat("HorizontalMovement", moveHorizontal);
         playerAnimator.SetFloat("VerticalMovement", playerRigidbody.velocity.y);
 
-        if (moveHorizontal < 0 && !knockbacked)
+        if (_direction.x < 0 && !knockbacked)
         {
             spriteRenderer.flipX = true;
             dashDirection = -1;
         }
-        if (moveHorizontal > 0 && !knockbacked)
+        if (_direction.x > 0 && !knockbacked)
         {
             spriteRenderer.flipX = false;
             dashDirection= 1;
@@ -186,12 +199,34 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(moveHorizontal == 0 && playerRun.isPlaying)
+        if(_currentVelocity.x == 0 && playerRun.isPlaying)
         {
             playerRun.Stop();
         }
 
-        if (moveHorizontal > 0.1f && !knockbacked)
+        if (knockbacked)
+        {
+            return;
+        }
+
+
+        _onGround = _collisionDataRetrieving.OnGround;
+        _currentVelocity = playerRigidbody.velocity;
+        _acceleration = _onGround ? maxGroundAcc : maxAirAcc;
+        _maxSpeedChange = _acceleration * Time.deltaTime;
+        _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
+
+        playerAnimator.SetFloat("HorizontalMovement", _currentVelocity.x);
+
+        playerRigidbody.velocity = _currentVelocity;
+
+        if (_currentVelocity.x != 0 && !playerRun.isPlaying && playerRigidbody.velocity.y == 0)
+        {
+            playerRun.Play();
+        }
+
+
+        /*if (moveHorizontal > 0.1f && !knockbacked)
         {
             if (playerRigidbody.velocity.x < maxXVelocity)
             {
@@ -216,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 playerRun.Play();
             }
-        }
+        }*/
 
         if (_shouldJump && !isJumping) Jump();
 
@@ -344,7 +379,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void StopSounds()
     {
-        moveHorizontal = 0;
+        _currentVelocity.x = 0f;
         playerRun.Stop();
         playerJump.Stop();
         playerLand.Stop();

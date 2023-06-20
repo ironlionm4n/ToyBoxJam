@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 101188707672128513}
   - component: {fileID: 101188707672128525}
   - component: {fileID: 101188707672128512}
+  - component: {fileID: 6932165252750033159}
   - component: {fileID: 101188707672128539}
   - component: {fileID: 101188707672128516}
   - component: {fileID: 101188707672128517}
@@ -397,6 +398,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundChecker: {fileID: 101188707672128515}
+  inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
+  maxSpeed: 4
+  maxGroundAcc: 35
+  maxAirAcc: 20
   moveSpeed: 1.15
   maxXVelocity: 12
   maxYVelocity: 20
@@ -426,6 +431,7 @@ MonoBehaviour:
   isDead: 0
   canPlaySounds: 1
   inCutscene: 0
+  currentRespawnPoint: {fileID: 0}
 --- !u!114 &101188707672128512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +471,18 @@ MonoBehaviour:
   hearts: []
   inCutscene: 0
   deathManager: {fileID: 0}
+--- !u!114 &6932165252750033159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101188707672128522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7667980fece741e4085d9a82125858fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &101188707672128539
 AudioSource:
   m_ObjectHideFlags: 0
