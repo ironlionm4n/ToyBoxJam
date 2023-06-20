@@ -121,6 +121,8 @@ public class Jump : MonoBehaviour
         }
 
         _canFall = _playerRigidbody.velocity.y >= 0;
+
+        playerAnimator.SetFloat("VerticalMovement", _velocity.y);
         _playerRigidbody.velocity = _velocity;
     }
 
@@ -146,7 +148,6 @@ public class Jump : MonoBehaviour
             }
 
             _velocity.y += _jumpSpeed;
-            playerAnimator.SetFloat("VerticalMovement", _playerRigidbody.velocity.y);
             playerAnimator.SetBool("Jumping", true);
             SFX.instance.Jump();
         }

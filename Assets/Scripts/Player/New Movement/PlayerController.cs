@@ -11,11 +11,11 @@ public class PlayerController : InputController
 
     public override bool RetrieveJumpInput()
     {
-        return Input.GetButtonDown("Jump");
+        return Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W);
     }
 
     public override bool RetrieveJumpInputHeld()
     {
-        return Input.GetButton("Jump");
+        return Input.GetButton("Jump") || Input.GetKey(KeyCode.W);
     }
 }

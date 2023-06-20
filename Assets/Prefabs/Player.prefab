@@ -393,7 +393,7 @@ MonoBehaviour:
     m_Bits: 0
   groundChecker: {fileID: 101188707672128515}
   inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
-  maxSpeed: 4
+  maxSpeed: 10
   maxGroundAcc: 35
   maxAirAcc: 20
   knockbacked: 0
