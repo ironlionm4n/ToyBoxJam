@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 101188707672128537}
   - component: {fileID: 5805093554785679318}
   - component: {fileID: 7200820556332345846}
+  - component: {fileID: 6624539215822150411}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -402,10 +403,6 @@ MonoBehaviour:
   maxSpeed: 4
   maxGroundAcc: 35
   maxAirAcc: 20
-  moveSpeed: 1.15
-  maxXVelocity: 12
-  maxYVelocity: 20
-  moveHorizontal: 0
   knockbacked: 0
   jumpForce: 20
   isJumping: 0
@@ -1251,6 +1248,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6624539215822150411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101188707672128522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e297214f283654448973d5e1fa9438f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
+  jumpHeight: 3
+  maxAirJumps: 0
+  downwardMovementMultiplier: 3
+  upwardMovementMultiplier: 1.7
+  coyoteTime: 0.25
+  jumpBuffer: 0.25
+  playerAnimator: {fileID: 101188707672128514}
+  playerJump: Player_Jump
+  canJump: 1
 --- !u!1 &1049474186992599452
 GameObject:
   m_ObjectHideFlags: 0

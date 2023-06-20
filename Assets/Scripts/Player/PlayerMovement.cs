@@ -99,10 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDead)
         {
-            if(playerRun.isPlaying)
-            {
-                playerRun.Stop();
-            }
+            SFX.instance.StopRunning();
 
             playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
             return;
@@ -119,7 +116,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             canDash = false;
-            playerDashAudioSource.Play();
+
+            SFX.instance.Dash();
+
             playerAnimator.SetTrigger("TriggerDash");
             playerAnimator.SetBool("Dashing", true);
             playerRigidbody.AddForce(new Vector2(dashDirection * dashSpeed, 0f), ForceMode2D.Impulse);
@@ -190,18 +189,13 @@ public class PlayerMovement : MonoBehaviour
             }
         }      
 
-        if ((moveVertical > 0 && !isJumping && !jumpQueued))
-        {
-            playerAnimator.SetBool("Jumping", true);
-            _shouldJump = true;
-        }
     }
 
     private void FixedUpdate()
     {
         if(_currentVelocity.x == 0 && playerRun.isPlaying)
         {
-            playerRun.Stop();
+            SFX.instance.StopRunning();
         }
 
         if (knockbacked)
@@ -222,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_currentVelocity.x != 0 && !playerRun.isPlaying && playerRigidbody.velocity.y == 0)
         {
-            playerRun.Play();
+            SFX.instance.Run();
         }
 
 
@@ -252,14 +246,6 @@ public class PlayerMovement : MonoBehaviour
                 playerRun.Play();
             }
         }*/
-
-        if (_shouldJump && !isJumping) Jump();
-
-        if(jumpQueued && playerRigidbody.velocity.y == 0)
-        {
-            jumpQueued = false;
-            Jump();
-        }
         
         
     }
@@ -308,10 +294,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
-            playerRun.Stop();
+            //playerRun.Stop();
             isJumping = false;
             playerAnimator.SetBool("Jumping", false);
-            playerLand.Play();
+            //playerLand.Play();
         }
         else if(collision.gameObject.tag == "AngelRespawn")
         {
@@ -380,9 +366,7 @@ public class PlayerMovement : MonoBehaviour
     public void StopSounds()
     {
         _currentVelocity.x = 0f;
-        playerRun.Stop();
-        playerJump.Stop();
-        playerLand.Stop();
+        SFX.instance.StopSounds();
     }
 
     public void Respawned()
