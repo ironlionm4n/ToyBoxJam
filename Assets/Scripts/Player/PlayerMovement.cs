@@ -152,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
        // moveVertical = Input.GetAxisRaw("Vertical");
 
         //Sets animator values
-        playerAnimator.SetFloat("VerticalMovement", playerRigidbody.velocity.y);
+        //playerAnimator.SetFloat("VerticalMovement", playerRigidbody.velocity.y);
 
         if (_direction.x < 0 && !knockbacked)
         {
@@ -164,30 +164,6 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = false;
             dashDirection= 1;
         }
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            moveVertical = 1;
-        }
-
-        if(moveVertical < 0)
-        {
-            RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, -transform.up, 0.75f);
-
-            foreach (RaycastHit2D item in hit)
-            {
-
-                if (item && item.transform != transform)
-                {
-                    if (item.transform.GetComponent<PlatformEffector2D>() != null)
-                    {
-                        Debug.Log("Hit");
-                        PlatformEffector2D hitEffector = item.transform.GetComponent<PlatformEffector2D>();
-                        item.transform.GetComponent<OneWay>().FallThrough();
-                    }
-                }
-            }
-        }      
 
     }
 
@@ -214,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerRigidbody.velocity = _currentVelocity;
 
-        if (_currentVelocity.x != 0 && !playerRun.isPlaying && playerRigidbody.velocity.y == 0)
+        if (_currentVelocity.x != 0 && playerRigidbody.velocity.y == 0)
         {
             SFX.instance.Run();
         }

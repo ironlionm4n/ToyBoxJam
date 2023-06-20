@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 101188707672128512}
   - component: {fileID: 6932165252750033159}
   - component: {fileID: 6624539215822150411}
+  - component: {fileID: 9023779090201144497}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -494,6 +495,18 @@ MonoBehaviour:
   playerAnimator: {fileID: 101188707672128514}
   playerJump: Player_Jump
   canJump: 1
+--- !u!114 &9023779090201144497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101188707672128522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0502a64037a9bd64ab700ce76cdaa33e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1049474186992599452
 GameObject:
   m_ObjectHideFlags: 0
