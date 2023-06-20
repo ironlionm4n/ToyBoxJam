@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_currentVelocity.x == 0 && playerRun.isPlaying)
+        if(_currentVelocity.x == 0)
         {
             SFX.instance.StopRunning();
         }

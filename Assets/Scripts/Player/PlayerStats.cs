@@ -65,7 +65,7 @@ public class PlayerStats : MonoBehaviour
 
         if(health == 1)
         {
-            lowHealth.Play();
+            SFX.instance.LowHealth();
         }
     }
 
@@ -92,14 +92,14 @@ public class PlayerStats : MonoBehaviour
         numCoins--;
         coins[numCoins].color = Color.gray;
         Instantiate(throwableCoin, coinSpawnPoint.transform.position, coinSpawnPoint.transform.rotation);
-        coinThrow.Play();
+        SFX.instance.CoinThrown();
     }
 
     public void CoinPickedUp()
     {
         coins[numCoins].color = Color.white;
         numCoins++;
-        coinPickup.Play();
+        SFX.instance.CoinPickedUp();
     }
 
     public void Flash()
@@ -109,7 +109,7 @@ public class PlayerStats : MonoBehaviour
 
     public void Hurt(float knockbackDir)
     {
-        playerHitAudioSource.Play();
+        SFX.instance.Hit();
         health--;
 
         hearts[(int)health].gameObject.SetActive(false);
