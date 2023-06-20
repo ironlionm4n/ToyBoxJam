@@ -62,11 +62,6 @@ public class PlayerStats : MonoBehaviour
         {
             Fire();
         }
-
-        if(health == 1)
-        {
-            SFX.instance.LowHealth();
-        }
     }
 
     //Keeps player from picking up multiple coins at once
@@ -113,8 +108,13 @@ public class PlayerStats : MonoBehaviour
         health--;
 
         hearts[(int)health].gameObject.SetActive(false);
-        
-        if(health <= 0)
+
+        if (health == 1)
+        {
+            SFX.instance.LowHealth();
+        }
+
+        if (health <= 0)
         {
             playerMovement.IsDead = true;
             StopAllCoroutines();

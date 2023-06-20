@@ -36588,6 +36588,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1302043363336328540, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1621982330951907184, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -36612,8 +36616,7 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 101188707672128538, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50c2e67444f392f47934919f1da25331, type: 3}
 --- !u!114 &591771534 stripped
 MonoBehaviour:
@@ -44260,7 +44263,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1044909752}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1492072621
 GameObject:
