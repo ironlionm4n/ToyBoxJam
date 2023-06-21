@@ -66239,7 +66239,7 @@ GameObject:
   - component: {fileID: 2064531712}
   - component: {fileID: 2064531711}
   - component: {fileID: 2064531715}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: BossPlatforms
   m_TagString: Ground
   m_Icon: {fileID: 0}

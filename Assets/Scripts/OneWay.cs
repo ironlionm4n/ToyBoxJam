@@ -6,6 +6,7 @@ public class OneWay : MonoBehaviour
 {
     [SerializeField] private PlatformEffector2D effector;
     [SerializeField] private bool fallThrough = false;
+    private bool switchFallThrough = false;
 
     // Start is called before the first frame update
     void Start()
@@ -16,28 +17,44 @@ public class OneWay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void FallThrough()
-    {
-        if (!fallThrough)
+        if (Input.GetKeyUp(KeyCode.S))
         {
-            fallThrough = true;
-            StartCoroutine(GoDown());
+            if (!fallThrough)
+            {
+                effector.surfaceArc = 180;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            effector.surfaceArc = 0;
         }
     }
 
-    public IEnumerator GoDown()
+    private void FixedUpdate()
     {
-        effector.surfaceArc = 0;
+        if (switchFallThrough)
+        {
+            switchFallThrough = false;
+            effector.surfaceArc = 180;
+        }
+    }
 
-        yield return new WaitForSeconds(0.5f);
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player")){
+            fallThrough = true;
+            switchFallThrough = false;
+        }
+        
+    }
 
-        effector.surfaceArc = 180;
-
-        yield return null;
-
-        fallThrough = false;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            fallThrough = false;
+            switchFallThrough = true;
+        }
     }
 }
