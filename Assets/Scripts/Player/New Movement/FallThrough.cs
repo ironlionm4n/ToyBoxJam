@@ -4,19 +4,38 @@ using UnityEngine;
 
 public class FallThrough : MonoBehaviour
 {
-    public LayerMask layerMask;
-    private BoxCollider2D groundCheck;
+    private OneWay currentOneWay;
     // Start is called before the first frame update
     void Start()
     {
-        groundCheck = GetComponent<BoxCollider2D>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.S))
+        {
+            if(currentOneWay != null)
+            {
+                currentOneWay.FallThrough();
+            }
+        }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("OneWay"))
+        {
+            currentOneWay = collision.gameObject.GetComponent<OneWay>();
+        }
+    }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("OneWay"))
+        {
+            currentOneWay = null;
+        }
+    }
 }

@@ -15,6 +15,7 @@ TagManager:
   - MainMenuCanvas
   - AngelRespawn
   - PlatformRespawnPoint
+  - OneWay
   layers:
   - Default
   - TransparentFX

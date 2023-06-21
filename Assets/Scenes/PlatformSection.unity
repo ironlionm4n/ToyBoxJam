@@ -8765,7 +8765,7 @@ GameObject:
   - component: {fileID: 1110094086}
   m_Layer: 8
   m_Name: OneWayPlatforms
-  m_TagString: Ground
+  m_TagString: OneWay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9311,7 +9311,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 179
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -9344,7 +9344,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effector: {fileID: 1110094084}
-  fallThrough: 0
 --- !u!1001 &1181422585
 PrefabInstance:
   m_ObjectHideFlags: 0

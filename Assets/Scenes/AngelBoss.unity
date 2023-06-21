@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 36380128}
   m_Layer: 7
   m_Name: OneWayPlatforms
-  m_TagString: Ground
+  m_TagString: OneWay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -408,10 +408,10 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 179
   m_UseSideFriction: 0
   m_UseSideBounce: 0
-  m_SideArc: 1
+  m_SideArc: 0
 --- !u!19719996 &36380125
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -616,7 +616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effector: {fileID: 36380124}
-  fallThrough: 0
 --- !u!1 &42249352
 GameObject:
   m_ObjectHideFlags: 0
@@ -66241,7 +66240,7 @@ GameObject:
   - component: {fileID: 2064531715}
   m_Layer: 8
   m_Name: BossPlatforms
-  m_TagString: Ground
+  m_TagString: OneWay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66276,10 +66275,10 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 179
   m_UseSideFriction: 0
   m_UseSideBounce: 0
-  m_SideArc: 1
+  m_SideArc: 180
 --- !u!19719996 &2064531712
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -66804,7 +66803,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effector: {fileID: 2064531711}
-  fallThrough: 0
 --- !u!1 &2064694026
 GameObject:
   m_ObjectHideFlags: 0

@@ -84,6 +84,14 @@ public class Jump : MonoBehaviour
         {
             _jumpPhase = 0;
             _coyoteCounter = coyoteTime;
+
+
+            if (_isJumping)
+            {
+                SFX.instance.Land();
+                playerAnimator.SetBool("Jumping", false);
+            }
+
             _isJumping = false;
         }
         else
@@ -167,8 +175,7 @@ public class Jump : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            SFX.instance.Land();
-            playerAnimator.SetBool("Jumping", false);
+           
 
         }
     }
