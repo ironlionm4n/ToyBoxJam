@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class FallThrough : MonoBehaviour
 {
     private OneWay currentOneWay;
+
+    [SerializeField] private BoxCollider2D playerCollider;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +22,7 @@ public class FallThrough : MonoBehaviour
         {
             if(currentOneWay != null)
             {
-                currentOneWay.FallThrough();
+                StartCoroutine(DisableCollision());
             }
         }
     }
@@ -37,5 +41,16 @@ public class FallThrough : MonoBehaviour
         {
             currentOneWay = null;
         }
+    }
+
+    private IEnumerator DisableCollision()
+    {
+        TilemapCollider2D platformCollider = currentOneWay.GetComponent<TilemapCollider2D>();
+
+        Physics2D.IgnoreCollision(playerCollider, platformCollider);
+
+        yield return new WaitForSeconds(0.25f);
+
+        Physics2D.IgnoreCollision(platformCollider, playerCollider, false);
     }
 }

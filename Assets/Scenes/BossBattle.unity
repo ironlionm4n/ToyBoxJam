@@ -36529,10 +36529,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: groundChecker
-      value: 
-      objectReference: {fileID: 591771535}
-    - target: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: oneway.m_Bits
       value: 256
       objectReference: {fileID: 0}
@@ -36600,6 +36596,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3470433445735849565, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470433445735849565, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470433445735849565, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470433445735849565, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4764714293892587891, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Camera
       value: 
@@ -36629,11 +36641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d5595835c418b48a31807f0dba850a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &591771535 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 101188707672128515, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-  m_PrefabInstance: {fileID: 591771533}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &601542339
 GameObject:
   m_ObjectHideFlags: 0

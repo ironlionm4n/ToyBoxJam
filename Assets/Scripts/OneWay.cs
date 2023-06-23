@@ -13,12 +13,4 @@ public class OneWay : MonoBehaviour
         fallThrough = true;
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            effector.surfaceArc = 179;
-            fallThrough = false;
-        }
-    }
 }

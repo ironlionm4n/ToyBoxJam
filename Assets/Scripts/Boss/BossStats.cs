@@ -86,7 +86,7 @@ public class BossStats : MonoBehaviour
                 break;
 
             case 3:
-                currentSpinner.DeactivateSpinner();
+                currentSpinner?.DeactivateSpinner();
                 homeShotTimer += Time.deltaTime;
                 //fourWayTimer += Time.deltaTime;
                 indicatorTimer += Time.deltaTime;
@@ -111,7 +111,7 @@ public class BossStats : MonoBehaviour
         if (indicatorTimer > timeBetweenIndicatorAttacks)
         {
             indicatorTimer = 0;
-            Instantiate(IndicatorAttack, new Vector3(indicatorSpawn.transform.position.x + pmove.GetHorizontalMoveDirection() * 3, indicatorSpawn.transform.position.y), Quaternion.identity);
+            Instantiate(IndicatorAttack, new Vector3(indicatorSpawn.transform.position.x + pmove.GetHorizontalMoveDirection() * 0.75F, indicatorSpawn.transform.position.y), Quaternion.identity);
             animations.Attack();
         }
 

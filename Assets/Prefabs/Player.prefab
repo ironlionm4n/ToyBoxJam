@@ -487,10 +487,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
-  jumpHeight: 6
+  jumpHeight: 7
   maxAirJumps: 0
   downwardMovementMultiplier: 4
-  upwardMovementMultiplier: 1.7
+  upwardMovementMultiplier: 2.04
   coyoteTime: 0.25
   jumpBuffer: 0.25
   playerAnimator: {fileID: 101188707672128514}
@@ -508,6 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0502a64037a9bd64ab700ce76cdaa33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCollider: {fileID: 3470433445735849565}
 --- !u!61 &3470433445735849565
 BoxCollider2D:
   m_ObjectHideFlags: 0
