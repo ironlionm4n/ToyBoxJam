@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class AngelBoss : MonoBehaviour
 
     [SerializeField] private GameObject dashIndicator;
     private GameObject indicator;
+    private Transform indicatorEndPoint;
 
     [Header("Stats")]
     [SerializeField] private float currentHealth = 0f;
@@ -60,12 +62,24 @@ public class AngelBoss : MonoBehaviour
     [SerializeField] private bool destroyPlatforms = false;
     [SerializeField] private GameObject floorBottomLayer;
 
+    [Header("Player")]
+    [SerializeField] private GameObject player;
+
+    [Header("Top Bound")]
+    [SerializeField] private GameObject topBound;
+
+    private Aimer aimer;
+
+    private bool aiming = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        aimer = GetComponent<Aimer>();
+
         //Testing attacks
-        dashing = true;
+        //dashing = true;
+
     }
 
     // Update is called once per frame
@@ -81,10 +95,6 @@ public class AngelBoss : MonoBehaviour
                 midFlight = true;
                 StartCoroutine(StartFlying());
             }
-
-            elapsedFlightTime += Time.deltaTime;
-            float percentComplete = elapsedFlightTime / flyTime;
-            transform.position = Vector3.Lerp(currentPosition, flyAwayPoint.transform.position, percentComplete);
             return;
         }
 
@@ -157,42 +167,36 @@ public class AngelBoss : MonoBehaviour
                         break;
                 }
 
-                transform.rotation = startingPoint.transform.rotation;
+
                 lastPath = randomStartingPoint;
+                
+                //Calculate direction to player
+                Vector2 playerDirection = player.transform.position - transform.position;
 
-                indicator = Instantiate(dashIndicator, startingPoint.transform.position, Quaternion.Euler(0, 0, startingPoint.transform.eulerAngles.z));
+                //Use direction to calculate look rotation
+                Quaternion rotation = Quaternion.LookRotation(playerDirection);
 
-                StartCoroutine(StartDashing(indicator));
+                transform.position = startingPoint.transform.position;
 
-                StartCoroutine(DashIndicator());
+                //Instantiate indicator with inital rotation
+                indicator = Instantiate(dashIndicator, startingPoint.transform.position, Quaternion.Euler(0, 0, rotation.z));
+                indicatorEndPoint = indicator.transform.GetChild(0);
 
-            }
+                aimer.TakeAim(indicator);
 
-            //Waits until the indicator is fully there before starting the dash
-            if (indicator.GetComponent<SpriteRenderer>().color.a < 0.35)
-            {
-                var currentOpac = indicator.GetComponent<SpriteRenderer>().color.a;
-                currentOpac += Time.deltaTime/2;
-                indicator.GetComponent<SpriteRenderer>().color = new Color(indicator.GetComponent<SpriteRenderer>().color.r, indicator.GetComponent<SpriteRenderer>().color.g, indicator.GetComponent<SpriteRenderer>().color.b, currentOpac);
-            }
-            else
-            {
-                elapsedTime += Time.deltaTime;
-                float percentComplete = elapsedTime / DashTime;
-                transform.position = Vector3.Lerp(startingPoint.transform.position, endingPoint.transform.position, percentComplete);
+                StartCoroutine(StartDashing());
+
+
             }
         }
 
     }
 
-    public IEnumerator DashIndicator()
-    {
-        yield return null;
-    }
-
     public IEnumerator StartFlying()
     {
         floatController.ShouldFloat = false;
+
+        transform.DOMove(flyAwayPoint.transform.position, flyTime);
 
         yield return new WaitUntil(() => (transform.position.x == flyAwayPoint.transform.position.x) && (transform.position.y == flyAwayPoint.transform.position.y));
 
@@ -203,9 +207,17 @@ public class AngelBoss : MonoBehaviour
         midFlight = false;
     }
 
-    public IEnumerator StartDashing(GameObject indicator)
+    public IEnumerator StartDashing()
     {
-        yield return new WaitUntil(() => (transform.position.x == endingPoint.transform.position.x) && (transform.position.y == endingPoint.transform.position.y));
+        //Wait for aim time 
+        yield return new WaitForSeconds(aimer.aimTime * 0.8f);
+
+        indicator.GetComponent<IndicatorFlash>().StartFlash();
+
+        yield return new WaitForSeconds(aimer.aimTime * 0.4f);
+        transform.DOMove(indicatorEndPoint.position, DashTime);
+
+        yield return new WaitForSeconds(DashTime);
 
         midDash = false;
         elapsedTime = 0;
