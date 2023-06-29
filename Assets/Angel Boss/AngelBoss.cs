@@ -16,11 +16,25 @@ public class AngelBoss : MonoBehaviour
 
 
     [Header("Attacks")]
+    private const string DASH_ATTACK = "dash";
+    private const string WAVE_ATTACK = "wave";
+
+    List<string> attacks;
+
+    private int lastAttack = 0;
+    private string currentAttack;
+
+    [Header("Ground Slam")]
+    [SerializeField] private bool WaveAttack = false;
+    private GroundSlam groundSlam;
 
     [Header("Dash Attack")]
-    [SerializeField] private bool midDash = false;
     [SerializeField] private bool dashing = false;
+    [SerializeField] private bool midDash = false;
     [SerializeField] private float DashTime = 1f;
+    [SerializeField] private int numberOfDashes = 7;
+    private int dashCounter = 0;
+
     [SerializeField] private GameObject topLeftPoint;
     [SerializeField] private GameObject midLeftPoint;
     [SerializeField] private GameObject botLeftPoint;
@@ -50,6 +64,7 @@ public class AngelBoss : MonoBehaviour
 
     [Header("Fly Away")]
     [SerializeField] private GameObject flyAwayPoint;
+    [SerializeField] private Transform originalStartPoint;
     [SerializeField] private float flyTime = 2f;
     [SerializeField] private float elapsedFlightTime = 0f;
     [SerializeField] private bool flyAway = false;
@@ -75,11 +90,19 @@ public class AngelBoss : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        attacks = new List<string>();
+
+        //Add attack identifiers to attacks list
+        attacks.Add(WAVE_ATTACK);
+        attacks.Add(DASH_ATTACK);
+
         aimer = GetComponent<Aimer>();
+        groundSlam = GetComponent<GroundSlam>();
 
         //Testing attacks
         //dashing = true;
 
+        StartCoroutine(StartFlying());
     }
 
     // Update is called once per frame
@@ -190,6 +213,16 @@ public class AngelBoss : MonoBehaviour
             }
         }
 
+        if (WaveAttack)
+        {
+            //Enable ground slam attack spawning
+            if (!groundSlam.isActiveAndEnabled)
+            {
+                groundSlam.enabled = true;
+            }
+
+
+        }
     }
 
     public IEnumerator StartFlying()
@@ -200,11 +233,32 @@ public class AngelBoss : MonoBehaviour
 
         yield return new WaitUntil(() => (transform.position.x == flyAwayPoint.transform.position.x) && (transform.position.y == flyAwayPoint.transform.position.y));
 
-        groundChanger.DestroyTheGround();
+        currentAttack = ChooseNextAttack();
 
-        flyAway = false;
-        floatController.ShouldFloat = true;
-        midFlight = false;
+        //Testing
+        currentAttack = WAVE_ATTACK;
+
+        if (currentAttack.Equals(DASH_ATTACK))
+        {
+            groundChanger.DestroyTheGround();
+            dashing = true;
+
+            flyAway = false;
+            floatController.ShouldFloat = true;
+            midFlight = false;
+        }
+        else if (currentAttack.Equals(WAVE_ATTACK))
+        {
+            WaveAttack = true;
+
+            transform.DOMove(originalStartPoint.position, flyTime).OnComplete(() =>
+            {
+                flyAway = false;
+                floatController.ShouldFloat = true;
+                midFlight = false;
+            });
+        }
+
     }
 
     public IEnumerator StartDashing()
@@ -223,5 +277,19 @@ public class AngelBoss : MonoBehaviour
         elapsedTime = 0;
         floatController.ShouldFloat = true;
         Destroy(indicator);
+    }
+
+    public string ChooseNextAttack()
+    {
+        int randAttack = Random.Range(0, attacks.Count);
+
+        while(randAttack == lastAttack)
+        {
+            randAttack = Random.Range(0, attacks.Count);
+        }
+
+        lastAttack = randAttack;
+
+        return attacks[randAttack];
     }
 }

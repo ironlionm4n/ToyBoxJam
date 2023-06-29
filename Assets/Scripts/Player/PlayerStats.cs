@@ -187,7 +187,7 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {   
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball" || collision.tag.Equals("Wave"))
         {
             if (!invincible)
             {
@@ -220,7 +220,7 @@ public class PlayerStats : MonoBehaviour
 
                 Hurt(knockbackDirection);
 
-                if(collision.tag == "Fireball")
+                if(collision.tag == "Fireball" || collision.tag.Equals("Wave"))
                 {
                     Destroy(collision.gameObject);
                 }

@@ -16,6 +16,8 @@ TagManager:
   - AngelRespawn
   - PlatformRespawnPoint
   - OneWay
+  - Wall
+  - Wave
   layers:
   - Default
   - TransparentFX
