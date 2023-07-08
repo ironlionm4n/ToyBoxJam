@@ -43,7 +43,7 @@ public class Grapple : MonoBehaviour
     [SerializeField] private int numberOfPoints = 40;
     [SerializeField] private bool snap = false;
 
-    private Vector2 snapPoint;
+    private Transform snapPoint;
 
     [Header("Rope Animation Settings:")]
     public AnimationCurve ropeAnimationCurve;
@@ -58,6 +58,7 @@ public class Grapple : MonoBehaviour
 
     private Transform currentGrapple;
 
+    private MovingGrappleHook currentMovingHook;
 
     // Start is called before the first frame update
     void Start()
@@ -165,9 +166,6 @@ public class Grapple : MonoBehaviour
             {
                 if (hit == true)
                 {
-                    Debug.Log(hit.collider.gameObject.layer);
-                    Debug.Log(layerMask.value);
-                    Debug.Log(i << layerMask);
 
                     if (hit.collider.gameObject.layer == 9)
                     {
@@ -190,19 +188,33 @@ public class Grapple : MonoBehaviour
         {
             lineRenderer.positionCount = 2;
 
-            snapPoint = hit.collider.transform.position;
+            snapPoint = hit.collider.transform;
+
+            //If the player is hooked to a moving hook, move hook start moving hook
+            if (hit.transform.tag.Equals("MovingHook"))
+            {
+                currentMovingHook = hit.transform.GetComponent<MovingGrappleHook>();
+                currentMovingHook.PlayerSnapped();
+            }
         }
 
         if (snapPoint != null)
         {
             lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, snapPoint);
+            lineRenderer.SetPosition(1, snapPoint.position);
         }
 
     }
 
     private void StopGrappling()
     {
+        //If the player was hooked to a moving hook, move hook back to starting location
+        if(currentMovingHook != null)
+        {
+            currentMovingHook.PlayerUnSnapped();
+            currentMovingHook=null;
+        }
+
         lineRenderer.enabled = false;
         springJoint.enabled = false;
         finishedShooting = false;
@@ -225,7 +237,7 @@ public class Grapple : MonoBehaviour
             Debug.Log(hit.collider);
 
             //Get the distance to what the rope is snapped to
-            var distance = Vector2.Distance(transform.position, snapPoint);
+            var distance = Vector2.Distance(transform.position, snapPoint.position);
 
             //If the distance is less than the maxRopeLength use the shorter distance 
             if (distance < maxRopeLength)

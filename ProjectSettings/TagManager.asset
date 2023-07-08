@@ -18,6 +18,7 @@ TagManager:
   - OneWay
   - Wall
   - Wave
+  - MovingHook
   layers:
   - Default
   - TransparentFX
