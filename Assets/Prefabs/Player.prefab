@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 6932165252750033159}
   - component: {fileID: 6624539215822150411}
   - component: {fileID: 9023779090201144497}
+  - component: {fileID: 6983696647436910741}
   - component: {fileID: 3470433445735849565}
   m_Layer: 6
   m_Name: Player
@@ -509,6 +510,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCollider: {fileID: 3470433445735849565}
+--- !u!114 &6983696647436910741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101188707672128522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de1e59a006924046b3ae71cf19c871e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grappleSprite: {fileID: 0}
+  grapplePrefab: {fileID: 0}
+  aimReticle: {fileID: 101188705902826705}
+  shooting: 0
+  latched: 0
+  travelDistance: 0
+  travelSpeed: 0
+  retractSpeed: 0
+  maxLength: 0
+  pullStrength: 0
 --- !u!61 &3470433445735849565
 BoxCollider2D:
   m_ObjectHideFlags: 0
