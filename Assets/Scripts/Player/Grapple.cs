@@ -17,7 +17,7 @@ public class Grapple : MonoBehaviour
 
     private Vector3 targetPosition;
 
-    private SpringJoint2D springJoint;
+    private DistanceJoint2D springJoint;
 
     [Header("Aim Reticle")]
     [SerializeField] private Transform aimReticle;
@@ -33,6 +33,7 @@ public class Grapple : MonoBehaviour
     [SerializeField] private float travelSpeed;
     [SerializeField] private float retractSpeed;
     [SerializeField] private float maxRopeLength;
+    [SerializeField] private float minRopeLength;
     [SerializeField] private float pullStrength;
 
     [SerializeField]private bool finishedShooting = false;
@@ -42,6 +43,7 @@ public class Grapple : MonoBehaviour
     [Header("Rope Variables")]
     [SerializeField] private int numberOfPoints = 40;
     [SerializeField] private bool snap = false;
+    [SerializeField] private float ropeChangeAmount = 0.05f;
 
     private Transform snapPoint;
 
@@ -64,7 +66,7 @@ public class Grapple : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        springJoint = GetComponent<SpringJoint2D>();
+        springJoint = GetComponent<DistanceJoint2D>();
 
         lineRenderer.positionCount = numberOfPoints;
 
@@ -136,6 +138,22 @@ public class Grapple : MonoBehaviour
         else
         {
             SnapRope(hit);
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (springJoint.enabled && springJoint.distance > minRopeLength)
+                {
+                    springJoint.distance -= ropeChangeAmount;
+                }
+            }
+
+            if(Input.GetKey(KeyCode.S))
+            {
+                if (springJoint.enabled && springJoint.distance < maxRopeLength)
+                {
+                    springJoint.distance += ropeChangeAmount;
+                }
+            }
         }
 
         if (shooting)
