@@ -97369,22 +97369,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 1569782571
       objectReference: {fileID: 0}
-    - target: {fileID: 1049474186992599452, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1947072781912171559, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2460618488935392426, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 155380758, guid: d9b5626fc47419445908b4205cd2ac77, type: 3}
-    - target: {fileID: 5019635917362237225, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5149526561650680825, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -97393,10 +97381,6 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 24300002, guid: 8ab573a77ebbbeb4f92dcb38f82e353d, type: 2}
-    - target: {fileID: 6009136197069733125, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6434501425916716557, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -97407,10 +97391,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6572268783540320705, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6666564802069300921, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
