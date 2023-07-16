@@ -8,9 +8,13 @@ public class MageController : MonoBehaviour
     [SerializeField] private Transform[] movePoints;
     [SerializeField] private GameObject bounceAttack;
 
+    [SerializeField] private GameObject trackingProjectile;
+
     private BossInvoker bossInvoker;
 
-    public Action<MageFlailAction> action;
+    public Action<MageFlailAction> flailAttack;
+
+    public Action<MageBounceAction> bounceEffect; 
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +22,11 @@ public class MageController : MonoBehaviour
         bossInvoker = InvokerHolder.instance.bossInvoker;
 
         MageFlailAction testAction = new MageFlailAction(transform, bounceAttack, 5, movePoints, true, 2, 2f);
-        action?.Invoke(testAction);
+        //flailAttack?.Invoke(testAction);
+
+        MageBounceAction test1 = new MageBounceAction(GameObject.Find("Player"), trackingProjectile);
+
+        bounceEffect?.Invoke(test1);
     }
 
     // Update is called once per frame

@@ -29,13 +29,13 @@ public class FlailAttack : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<MageController>().action += StartFlailing;
+        GetComponent<MageController>().flailAttack += StartFlailing;
         currentProjectiles = new List<GameObject>();
     }
 
     private void OnDisable()
     {
-        GetComponent<MageController>().action -= StartFlailing;
+        GetComponent<MageController>().flailAttack -= StartFlailing;
     }
 
     // Start is called before the first frame update
