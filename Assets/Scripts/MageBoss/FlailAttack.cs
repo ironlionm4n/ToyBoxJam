@@ -25,9 +25,12 @@ public class FlailAttack : MonoBehaviour
 
     public float shootCooldown { get; private set; }
 
+    public List<GameObject> currentProjectiles { get; private set; }
+
     private void OnEnable()
     {
         GetComponent<MageController>().action += StartFlailing;
+        currentProjectiles = new List<GameObject>();
     }
 
     private void OnDisable()
@@ -122,6 +125,18 @@ public class FlailAttack : MonoBehaviour
         });
 
         yield return new WaitWhile(() => moving);
+
+        //taunt stuff
+
+        yield return new WaitForSeconds(5f);
+
+        foreach(var projectile in currentProjectiles)
+        {
+            Destroy(projectile.gameObject);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
     }
 
     public IEnumerator StartShooting()
@@ -137,6 +152,6 @@ public class FlailAttack : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(projectile, mage.transform.position, Quaternion.identity);
+        currentProjectiles.Add(Instantiate(projectile, mage.transform.position, Quaternion.identity));
     }
 }
