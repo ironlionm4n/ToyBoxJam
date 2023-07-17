@@ -44,6 +44,9 @@ public class Jump : MonoBehaviour
     private bool _onGround;
     private bool _isJumping;
     private bool _canFall;
+    private bool _bouncyFloor = false;
+    private bool _highBounce;
+    private float _bounceMultiplier = 1f;
 
     private static readonly int Vertical = Animator.StringToHash("Vertical");
 
@@ -56,6 +59,11 @@ public class Jump : MonoBehaviour
 
     private void Update()
     {
+        if(_bouncyFloor)
+        {
+            _highBounce |= inputController.RetrieveJumpInput();
+        }
+
         if (!canJump) return;
 
         // Bitwise OR assignment operator, tryingToJump will remain set in new updates until manually changed
@@ -171,12 +179,53 @@ public class Jump : MonoBehaviour
         canJump = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /// <summary>
+    /// Makes the player continously jump when colliding with a wall. This method flips the current state of the variable controlling this effect.
+    /// </summary>
+    public void BouncyFloorEffect()
     {
+        _bouncyFloor = !_bouncyFloor;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!_bouncyFloor)
+        {
+            return;
+        }
+
+
         if (collision.gameObject.tag == "Ground")
         {
-           
 
+            if (_highBounce)
+            {
+                _bounceMultiplier = 1.2f;
+                _highBounce = false;
+            }
+            else
+            {
+                _bounceMultiplier = 1f;
+            }
+
+            Debug.Log(_bounceMultiplier);
+
+            _playerRigidbody.AddForce(new Vector2(0, 20 * _bounceMultiplier), ForceMode2D.Impulse);
+
+        }
+
+        if(collision.gameObject.tag == "Wall")
+        {
+            var hit = Physics2D.Raycast(transform.position, transform.right, 1);
+
+            if (hit)
+            {
+                _playerRigidbody.AddForce(new Vector2(-10, 0), ForceMode2D.Impulse);
+            }
+            else
+            {
+                _playerRigidbody.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+            }
         }
     }
 }
