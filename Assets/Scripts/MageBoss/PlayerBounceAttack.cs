@@ -4,25 +4,29 @@ using UnityEngine;
 
 public class PlayerBounceAttack : MonoBehaviour
 {
-    [SerializeField] private PhysicsMaterial2D bounceMaterial;
-    [SerializeField] private PhysicsMaterial2D playerMaterial;
-
     [SerializeField] private GameObject oneWays;
-    [SerializeField] private GameObject ground;
+
+    [SerializeField] private GameObject rollerSpawnPoint;
+    [SerializeField] private GameObject roller;
+
+    [SerializeField] private int numberOfRollers;
+
+    [SerializeField] private float timeBetweenRollers;
+
+
+    private List<GameObject> currentRollers;
 
     public GameObject player { get; private set; }
     public Rigidbody2D playerRB { get; private set; }
 
-    public Rigidbody2D groundRB { get; private set; }
-
     public Jump playerJump { get; private set; }
 
-    public bool bouncy { get; private set; } = false;
 
 
     private void OnEnable()
     {
         GetComponent<MageController>().bounceEffect += StartBouncingAttack;
+        currentRollers = new List<GameObject>();
     }
 
     private void OnDisable()
@@ -46,13 +50,9 @@ public class PlayerBounceAttack : MonoBehaviour
     {
         player = action.player;
 
-        groundRB = ground.GetComponent<Rigidbody2D>();
-
         playerRB = player.GetComponent<Rigidbody2D>();
 
         playerJump = player.GetComponent<Jump>();
-
-        //groundRB.sharedMaterial = bounceMaterial;
 
         playerJump.DisableJumping();
 
@@ -62,17 +62,34 @@ public class PlayerBounceAttack : MonoBehaviour
 
         playerRB.AddForce(new Vector2(0, 15), ForceMode2D.Impulse);
 
-        //StartCoroutine(BouncyAttack());
+        StartCoroutine(BouncyAttack());
     }
 
     private IEnumerator BouncyAttack()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
-        //playerJump.EnableJumping();
+        for(int i = 0; i < numberOfRollers; i++)
+        {
+            currentRollers.Add(Instantiate(roller, rollerSpawnPoint.transform.position, Quaternion.identity));
 
-        oneWays.SetActive(true);
+            yield return new WaitForSeconds(timeBetweenRollers);
+        }
 
-        //playerRB.sharedMaterial = playerMaterial;
+        yield return new WaitForSeconds(10f);
+
+        StartCoroutine(EndAttack());
+    }
+
+    private IEnumerator EndAttack()
+    {
+        for (int i = 0; i < currentRollers.Count; i++)
+        {
+            Destroy(currentRollers[i]);
+
+            yield return new WaitForSeconds(timeBetweenRollers);
+        }
+
+        currentRollers.Clear();
     }
 }

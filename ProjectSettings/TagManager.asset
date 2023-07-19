@@ -20,6 +20,7 @@ TagManager:
   - Wave
   - MovingHook
   - BouncingAttack
+  - TurnPoint
   layers:
   - Default
   - TransparentFX
