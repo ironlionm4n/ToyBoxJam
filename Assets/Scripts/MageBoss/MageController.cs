@@ -14,7 +14,9 @@ public class MageController : MonoBehaviour
 
     public Action<MageFlailAction> flailAttack;
 
-    public Action<MageBounceAction> bounceEffect; 
+    public Action<MageBounceAction> bounceEffect;
+
+    public Action<MageSideBouncerAction> sideBouncingAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +28,11 @@ public class MageController : MonoBehaviour
 
         MageBounceAction test1 = new MageBounceAction(GameObject.Find("Player"), trackingProjectile);
 
-        bounceEffect?.Invoke(test1);
+        // bounceEffect?.Invoke(test1);
+
+        MageSideBouncerAction sideBounce = new MageSideBouncerAction(20);
+
+        sideBouncingAttack?.Invoke(sideBounce);
     }
 
     // Update is called once per frame
