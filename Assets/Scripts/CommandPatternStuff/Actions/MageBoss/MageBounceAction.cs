@@ -6,12 +6,12 @@ public class MageBounceAction : IAction
 {
     public GameObject player {get; private set;}
 
-    public GameObject projectile { get; private set;}
+    public GameObject roller { get; private set;}
 
-    public MageBounceAction(GameObject player, GameObject projectile)
+    public MageBounceAction(GameObject player, GameObject roller)
     {
         this.player = player;
-        this.projectile = projectile;
+        this.roller = roller;
     }
 
     public void Execute()

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlailAttack : MonoBehaviour
+public class FlailAttack : MonoBehaviour, IAttack
 {
 
     public Transform mage { get; private set; }
@@ -27,15 +27,19 @@ public class FlailAttack : MonoBehaviour
 
     public List<GameObject> currentProjectiles { get; private set; }
 
+    public bool shooting { get; private set; }
+
+    private bool shouldShoot = false;
+
     private void OnEnable()
     {
-        GetComponent<MageController>().flailAttack += StartFlailing;
+        GetComponent<MageController>().flailAttack += Attack;
         currentProjectiles = new List<GameObject>();
     }
 
     private void OnDisable()
     {
-        GetComponent<MageController>().flailAttack -= StartFlailing;
+        GetComponent<MageController>().flailAttack -= Attack;
     }
 
     // Start is called before the first frame update
@@ -47,18 +51,27 @@ public class FlailAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(shouldShoot && !shooting)
+        {
+            shooting = true;
+            StartCoroutine(StartMoving());
+        }
     }
 
-    public void StartFlailing(MageFlailAction action)
+    public void Attack(IAction action)
     {
-        this.mage = action.mage;
-        this.projectile = action.projectile;
-        this.numberOfBackForths = action.numberOfBackForths;
-        this.movePoints = action.movePoints;
-        this.moveRight = action.moveRight;
-        this.moveTime = action.moveTime;
-        this.shootCooldown = action.shootCooldown;
+        MageFlailAction act = (MageFlailAction)action;
+
+        this.mage = act.mage;
+        this.projectile = act.projectile;
+        this.numberOfBackForths = act.numberOfBackForths;
+        this.movePoints = act.movePoints;
+        this.moveRight = act.moveRight;
+        this.moveTime = act.moveTime;
+        this.shootCooldown = act.shootCooldown;
+
+        shooting = true;
+        shouldShoot = true; 
 
         StartCoroutine(StartMoving());
     }
@@ -126,17 +139,16 @@ public class FlailAttack : MonoBehaviour
 
         yield return new WaitWhile(() => moving);
 
+        StartCoroutine(DestroyProjectiles());
+
+        yield return new WaitWhile(()=> currentProjectiles.Count > 0);
+
+
         //taunt stuff
 
         yield return new WaitForSeconds(5f);
 
-        foreach(var projectile in currentProjectiles)
-        {
-            Destroy(projectile.gameObject);
-
-            yield return new WaitForSeconds(0.5f);
-        }
-
+        shooting = false;
     }
 
     public IEnumerator StartShooting()
@@ -153,5 +165,31 @@ public class FlailAttack : MonoBehaviour
     private void Shoot()
     {
         currentProjectiles.Add(Instantiate(projectile, mage.transform.position, Quaternion.identity));
+    }
+
+    public void StopAttack()
+    {
+        shouldShoot = false;
+        shooting = false;
+
+        StopAllCoroutines();
+
+        StartCoroutine(DestroyProjectiles());
+    }
+
+    /// <summary>
+    /// Destroys all current bouncy projectiles with a slight delay with each one
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DestroyProjectiles()
+    {
+        foreach (var projectile in currentProjectiles)
+        {
+            Destroy(projectile.gameObject);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        currentProjectiles.Clear();
     }
 }

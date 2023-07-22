@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBounceAttack : MonoBehaviour
+public class PlayerBounceAttack : MonoBehaviour, IAttack
 {
     [SerializeField] private GameObject oneWays;
 
     [SerializeField] private GameObject rollerSpawnPoint;
-    [SerializeField] private GameObject roller;
 
     [SerializeField] private int numberOfRollers;
 
     [SerializeField] private float timeBetweenRollers;
 
+    private GameObject roller;
 
     private List<GameObject> currentRollers;
 
@@ -25,13 +25,13 @@ public class PlayerBounceAttack : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<MageController>().bounceEffect += StartBouncingAttack;
+        GetComponent<MageController>().bounceEffect += Attack;
         currentRollers = new List<GameObject>();
     }
 
     private void OnDisable()
     {
-        GetComponent<MageController>().bounceEffect -= StartBouncingAttack;
+        GetComponent<MageController>().bounceEffect -= Attack;
     }
 
     // Start is called before the first frame update
@@ -46,9 +46,11 @@ public class PlayerBounceAttack : MonoBehaviour
 
     }
 
-    public void StartBouncingAttack(MageBounceAction action)
+    public void Attack(IAction action)
     {
-        player = action.player;
+        MageBounceAction act = (MageBounceAction)action;
+
+        player = act.player;
 
         playerRB = player.GetComponent<Rigidbody2D>();
 
@@ -59,6 +61,8 @@ public class PlayerBounceAttack : MonoBehaviour
         playerJump.BouncyFloorEffect();
 
         oneWays.SetActive(false);
+
+        roller = act.roller;
 
         playerRB.AddForce(new Vector2(0, 15), ForceMode2D.Impulse);
 
@@ -78,10 +82,15 @@ public class PlayerBounceAttack : MonoBehaviour
 
         yield return new WaitForSeconds(10f);
 
+        StopAttack();
+    }
+
+    public void StopAttack()
+    {
         StartCoroutine(EndAttack());
     }
 
-    private IEnumerator EndAttack()
+    public IEnumerator EndAttack()
     {
         for (int i = 0; i < currentRollers.Count; i++)
         {

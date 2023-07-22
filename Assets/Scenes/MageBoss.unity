@@ -3192,7 +3192,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3216,7 +3216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975101847}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0465757, y: 0.4579401, z: -10}
+  m_LocalPosition: {x: -0.6629921, y: -28.70143, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7158,6 +7158,7 @@ GameObject:
   - component: {fileID: 1902126479}
   - component: {fileID: 1902126481}
   - component: {fileID: 1902126482}
+  - component: {fileID: 1902126486}
   - component: {fileID: 1902126483}
   - component: {fileID: 1902126484}
   - component: {fileID: 1902126485}
@@ -7267,7 +7268,7 @@ MonoBehaviour:
   - {fileID: 1153116727}
   - {fileID: 1504129594}
   bounceAttack: {fileID: 1185263838633436575, guid: 5597f221c4b9bf74faaa6d95b480a9f5, type: 3}
-  trackingProjectile: {fileID: 0}
+  roller: {fileID: 1551288615521705482, guid: 1ef369f90b348484dac1906ffc057d52, type: 3}
 --- !u!114 &1902126483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7294,7 +7295,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   oneWays: {fileID: 827740295}
   rollerSpawnPoint: {fileID: 524125393}
-  roller: {fileID: 1551288615521705482, guid: 1ef369f90b348484dac1906ffc057d52, type: 3}
   numberOfRollers: 8
   timeBetweenRollers: 0.95
 --- !u!114 &1902126485
@@ -7319,6 +7319,19 @@ MonoBehaviour:
   grappleMoveDownSpeed: 1
   projectile: {fileID: 7419435637663136114, guid: 55185241e55eb4846ab4938695e38419, type: 3}
   projectileSpawnPoint: {fileID: 1724193478}
+--- !u!114 &1902126486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902126478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784ffebfa4fc125489474a11185b21dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
 --- !u!1 &1910195113
 GameObject:
   m_ObjectHideFlags: 0

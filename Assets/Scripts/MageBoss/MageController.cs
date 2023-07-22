@@ -8,36 +8,68 @@ public class MageController : MonoBehaviour
     [SerializeField] private Transform[] movePoints;
     [SerializeField] private GameObject bounceAttack;
 
-    [SerializeField] private GameObject trackingProjectile;
-
-    private BossInvoker bossInvoker;
+    [SerializeField] private GameObject roller;
 
     public Action<MageFlailAction> flailAttack;
 
+    public Action stopFlailAttack;
+
     public Action<MageBounceAction> bounceEffect;
+
+    public Action stopBounceEffect;
 
     public Action<MageSideBouncerAction> sideBouncingAttack;
 
-    // Start is called before the first frame update
-    void Start()
+    public Action stopSideBouncingAttack;
+
+    MageFlailAction flailAttackAction;
+
+    MageBounceAction rollerAttack;
+
+    MageSideBouncerAction sideBounce;
+
+    private void Awake()
     {
-        bossInvoker = InvokerHolder.instance.bossInvoker;
+        flailAttackAction = new MageFlailAction(transform, bounceAttack, 5, movePoints, true, 2, 2f);
 
-        MageFlailAction testAction = new MageFlailAction(transform, bounceAttack, 5, movePoints, true, 2, 2f);
-        //flailAttack?.Invoke(testAction);
+        rollerAttack = new MageBounceAction(GameObject.Find("Player"), roller);
 
-        MageBounceAction test1 = new MageBounceAction(GameObject.Find("Player"), trackingProjectile);
-
-        // bounceEffect?.Invoke(test1);
-
-        MageSideBouncerAction sideBounce = new MageSideBouncerAction(20);
-
-        sideBouncingAttack?.Invoke(sideBounce);
+        sideBounce = new MageSideBouncerAction(20);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void StartFlailAttack()
+    {
+        flailAttack.Invoke(flailAttackAction);
+    }
+
+    public void StartRollerAttack()
+    {
+        bounceEffect.Invoke(rollerAttack);
+    }
+
+    public void StartSideBounceAttack()
+    {
+        sideBouncingAttack.Invoke(sideBounce);
+    }
+
+    public void StopFlailAttack()
+    {
+        stopFlailAttack.Invoke();
+    }
+
+    public void StopRollerAttack()
+    {
+        stopBounceEffect.Invoke();
+    }
+
+    public void StopSideBouncingAttack()
+    {
+        stopSideBouncingAttack.Invoke();
     }
 }

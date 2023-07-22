@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrappleDodgeAttack : MonoBehaviour
+public class GrappleDodgeAttack : MonoBehaviour, IAttack
 {
     [SerializeField] private GameObject oneWays;
 
@@ -21,7 +21,7 @@ public class GrappleDodgeAttack : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<MageController>().sideBouncingAttack += StartSideBouncingAttack;
+        GetComponent<MageController>().sideBouncingAttack += Attack;
         currentProjectiles = new List<GameObject>();
         hookOffScreenPositions = new Transform[2];
 
@@ -31,11 +31,13 @@ public class GrappleDodgeAttack : MonoBehaviour
 
     private void OnDisable()
     {
-        GetComponent<MageController>().sideBouncingAttack -= StartSideBouncingAttack;
+        GetComponent<MageController>().sideBouncingAttack -= Attack;
     }
 
-    public void StartSideBouncingAttack(MageSideBouncerAction action)
+    public void Attack(IAction action)
     {
+
+
         oneWays.SetActive(false);
         float grappleMoveTime = 2f;
 
@@ -43,10 +45,10 @@ public class GrappleDodgeAttack : MonoBehaviour
         movingGrappleHooks[0].transform.DOMove(grappleStartingPoints[0].transform.position, grappleMoveTime).SetEase(Ease.Linear);
         movingGrappleHooks[1].transform.DOMove(grappleStartingPoints[1].transform.position, grappleMoveTime).SetEase(Ease.Linear);
 
-        StartCoroutine(Atack(action.survivalTime));
+        StartCoroutine(StartAttack());
     }
 
-    private IEnumerator Atack(float survivalTime)
+    private IEnumerator StartAttack()
     {
         float timeBetweenProjectiles = 0.9f;
 
@@ -57,9 +59,13 @@ public class GrappleDodgeAttack : MonoBehaviour
             yield return new WaitForSeconds(timeBetweenProjectiles);
 
         }
+    }
 
-        yield return new WaitForSeconds(survivalTime);
-
-        oneWays.SetActive(true);
+    public void StopAttack()
+    {
+        foreach(var projectile in currentProjectiles)
+        {
+            Destroy(projectile.gameObject);
+        }
     }
 }
