@@ -43,6 +43,10 @@ public class Jump : MonoBehaviour
     private bool _tryingToJump;
     private bool _onGround;
     private bool _isJumping;
+
+    public bool IsJumping { get { return _isJumping; } }
+
+
     private bool _canFall;
     private bool _bouncyFloor = false;
     private bool _highBounce;
@@ -184,6 +188,7 @@ public class Jump : MonoBehaviour
     /// </summary>
     public void BouncyFloorEffect()
     {
+        _playerRigidbody.gravityScale = _defaultGravityScale;
         _bouncyFloor = !_bouncyFloor;
     }
 
@@ -208,9 +213,7 @@ public class Jump : MonoBehaviour
                 _bounceMultiplier = 1f;
             }
 
-            Debug.Log(_bounceMultiplier);
-
-            _playerRigidbody.AddForce(new Vector2(0, 20 * _bounceMultiplier), ForceMode2D.Impulse);
+            _playerRigidbody.AddForce(new Vector2(0, 10 * _bounceMultiplier), ForceMode2D.Impulse);
 
         }
 

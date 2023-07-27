@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class PlayerBounceAttack : MonoBehaviour, IAttack
@@ -7,6 +8,8 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
     [SerializeField] private GameObject oneWays;
 
     [SerializeField] private GameObject rollerSpawnPoint;
+
+    [SerializeField] private GameObject rollerStuff;
 
     [SerializeField] private int numberOfRollers;
 
@@ -21,8 +24,8 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
     public Jump playerJump { get; private set; }
 
-
-
+    private bool active;
+    private bool stopped = false;
     private void OnEnable()
     {
         GetComponent<MageController>().bounceEffect += Attack;
@@ -48,6 +51,8 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
     public void Attack(IAction action)
     {
+        if(stopped) return;
+
         MageBounceAction act = (MageBounceAction)action;
 
         player = act.player;
@@ -64,7 +69,13 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
         roller = act.roller;
 
-        playerRB.AddForce(new Vector2(0, 15), ForceMode2D.Impulse);
+        if (!playerJump.IsJumping)
+        {
+            playerRB.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+        }
+        rollerStuff.SetActive(true);
+
+        active = true;
 
         StartCoroutine(BouncyAttack());
     }
@@ -79,19 +90,18 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
             yield return new WaitForSeconds(timeBetweenRollers);
         }
-
-        yield return new WaitForSeconds(10f);
-
-        StopAttack();
     }
 
     public void StopAttack()
     {
+        stopped = true;
         StartCoroutine(EndAttack());
     }
 
     public IEnumerator EndAttack()
     {
+        StopCoroutine(BouncyAttack());
+
         for (int i = 0; i < currentRollers.Count; i++)
         {
             Destroy(currentRollers[i]);
@@ -100,5 +110,18 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
         }
 
         currentRollers.Clear();
+
+        playerJump?.EnableJumping();
+
+        playerJump?.BouncyFloorEffect();
+
+        rollerStuff.SetActive(false);
+
+        active = false;
+    }
+
+    public bool GetIsActive()
+    {
+        return active;
     }
 }

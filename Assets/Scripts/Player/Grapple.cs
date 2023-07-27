@@ -212,7 +212,7 @@ public class Grapple : MonoBehaviour
             if (hit.transform.tag.Equals("MovingHook"))
             {
                 currentMovingHook = hit.transform.GetComponent<MovingGrappleHook>();
-                currentMovingHook.PlayerSnapped();
+                currentMovingHook?.PlayerSnapped();
             }
         }
 
@@ -276,5 +276,10 @@ public class Grapple : MonoBehaviour
             //Otherwise stop grappling
             StopGrappling();
         }
+    }
+
+    public void BreakHook()
+    {
+        StopGrappling();
     }
 }

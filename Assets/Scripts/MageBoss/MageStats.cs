@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class MageStats : MonoBehaviour
 {
@@ -23,6 +25,8 @@ public class MageStats : MonoBehaviour
 
     private GrappleDodgeAttack grappleDodgeAttack;
 
+    public Action<float> hit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +34,17 @@ public class MageStats : MonoBehaviour
         bounceAttack = GetComponent<PlayerBounceAttack>();
         flailAttack = GetComponent<FlailAttack>();
         grappleDodgeAttack = GetComponent<GrappleDodgeAttack>();
+
+        currentHealth = health;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Hit(10);
+        }
     }
 
 
@@ -47,26 +56,28 @@ public class MageStats : MonoBehaviour
     {
         UpdateHealth(-damage);
 
-        if(health < 30)
+        if (currentHealth == 30)
         {
-            StopCurrentAttack();
+            hit?.Invoke(currentHealth);
         }
-        else if(health < 70)
+        else if(currentHealth == 70)
         {
-            StopCurrentAttack();
+            hit?.Invoke(currentHealth);
         }
+
     }
 
-    /// <summary>
-    /// Updates mage health bar
-    /// </summary>
-    /// <param name="amount"></param>
-    public void UpdateHealth(float amount)
+        /// <summary>
+        /// Updates mage health bar
+        /// </summary>
+        /// <param name="amount"></param>
+        public void UpdateHealth(float amount)
     {
         if (!defeated)
         {
-            healthBar.value = currentHealth + amount;
-            currentHealth = healthBar.value;
+            currentHealth += amount;
+
+           // healthBar.value = currentHealth;
 
             if (currentHealth > 100)
             {
@@ -76,37 +87,14 @@ public class MageStats : MonoBehaviour
 
             if (currentHealth <= 0)
             {
-                healthBar.gameObject.SetActive(false);
+                // healthBar.gameObject.SetActive(false);
                 //Dead();
             }
         }
     }
 
-    /// <summary>
-    /// Stop current attack and adds slight delay before starting next one
-    /// </summary>
-    public void StopCurrentAttack()
-    {
-        phase++;
-
-        if(phase == 1)
-        {
-            
-        }
-
-        if(phase == 2)
-        {
-
-        }
-    }
-
-    private IEnumerator HandleAttackChange(IAttack attackToStop, IAttack attackToStart, IAction startAction, float cooldownPeriod)
+    public void Dead()
     {
 
-        attackToStop.StopAttack();
-
-        yield return new WaitForSeconds(cooldownPeriod);
-
-        attackToStart.Attack(startAction);
     }
 }

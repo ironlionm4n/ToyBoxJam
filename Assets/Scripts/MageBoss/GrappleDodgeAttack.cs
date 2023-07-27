@@ -6,9 +6,11 @@ using UnityEngine;
 public class GrappleDodgeAttack : MonoBehaviour, IAttack
 {
     [SerializeField] private GameObject oneWays;
+    [SerializeField] private GameObject grappleHookAttack;
 
     [SerializeField] private MovingGrappleHook[] movingGrappleHooks;
     [SerializeField] private GameObject[] grappleStartingPoints;
+    [SerializeField] private Transform[] hookOffScreenPositions;
 
     [SerializeField] private float grappleMoveDownSpeed = 1f;
 
@@ -17,16 +19,14 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
 
     List<GameObject> currentProjectiles;
 
-    private Transform[] hookOffScreenPositions;
 
+    private bool active;
+    private bool stopped = false;
     private void OnEnable()
     {
         GetComponent<MageController>().sideBouncingAttack += Attack;
         currentProjectiles = new List<GameObject>();
-        hookOffScreenPositions = new Transform[2];
-
-        hookOffScreenPositions[0] = movingGrappleHooks[0].transform;
-        hookOffScreenPositions[1] = movingGrappleHooks[1].transform;
+        currentProjectiles = new List<GameObject>();
     }
 
     private void OnDisable()
@@ -37,13 +37,18 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
     public void Attack(IAction action)
     {
 
+        if(stopped) return;
 
         oneWays.SetActive(false);
+        grappleHookAttack.SetActive(true);
+
         float grappleMoveTime = 2f;
 
         //Start moving grapples down
         movingGrappleHooks[0].transform.DOMove(grappleStartingPoints[0].transform.position, grappleMoveTime).SetEase(Ease.Linear);
         movingGrappleHooks[1].transform.DOMove(grappleStartingPoints[1].transform.position, grappleMoveTime).SetEase(Ease.Linear);
+
+        active = true;
 
         StartCoroutine(StartAttack());
     }
@@ -63,9 +68,28 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
 
     public void StopAttack()
     {
+        stopped = true;
+
+        StopCoroutine(StartAttack());
+
         foreach(var projectile in currentProjectiles)
         {
             Destroy(projectile.gameObject);
         }
+
+       GameObject.Find("Player").GetComponent<Grapple>().BreakHook();
+
+        movingGrappleHooks[0].tag = "Untagged";
+        movingGrappleHooks[1].tag = "Untagged";
+
+        movingGrappleHooks[0].transform.DOMove(hookOffScreenPositions[0].transform.position, 2f).SetEase(Ease.Linear);
+        movingGrappleHooks[1].transform.DOMove(hookOffScreenPositions[1].transform.position, 2f).SetEase(Ease.Linear);
+
+        active = false;
+    }
+
+    public bool GetIsActive()
+    {
+        return active;
     }
 }

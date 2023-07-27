@@ -8,6 +8,8 @@ public class MageController : MonoBehaviour
     [SerializeField] private Transform[] movePoints;
     [SerializeField] private GameObject bounceAttack;
 
+    [SerializeField] private float attackCooldown;
+
     [SerializeField] private GameObject roller;
 
     public Action<MageFlailAction> flailAttack;
@@ -28,48 +30,71 @@ public class MageController : MonoBehaviour
 
     MageSideBouncerAction sideBounce;
 
+    IAttack flailingAttack;
+
+    IAttack playerBounceAttack;
+
+    IAttack grappleDodgeAttack;
+
+    public int phase { get; private set; } = 1;
+
     private void Awake()
     {
+        flailingAttack = GetComponent<FlailAttack>();
         flailAttackAction = new MageFlailAction(transform, bounceAttack, 5, movePoints, true, 2, 2f);
 
+        playerBounceAttack = GetComponent<PlayerBounceAttack>();
         rollerAttack = new MageBounceAction(GameObject.Find("Player"), roller);
 
+        grappleDodgeAttack = GetComponent<GrappleDodgeAttack>();
         sideBounce = new MageSideBouncerAction(20);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(HandleAttackChange(null, flailingAttack, flailAttackAction, 1f));
+    }
+
+    public void OnEnable()
+    {
+        GetComponent<MageStats>().hit += HandleHit;
+    }
+
+    public void OnDisable()
+    {
+        GetComponent<MageStats>().hit -= HandleHit;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void StartFlailAttack()
+    public void HandleHit(float health)
     {
-        flailAttack.Invoke(flailAttackAction);
+        if(health == 30)
+        {
+            phase = 3;
+
+            StartCoroutine(HandleAttackChange(playerBounceAttack, grappleDodgeAttack, sideBounce, attackCooldown));
+        }
+        else if(health == 70)
+        {
+            phase = 2;
+
+            StartCoroutine(HandleAttackChange(flailingAttack, playerBounceAttack, rollerAttack, attackCooldown));
+        }
     }
 
-    public void StartRollerAttack()
+    private IEnumerator HandleAttackChange(IAttack attackToStop, IAttack attackToStart, IAction startAction, float cooldownPeriod)
     {
-        bounceEffect.Invoke(rollerAttack);
-    }
 
-    public void StartSideBounceAttack()
-    {
-        sideBouncingAttack.Invoke(sideBounce);
-    }
+        attackToStop?.StopAttack();
 
-    public void StopFlailAttack()
-    {
-        stopFlailAttack.Invoke();
-    }
+        yield return new WaitWhile(() => attackToStop != null && attackToStop.GetIsActive());
 
-    public void StopRollerAttack()
-    {
-        stopBounceEffect.Invoke();
-    }
+        yield return new WaitForSeconds(cooldownPeriod);
 
-    public void StopSideBouncingAttack()
-    {
-        stopSideBouncingAttack.Invoke();
+        attackToStart.Attack(startAction);
     }
 }
