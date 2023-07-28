@@ -36,6 +36,8 @@ public class MageController : MonoBehaviour
 
     IAttack grappleDodgeAttack;
 
+    public Action<int, float> phaseChange;
+
     public int phase { get; private set; } = 1;
 
     private void Awake()
@@ -84,6 +86,13 @@ public class MageController : MonoBehaviour
 
             StartCoroutine(HandleAttackChange(flailingAttack, playerBounceAttack, rollerAttack, attackCooldown));
         }
+        else if(health == 0)
+        {
+            phase = 4;
+            StartCoroutine(HandleAttackChange(grappleDodgeAttack, null, null, 0));
+        }
+
+        phaseChange?.Invoke(phase, attackCooldown);
     }
 
     private IEnumerator HandleAttackChange(IAttack attackToStop, IAttack attackToStart, IAction startAction, float cooldownPeriod)
@@ -95,6 +104,6 @@ public class MageController : MonoBehaviour
 
         yield return new WaitForSeconds(cooldownPeriod);
 
-        attackToStart.Attack(startAction);
+        attackToStart?.Attack(startAction);
     }
 }

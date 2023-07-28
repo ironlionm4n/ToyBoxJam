@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class FlailAttack : MonoBehaviour, IAttack
 {
@@ -184,6 +185,8 @@ public class FlailAttack : MonoBehaviour, IAttack
 
         stopped = true;
 
+        DOTween.Kill(mage.transform);
+
         StopCoroutine(lastCoroutine);
 
         //Calculates total distance from starting to end position
@@ -208,8 +211,6 @@ public class FlailAttack : MonoBehaviour, IAttack
             moving = false;
             moveRight = true;
         });
-
-        StopCoroutine(lastCoroutine);
 
         StartCoroutine(DestroyProjectiles());
     }

@@ -56,7 +56,11 @@ public class MageStats : MonoBehaviour
     {
         UpdateHealth(-damage);
 
-        if (currentHealth == 30)
+        if(currentHealth == 0)
+        {
+            hit?.Invoke(currentHealth);
+        }
+        else if (currentHealth == 30)
         {
             hit?.Invoke(currentHealth);
         }

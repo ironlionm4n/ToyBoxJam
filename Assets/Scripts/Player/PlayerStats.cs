@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,8 @@ public class PlayerStats : MonoBehaviour
     public bool InCutscene { get { return inCutscene; } set { inCutscene = value; } }
 
     private bool _canFire = true;
+
+    public Action pickedUpCoin;
 
     private void OnEnable()
     {
@@ -95,6 +98,8 @@ public class PlayerStats : MonoBehaviour
         coins[numCoins].color = Color.white;
         numCoins++;
         SFX.instance.CoinPickedUp();
+
+        pickedUpCoin?.Invoke();
     }
 
     public void Flash()
@@ -206,7 +211,7 @@ public class PlayerStats : MonoBehaviour
                 }
                 else if (collision.gameObject.transform.position.x == transform.position.x)
                 {
-                    int choice = Random.Range(0, 1);
+                    int choice = UnityEngine.Random.Range(0, 2);
 
                     if (choice == 0)
                     {
