@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 6983696647436910741}
   - component: {fileID: 6435812553536505521}
   - component: {fileID: 6572268783540320705}
+  - component: {fileID: 6784069336222018569}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -555,7 +556,7 @@ MonoBehaviour:
   pullSpeed: 0.1
   numberOfPoints: 40
   snap: 0
-  ropeChangeAmount: 0.005
+  ropeChangeAmount: 5
   ropeAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -762,6 +763,18 @@ DistanceJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 6
   m_MaxDistanceOnly: 0
+--- !u!114 &6784069336222018569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101188707672128522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd61365d40aa2f4597cb427c852da16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1049474186992599452
 GameObject:
   m_ObjectHideFlags: 0

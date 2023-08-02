@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BossBattle.unity
     guid: a0a2e1b2569f1d84a835b25dc8cf111f
+  - enabled: 1
+    path: Assets/Scenes/PlatformSection2.unity
+    guid: d689fc75437ba7b41ac63759cd943136
+  - enabled: 1
+    path: Assets/Scenes/MageBoss.unity
+    guid: af86fe24ab7bb4a4b87f21850e515713
   m_configObjects: {}

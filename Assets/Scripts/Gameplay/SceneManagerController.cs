@@ -16,6 +16,16 @@ public class SceneManagerController : MonoBehaviour
         
     }
 
+    public void LoadTestPlatformer()
+    {
+        SceneManager.LoadScene("PlatformSection2");
+    }
+
+    public void LoadTestBoss()
+    {
+        SceneManager.LoadScene("MageBoss");
+    }
+
     private IEnumerator LoadPlatformSection(float playButtonAudioClipLength)
     {
         yield return new WaitForSeconds(playButtonAudioClipLength / 3f);

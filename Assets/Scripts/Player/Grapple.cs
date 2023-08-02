@@ -143,7 +143,7 @@ public class Grapple : MonoBehaviour
             {
                 if (springJoint.enabled && springJoint.distance > minRopeLength)
                 {
-                    springJoint.distance -= ropeChangeAmount;
+                    springJoint.distance -= ropeChangeAmount * Time.deltaTime;
                 }
             }
 
@@ -151,7 +151,7 @@ public class Grapple : MonoBehaviour
             {
                 if (springJoint.enabled && springJoint.distance < maxRopeLength)
                 {
-                    springJoint.distance += ropeChangeAmount;
+                    springJoint.distance += ropeChangeAmount * Time.deltaTime;
                 }
             }
         }

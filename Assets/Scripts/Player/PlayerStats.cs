@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class PlayerStats : MonoBehaviour
 {
     [Header("Required Components")]
@@ -112,7 +112,10 @@ public class PlayerStats : MonoBehaviour
         SFX.instance.Hit();
         health--;
 
-        hearts[(int)health].gameObject.SetActive(false);
+        if (health >= 0)
+        {
+            hearts[(int)health].gameObject.SetActive(false);
+        }
 
         if (health == 1)
         {
@@ -121,10 +124,13 @@ public class PlayerStats : MonoBehaviour
 
         if (health <= 0)
         {
-            playerMovement.IsDead = true;
-            StopAllCoroutines();
-            deathManager.PlayerDied();
-            return;
+            if (!SceneManager.GetActiveScene().name.Equals("MageBoss"))
+            {
+                playerMovement.IsDead = true;
+                StopAllCoroutines();
+                deathManager.PlayerDied();
+                return;
+            }
         }
 
 
