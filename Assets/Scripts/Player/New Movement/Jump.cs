@@ -192,13 +192,14 @@ public class Jump : MonoBehaviour
         _bouncyFloor = !_bouncyFloor;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (!_bouncyFloor)
         {
             return;
         }
 
+         float bounceForce = 5f;
 
         if (collision.gameObject.tag == "Ground")
         {
@@ -213,21 +214,21 @@ public class Jump : MonoBehaviour
                 _bounceMultiplier = 1f;
             }
 
-            _playerRigidbody.AddForce(new Vector2(0, 10 * _bounceMultiplier), ForceMode2D.Impulse);
+            _playerRigidbody.AddForce(new Vector2(0, bounceForce * _bounceMultiplier), ForceMode2D.Impulse);
 
         }
 
-        if(collision.gameObject.tag == "Wall")
+        if (collision.gameObject.tag == "Wall")
         {
             var hit = Physics2D.Raycast(transform.position, transform.right, 1);
 
             if (hit)
             {
-                _playerRigidbody.AddForce(new Vector2(-10, 0), ForceMode2D.Impulse);
+                _playerRigidbody.AddForce(new Vector2(-bounceForce, 0), ForceMode2D.Impulse);
             }
             else
             {
-                _playerRigidbody.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+                _playerRigidbody.AddForce(new Vector2(bounceForce, 0), ForceMode2D.Impulse);
             }
         }
     }

@@ -1100,10 +1100,6 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 975101849}
-    - target: {fileID: 101188707672128515, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: m_Size.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 101188707672128522, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Name
       value: Player
@@ -7581,6 +7577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
+  player: {fileID: 342557825}
 --- !u!114 &1902126487
 MonoBehaviour:
   m_ObjectHideFlags: 0

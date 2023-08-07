@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(playerRigidbody.velocity.y <= 0)
         {
-            groundChecker.enabled = true;
+            //groundChecker.enabled = true;
         }
 
         _direction.x = inputController.RetrieveMovementInput();

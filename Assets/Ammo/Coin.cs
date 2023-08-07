@@ -30,6 +30,11 @@ public class Coin : MonoBehaviour
         ammoRigidbody.AddForce(transform.up * throwForce, ForceMode2D.Impulse);
         StartCoroutine(Disapear());
 
+        if (GameObject.Find("Player"))
+        {
+            Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Player").GetComponent<Collider2D>());
+        }
+
         if (GameObject.Find("Mage")) {
             Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Mage").GetComponent<Collider2D>());
             return;

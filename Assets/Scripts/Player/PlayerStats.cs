@@ -98,8 +98,6 @@ public class PlayerStats : MonoBehaviour
         coins[numCoins].color = Color.white;
         numCoins++;
         SFX.instance.CoinPickedUp();
-
-        pickedUpCoin?.Invoke();
     }
 
     public void Flash()
@@ -185,6 +183,7 @@ public class PlayerStats : MonoBehaviour
             {
                 CoinPickedUp();
                 coinPickedUp = true;
+                pickedUpCoin?.Invoke();
             }
         }
     }

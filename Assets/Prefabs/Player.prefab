@@ -181,7 +181,6 @@ GameObject:
   - component: {fileID: 101188707672128527}
   - component: {fileID: 101188707672128520}
   - component: {fileID: 3470433445735849565}
-  - component: {fileID: 101188707672128515}
   - component: {fileID: 101188707672128514}
   - component: {fileID: 101188707672128513}
   - component: {fileID: 101188707672128525}
@@ -317,32 +316,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!61 &101188707672128515
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101188707672128522}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.46}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.1}
-  m_EdgeRadius: 0
 --- !u!95 &101188707672128514
 Animator:
   serializedVersion: 4
@@ -405,7 +378,7 @@ MonoBehaviour:
   oneway:
     serializedVersion: 2
     m_Bits: 0
-  groundChecker: {fileID: 101188707672128515}
+  groundChecker: {fileID: 0}
   inputController: {fileID: 11400000, guid: d3893e97430f69048bd02453cc0d4c5f, type: 2}
   maxSpeed: 10
   maxGroundAcc: 35

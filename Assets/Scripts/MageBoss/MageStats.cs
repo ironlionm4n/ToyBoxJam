@@ -17,6 +17,9 @@ public class MageStats : MonoBehaviour
 
     public int phase { get; private set; }
 
+    //Reference to the player
+    [SerializeField] private GameObject player;
+
     MageController controller;
 
     private PlayerBounceAttack bounceAttack;
@@ -92,14 +95,14 @@ public class MageStats : MonoBehaviour
             if (currentHealth <= 0)
             {
                 // healthBar.gameObject.SetActive(false);
-                //Dead();
+                Dead();
             }
         }
     }
 
     public void Dead()
     {
-
+        player.GetComponent<Grapple>().enabled = false;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

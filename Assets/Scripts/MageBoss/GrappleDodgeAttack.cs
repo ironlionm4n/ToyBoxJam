@@ -19,6 +19,7 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
 
     List<GameObject> currentProjectiles;
 
+    private int numberOfProjectiles = 15;
 
     private bool active;
     private bool stopped = false;
@@ -57,7 +58,7 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
     {
         float timeBetweenProjectiles = 0.9f;
 
-        for(int i = 0; i < 15; i++)
+        for(int i = 0; i < numberOfProjectiles; i++)
         {
             currentProjectiles.Add(Instantiate(projectile, projectileSpawnPoint.transform.position, Quaternion.identity));
 
@@ -70,6 +71,8 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
     {
         stopped = true;
 
+        numberOfProjectiles = 0;
+
         StopCoroutine(StartAttack());
 
         foreach(var projectile in currentProjectiles)
@@ -78,6 +81,9 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
         }
 
        GameObject.Find("Player").GetComponent<Grapple>().BreakHook();
+
+        DOTween.Kill(movingGrappleHooks[0].transform);
+        DOTween.Kill(movingGrappleHooks[1].transform);
 
         movingGrappleHooks[0].tag = "Untagged";
         movingGrappleHooks[1].tag = "Untagged";
