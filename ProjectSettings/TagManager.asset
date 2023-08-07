@@ -21,6 +21,7 @@ TagManager:
   - MovingHook
   - BouncingAttack
   - TurnPoint
+  - Roller
   layers:
   - Default
   - TransparentFX

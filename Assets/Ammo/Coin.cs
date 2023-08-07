@@ -22,11 +22,27 @@ public class Coin : MonoBehaviour
     [Header("Damage")]
     [SerializeField] private float damage = 10f;
 
+    [SerializeField] Collider2D nonTriggerCollider;
+
     void OnEnable()
     {
         //Launches Coin Up
         ammoRigidbody.AddForce(transform.up * throwForce, ForceMode2D.Impulse);
         StartCoroutine(Disapear());
+
+        if (GameObject.Find("Mage")) {
+            Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Mage").GetComponent<Collider2D>());
+            return;
+        }
+
+        if (GameObject.Find("Boss"))
+        {
+            foreach(Collider2D col in GameObject.Find("Boss").GetComponents<Collider2D>())
+            {
+                Physics2D.IgnoreCollision(nonTriggerCollider, col);
+            }
+            return;
+        }
     }
 
     private void Update()
@@ -56,6 +72,7 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if(collision.tag == "Player")
         {
             collision.GetComponent<PlayerStats>().CoinPickedUp();

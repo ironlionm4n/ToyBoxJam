@@ -30,6 +30,11 @@ public class Enemy : MonoBehaviour
             gameObject.GetComponent<BossStats>().Hit(damage);
         }
 
+        if(gameObject.GetComponent<MageStats>() != null)
+        {
+            gameObject.GetComponent <MageStats>().Hit(damage);
+        }
+
         if(health <= 0)
         {
             if(gameObject.GetComponent<BatController>() != null)

@@ -43,7 +43,7 @@ public class MageStats : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Hit(10);
+            //Hit(10);
         }
     }
 
@@ -100,5 +100,10 @@ public class MageStats : MonoBehaviour
     public void Dead()
     {
 
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 }

@@ -129,6 +129,7 @@ MonoBehaviour:
   aliveTime: 5
   aliveTimer: 0
   damage: 10
+  nonTriggerCollider: {fileID: 2116598040414045003}
 --- !u!58 &2116598040414045003
 CircleCollider2D:
   m_ObjectHideFlags: 0
