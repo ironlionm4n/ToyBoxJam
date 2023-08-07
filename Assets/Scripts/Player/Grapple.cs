@@ -172,6 +172,13 @@ public class Grapple : MonoBehaviour
             float delta = (float)i / ((float)numberOfPoints - 1f);
             var distance = targetPosition - transform.position;
 
+            //New Code
+            /*Vector2 offset = Vector2.Perpendicular(distance).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
+
+            var newTargetPosition = transform.position + (distance * maxTravelDistance);
+
+            Vector2 tPosition = Vector2.Lerp(transform.position, newTargetPosition, delta) + offset; */
+
 
             Vector2 offset = Vector2.Perpendicular(distance).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
             Vector2 tPosition = Vector2.Lerp(transform.position, targetPosition, delta) + offset;

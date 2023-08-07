@@ -38,10 +38,13 @@ public class FlailAttack : MonoBehaviour, IAttack
     private bool stopped = false;
 
     Coroutine lastCoroutine;
+
+    private Vector2 startingPosition;
     private void OnEnable()
     {
         GetComponent<MageController>().flailAttack += Attack;
         currentProjectiles = new List<GameObject>();
+        startingPosition = transform.position;
     }
 
     private void OnDisable()
@@ -185,12 +188,14 @@ public class FlailAttack : MonoBehaviour, IAttack
 
         stopped = true;
 
-        DOTween.Kill(mage.transform);
+        DOTween.Kill(transform);
 
         StopCoroutine(lastCoroutine);
 
         //Calculates total distance from starting to end position
-        var fullDistance = Vector2.Distance(movePoints[0].position, movePoints[1].position);
+        var targetDistance = Vector2.Distance(transform.position, startingPosition);
+
+        var fullDistance = Vector2.Distance(movePoints[0].transform.position, movePoints[1].transform.position);
 
         //Calculate velocity of object given the full distance and move time
         var velocity = fullDistance / moveTime;
@@ -198,18 +203,12 @@ public class FlailAttack : MonoBehaviour, IAttack
         shouldShoot = false;
         shooting = false;
 
-        var distanceToMidPoint = fullDistance / 2;
-
-        Vector2 targetLocation = transform.position.x < 0 ? new Vector2(transform.position.x + distanceToMidPoint, transform.position.y) :
-            new Vector2(transform.position.x - distanceToMidPoint, transform.position.y);
-
-        var newTime = distanceToMidPoint / velocity;
+        var newTime = targetDistance / velocity;
 
         moving = true;
 
-        mage.DOMove(targetLocation, newTime).SetEase(Ease.Linear).OnComplete(() => {
+        mage.DOMove(startingPosition, newTime).SetEase(Ease.Linear).OnComplete(() => {
             moving = false;
-            moveRight = true;
         });
 
         StartCoroutine(DestroyProjectiles());
