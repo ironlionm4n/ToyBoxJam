@@ -136,9 +136,12 @@ public class PlayerStats : MonoBehaviour
 
         invulFrameTimer = 0f;
 
-        playerMovement.SetKnockbacked(true);
-        playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
-        playerRigidbody.AddForce(new Vector2(knockbackDir * knockbackForce, 5), ForceMode2D.Impulse);
+        if (knockbackDir > 0)
+        {
+            playerMovement.SetKnockbacked(true);
+            playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y);
+            playerRigidbody.AddForce(new Vector2(knockbackDir * knockbackForce, 5), ForceMode2D.Impulse);
+        }
         
         StartCoroutine(InvulnTime());
     }
@@ -198,6 +201,7 @@ public class PlayerStats : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {   
+        //With Knockback
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Fireball" || collision.gameObject.tag == "SpinningFireball" || collision.tag.Equals("Wave"))
         {
             if (!invincible)
@@ -239,6 +243,21 @@ public class PlayerStats : MonoBehaviour
                 {
                     collision.gameObject.SetActive(false);
                 }
+            }
+        }
+
+        //Without Knockback
+        if (collision.CompareTag("Roller"))
+        {
+            if (!invincible)
+            {
+                invincible = true;
+
+                float knockbackDirection = 0f;
+
+                Hurt(knockbackDirection);
+
+                
             }
         }
     }
