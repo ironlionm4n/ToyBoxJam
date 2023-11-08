@@ -92790,11 +92790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d5595835c418b48a31807f0dba850a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &1918891669 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 101188707672128515, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-  m_PrefabInstance: {fileID: 101188707013044299}
-  m_PrefabAsset: {fileID: 0}
 --- !u!50 &1918891679 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 101188707672128520, guid: 50c2e67444f392f47934919f1da25331, type: 3}
@@ -92925,6 +92920,24 @@ MonoBehaviour:
   targetFrequncy: 1
   grapplePoint: {x: 0, y: 0}
   grappleDistanceVector: {x: 0, y: 0}
+--- !u!114 &1918891685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918891646}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8908b4ba2d55f534cb335c5f8a7088a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfPoints: 40
+  snap: 0
+  grappling: 0
+  ropeChangeAmount: 0.05
+  grappleExtendSpeed: 0.01
+  maxTravelDistance: 6
 --- !u!1001 &1938051824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93827,7 +93840,7 @@ PrefabInstance:
     - target: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: groundChecker
       value: 
-      objectReference: {fileID: 1918891669}
+      objectReference: {fileID: 0}
     - target: {fileID: 101188707672128525, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: playerDashAudioSource
       value: 
@@ -93928,6 +93941,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 155380758, guid: d9b5626fc47419445908b4205cd2ac77, type: 3}
+    - target: {fileID: 6572268783540320705, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6666564802069300921, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -93936,6 +93953,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: maxLength
       value: 12
@@ -93951,6 +93972,10 @@ PrefabInstance:
     - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: travelDistance
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: ropeProgressionSpeed
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 8859540476368195332, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Sprite

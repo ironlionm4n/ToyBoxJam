@@ -167,6 +167,8 @@ public class Grapple : MonoBehaviour
 
     public void DrawRope(RaycastHit2D hit)
     {
+        Vector2 currentPosition = Vector2.zero; 
+
         for (int i = 0; i < numberOfPoints; i++)
         {
             float delta = (float)i / ((float)numberOfPoints - 1f);
@@ -182,34 +184,33 @@ public class Grapple : MonoBehaviour
 
             Vector2 offset = Vector2.Perpendicular(distance).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
             Vector2 tPosition = Vector2.Lerp(transform.position, targetPosition, delta) + offset;
-            Vector2 currentPosition = Vector2.Lerp(transform.position, tPosition, ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed);
+            currentPosition = Vector2.Lerp(transform.position, tPosition, ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed);
 
-            lineRenderer.SetPosition(i, currentPosition);
-
-            //Once the line is finished moving, set finishedShooting to true || if the distance is greater or equal to max travel distance
-            if(currentPosition == (Vector2)targetPosition || Vector2.Distance(transform.position, currentPosition) >= maxTravelDistance)
-            {
-                if (hit == true)
-                {
-
-                    if (hit.collider.gameObject.layer == 9)
-                    {
-                       SnapRope(hit);
-                        snap = true;
-                    }
-                }
-
-                finishedShooting = true;
-
-                
-            }
+            lineRenderer.SetPosition(i, currentPosition);  
         }
 
+        //Once the line is finished moving, set finishedShooting to true || if the distance is greater or equal to max travel distance
+        if (currentPosition == (Vector2)targetPosition || Vector2.Distance(transform.position, currentPosition) >= maxTravelDistance)
+        {
+            if (hit.collider != null)
+            {
+
+                if (hit.collider.gameObject.layer == 9)
+                {
+                    SnapRope(hit);
+                    snap = true;
+                }
+            }
+
+            finishedShooting = true;
+
+
+        }
     }
 
     public void SnapRope(RaycastHit2D hit)
     {
-        if (hit == true)
+        if (hit.collider != null)
         {
             lineRenderer.positionCount = 2;
 
@@ -257,7 +258,7 @@ public class Grapple : MonoBehaviour
         yield return new WaitWhile(() => !finishedShooting);
 
         //If something was hit
-        if (hit != false)
+        if (hit.collider != null)
         {
             Debug.Log(hit.collider);
 
