@@ -93973,10 +93973,6 @@ PrefabInstance:
       propertyPath: travelDistance
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 6983696647436910741, guid: 50c2e67444f392f47934919f1da25331, type: 3}
-      propertyPath: ropeProgressionSpeed
-      value: 5.8
-      objectReference: {fileID: 0}
     - target: {fileID: 8859540476368195332, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Sprite
       value: 

@@ -84,7 +84,7 @@ public class MageStats : MonoBehaviour
         {
             currentHealth += amount;
 
-           // healthBar.value = currentHealth;
+            healthBar.value = currentHealth;
 
             if (currentHealth > 100)
             {
@@ -94,7 +94,7 @@ public class MageStats : MonoBehaviour
 
             if (currentHealth <= 0)
             {
-                // healthBar.gameObject.SetActive(false);
+                healthBar.transform.parent.gameObject.SetActive(false);
                 Dead();
             }
         }

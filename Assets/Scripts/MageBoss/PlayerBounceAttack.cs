@@ -24,6 +24,8 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
     public Jump playerJump { get; private set; }
 
+    public MageCoinSpawning coinSpawning;
+
     private bool active;
     private bool stopped = false;
     private void OnEnable()
@@ -90,6 +92,8 @@ public class PlayerBounceAttack : MonoBehaviour, IAttack
 
             yield return new WaitForSeconds(timeBetweenRollers);
         }
+
+        coinSpawning.SpawnCoin();
     }
 
     public void StopAttack()

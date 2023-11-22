@@ -579,7 +579,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ropeProgressionSpeed: 2.9
+  ropeProgressionSpeed: 5.8
 --- !u!120 &6435812553536505521
 LineRenderer:
   m_ObjectHideFlags: 0

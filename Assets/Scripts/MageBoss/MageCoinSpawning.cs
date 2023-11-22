@@ -67,7 +67,7 @@ public class MageCoinSpawning : MonoBehaviour
 
         _currentPhase = phase;
 
-        StartCoroutine(WaitForPhaseChange(timeBetweenPhases));
+        //StartCoroutine(WaitForPhaseChange(timeBetweenPhases));
     }
 
     IEnumerator WaitForPhaseChange(float time)
@@ -86,7 +86,7 @@ public class MageCoinSpawning : MonoBehaviour
         SpawnCoin();
     }
 
-    private void SpawnCoin()
+    public void SpawnCoin()
     {
         if(_currentPhase == 1 || _currentPhase == 2)
         {

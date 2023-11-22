@@ -17,6 +17,8 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject projectileSpawnPoint;
 
+    [SerializeField] private MageCoinSpawning coinSpawning;
+
     List<GameObject> currentProjectiles;
 
     private int numberOfProjectiles = 15;
@@ -57,6 +59,8 @@ public class GrappleDodgeAttack : MonoBehaviour, IAttack
     private IEnumerator StartAttack()
     {
         float timeBetweenProjectiles = 0.9f;
+
+        coinSpawning.SpawnCoin();
 
         for(int i = 0; i < numberOfProjectiles; i++)
         {
