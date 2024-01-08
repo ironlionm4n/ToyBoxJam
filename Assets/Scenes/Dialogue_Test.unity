@@ -674,7 +674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1439154663
 RectTransform:
   m_ObjectHideFlags: 0
@@ -962,5 +962,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018dbde569340e74aabea5eafd683479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJSON: {fileID: 0}
-  speaker_sprite: {fileID: 0}
+  inkJSON: {fileID: 4900000, guid: 8da6d12e00d775840a1f0828f3a93eb1, type: 3}
+  speaker_sprite: {fileID: 21300000, guid: a09391197bc0fc84f97d5a69c509df06, type: 3}

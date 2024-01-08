@@ -20,6 +20,8 @@ public class Dialogue_Manager : MonoBehaviour
     //Ink story variable
     private Story currentStory;
 
+    //Current text read from the ink file
+    private string current_Text;
     
     [SerializeField] private bool dialogueIsPlaying = false;
 
@@ -33,7 +35,13 @@ public class Dialogue_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(dialogueIsPlaying)
+            {
+                Continue();
+            }
+        }
     }
 
     public void DialogueStart()
@@ -56,6 +64,34 @@ public class Dialogue_Manager : MonoBehaviour
 
         dialogueIsPlaying = true;
         dialogue_canvas.SetActive(true);
+        Continue();
+    }
 
+    //Continuse reading the story from the ink file
+    public void Continue()
+    {
+        if (currentStory == null)
+        {
+            Debug.Log("Current story is null?");
+            return;
+        }
+
+        if (currentStory.canContinue)
+        {
+            current_Text = "";
+            //printingText = true;
+            current_Text = currentStory.Continue();
+
+            //Handles tags
+            //HandleTags(currentStory.currentTags);
+
+            dialogue_text.text = current_Text;
+            //lastCoroutine = StartCoroutine(PrintText(currentText));
+
+        }
+        else
+        {
+            //ExitDialogueMode();
+        }
     }
 }
