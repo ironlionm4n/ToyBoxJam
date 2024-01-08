@@ -233,10 +233,11 @@ public class AngelBoss : MonoBehaviour
 
         yield return new WaitUntil(() => (transform.position.x == flyAwayPoint.transform.position.x) && (transform.position.y == flyAwayPoint.transform.position.y));
 
-        currentAttack = ChooseNextAttack();
+        //currentAttack = ChooseNextAttack();
 
         //Testing
         currentAttack = WAVE_ATTACK;
+        //currentAttack = DASH_ATTACK;
 
         if (currentAttack.Equals(DASH_ATTACK))
         {
