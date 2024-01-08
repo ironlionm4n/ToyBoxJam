@@ -67,6 +67,12 @@ public class Dialogue_Manager : MonoBehaviour
         Continue();
     }
 
+    public void ExitDialogue()
+    {
+        dialogueIsPlaying=false;
+        dialogue_canvas.SetActive(false);
+    }
+
     //Continuse reading the story from the ink file
     public void Continue()
     {
@@ -91,7 +97,7 @@ public class Dialogue_Manager : MonoBehaviour
         }
         else
         {
-            //ExitDialogueMode();
+            ExitDialogue();
         }
     }
 }
