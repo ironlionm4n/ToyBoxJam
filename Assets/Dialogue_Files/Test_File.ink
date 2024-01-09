@@ -1,7 +1,7 @@
-Test text
+Test text #speaker:player
 
-Text Test
+Text Test #speaker:other
 
-Testing the text
+Testing the text #speaker:player
 
-This is the final line for testing
+This is the final line for testing #speaker:other

@@ -964,3 +964,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inkJSON: {fileID: 4900000, guid: 8da6d12e00d775840a1f0828f3a93eb1, type: 3}
   speaker_sprite: {fileID: 21300000, guid: a09391197bc0fc84f97d5a69c509df06, type: 3}
+  player_speaking_sprite: {fileID: 21300000, guid: 1b290b14d35fe184f9cc676d5411d5a5, type: 3}

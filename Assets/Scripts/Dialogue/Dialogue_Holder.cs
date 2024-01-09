@@ -12,4 +12,8 @@ public class Dialogue_Holder : MonoBehaviour
     [SerializeField] private Sprite speaker_sprite;
 
     public Sprite Speaker_Sprite { get { return speaker_sprite; } }
+
+    [SerializeField] private Sprite player_speaking_sprite;
+
+    public Sprite Player_Speaking_Sprite { get { return player_speaking_sprite; } }
 }
