@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Cinemachine;
 
 public class GolemHand : MonoBehaviour
 {
@@ -13,12 +14,23 @@ public class GolemHand : MonoBehaviour
 
     private GolemHandFollow ghf;
 
+    private RotateToPlayer playerRotater;
+
     private ClapAttack clapAttack;
+
+    private CinemachineImpulseSource impulseSource;
+
+    private bool collision = false;
+    private bool waitingForCollision = false;
+
+    private float slamSpeed = 0;
 
     private void Awake()
     {
         ghf = GetComponent<GolemHandFollow>();
         clapAttack = transform.parent.GetComponent<ClapAttack>();
+        playerRotater = GetComponent<RotateToPlayer>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     // Start is called before the first frame update
@@ -30,25 +42,53 @@ public class GolemHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+       if(waitingForCollision)
+        {
+            transform.position += transform.right * slamSpeed * Time.deltaTime;
+        }
     }
 
 
-    public void SingleClap(float moveBackAmount, float pauseTime, float slamSpeed)
+    public void SingleClap(float moveBackAmount, float pauseTime, float slamSpeed, float stunTime)
     {
         ghf.StopFollowing();
+        collision = false;
+        this.slamSpeed = slamSpeed;
 
-        StartCoroutine(Clap(moveBackAmount, pauseTime, slamSpeed));
+        StartCoroutine(Clap(moveBackAmount, pauseTime, stunTime));
     }
 
-    public void DoubleClap()
+    public void DoubleClap(float moveBackAmount, float pauseTime, float slamSpeed, Transform player)
     {
         ghf.StartConstantFollow();
+        playerRotater.StopRotating();
 
+        Vector2 rotation = new Vector2(transform.rotation.x, 0);
+        transform.DORotate(rotation, 0.3f);
 
+        StartCoroutine(DoubleSlam(moveBackAmount, pauseTime, slamSpeed, player));
     }
 
-    private IEnumerator Clap(float moveBackAmount, float pauseTime, float slamSpeed)
+    private IEnumerator DoubleSlam(float moveBackAmount, float pauseTime, float slamSpeed, Transform player)
+    {
+        yield return new WaitForSeconds(pauseTime * 2);
+
+
+        ghf.StopFollowing();
+        transform.DOMove(player.position, slamSpeed * 0.75f);
+
+        yield return new WaitForSeconds(slamSpeed * 0.75f);
+        clapAttack.DoubleClap();
+
+        yield return new WaitForSeconds(10);
+
+        clapAttack.AttackFinished();
+        ghf.StopConstantFollow();
+        ghf.StartFollowing();
+        playerRotater.StartRotating();
+    }
+
+    private IEnumerator Clap(float moveBackAmount, float pauseTime, float stunTime)
     {
         Vector2 targetLocation = new Vector2();
 
@@ -70,14 +110,34 @@ public class GolemHand : MonoBehaviour
 
         transform.DOMoveX(moveBackXVal, pauseTime);
 
+        //Make sure the collision isn't already true
+        collision = false;
+
         yield return new WaitForSeconds(pauseTime * 2);
+        playerRotater.StopRotating();
 
+        //transform.DOMove(targetLocation, doubleSlamSpeed);
+        waitingForCollision = true;
 
-        transform.DOMove(targetLocation, slamSpeed);
+        yield return new WaitWhile(() => !collision);
+        waitingForCollision = false;
 
-        yield return new WaitForSeconds(slamSpeed * 1.5f);
+        CameraShakeManager.instance.CameraShake(impulseSource);
+
+        yield return new WaitForSeconds(stunTime);
 
         clapAttack.AttackFinished();
         ghf.StartFollowing();
+        playerRotater.StartRotating();
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Wall") || collision.CompareTag("Ground"))
+        {
+
+            this.collision = true;
+        }
     }
 }

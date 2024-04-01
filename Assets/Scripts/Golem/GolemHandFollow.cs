@@ -117,13 +117,14 @@ public class GolemHandFollow : MonoBehaviour
 
     public void StartConstantFollow()
     {
-        StopFollowing();
-        constantFollow = true; 
+        //StopFollowing();
+        //constantFollow = true; 
+        followDelay = 0.05f;
     }
 
     public void StopConstantFollow()
     {
         constantFollow= false;
-        StartFollowing();
+        followDelay = 0.3f;
     }
 }

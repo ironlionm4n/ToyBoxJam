@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class ClapAttack : MonoBehaviour
 {
+    private GolemManager golemManager;
+
+    private CinemachineImpulseSource impulseSource;
 
     private GolemHand golemRightHand;
 
@@ -26,11 +30,21 @@ public class ClapAttack : MonoBehaviour
     private float pauseTime = 0.5f;
 
     [SerializeField]
-    private float slamSpeed = 1.2f;
+    private float singleSlamMoveSpeed = 10f;
+
+    [SerializeField]
+    private float singleSlamStunTime = 0.5f;
+
+    [SerializeField]
+    private float doubleSlamSpeed = 1.2f;
 
     private bool attacking = false;
 
     private bool attackFinished = false;
+
+    private bool shaking = false;
+
+    private Transform player;
 
     private void Awake()
     {
@@ -50,12 +64,18 @@ public class ClapAttack : MonoBehaviour
                 }
             }
         }
+
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+        golemManager = GetComponent<GolemManager>();
+
+        currentChanceForDouble = chanceForDoubleSlam;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //GolemManager assigns player in awake
+        player = golemManager.Player;
     }
 
     // Update is called once per frame
@@ -64,6 +84,7 @@ public class ClapAttack : MonoBehaviour
         if(!attacking)
         {
             attacking = true;
+            attackFinished = false;
             StartCoroutine(Attack());
         }
     }
@@ -72,25 +93,51 @@ public class ClapAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(timeBetweenAttacks);
 
-        //1 = left and 2 = right
-        int attackingHand = Random.Range(1, 3);
 
-        if(attackingHand == 1)
+        int randomAttack = Random.Range(0, 11);
+
+        if (currentChanceForDouble != 0 && randomAttack / currentChanceForDouble == 0)
         {
-            golemLeftHand.SingleClap(moveBackAmount, pauseTime, slamSpeed);
+            Debug.Log("Double clap start");
+            currentChanceForDouble = chanceForDoubleSlam; //Reset chance
+
+            golemRightHand.DoubleClap(moveBackAmount, pauseTime, doubleSlamSpeed, player);
+            golemLeftHand.DoubleClap(moveBackAmount, pauseTime, doubleSlamSpeed, player);
         }
         else
         {
-            golemRightHand.SingleClap(moveBackAmount, pauseTime, slamSpeed);
+            currentChanceForDouble++; //Make it more likely each time to do a double slam next
+
+            //1 = left and 2 = right
+            int attackingHand = Random.Range(1, 3);
+
+            if (attackingHand == 1)
+            {
+                golemLeftHand.SingleClap(moveBackAmount, pauseTime, singleSlamMoveSpeed, singleSlamStunTime);
+            }
+            else
+            {
+                golemRightHand.SingleClap(moveBackAmount, pauseTime, singleSlamMoveSpeed, singleSlamStunTime);
+            }
         }
 
         yield return new WaitWhile(() => !attackFinished);
 
         attacking= false;
+        shaking = false;
     }
 
     public void AttackFinished()
     {
         attackFinished = true;
+    }
+
+    public void DoubleClap()
+    {
+        if (!shaking)
+        {
+            shaking = true;
+            CameraShakeManager.instance.CameraShake(impulseSource);
+        }
     }
 }
