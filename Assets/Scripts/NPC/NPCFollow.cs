@@ -8,6 +8,7 @@ public class NPCFollow : MonoBehaviour
     [SerializeField] private float followDistance = 8f;
     [SerializeField][Range(0f, 100f)] private float maxSpeed = 4f;
     [SerializeField][Range(0f, 100f)] private float maxGroundAcc = 35f;
+    [SerializeField][Range(0f, 100f)] private float maxSlowdownAcc = 15f;
     [SerializeField][Range(0f, 100f)] private float maxAirAcc = 20f;
 
     private Vector2 _direction;
@@ -17,7 +18,7 @@ public class NPCFollow : MonoBehaviour
     private float _maxSpeedChange;
     private float _acceleration;
     private bool _onGround;
-
+    private bool _slowing = false;
 
     private Transform player;
 
@@ -40,10 +41,15 @@ public class NPCFollow : MonoBehaviour
     {
         if(Vector2.Distance(player.position, transform.position) > followDistance)
         {
+            _slowing = false;
             Vector2 _direction = player.position - transform.position;
-            _direction.y = 0;
-            _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(maxSpeed - _collisionDataRetrieving.Friction, 0f);
-            Debug.Log(_collisionDataRetrieving.Friction);
+
+            _desiredVelocity = new Vector2(_direction.normalized.x, 0f) * Mathf.Max(maxSpeed - _collisionDataRetrieving.Friction, 0f);
+        }
+        else
+        {
+            _slowing = true;
+            _desiredVelocity = Vector2.zero;
         }
     }
 
@@ -51,7 +57,16 @@ public class NPCFollow : MonoBehaviour
     {
         _onGround = _collisionDataRetrieving.OnGround;
         _currentVelocity = rb.velocity;
-        _acceleration = _onGround ? maxGroundAcc : maxAirAcc;
+
+        if (!_slowing)
+        {
+            _acceleration = _onGround ? maxGroundAcc : maxAirAcc;
+        }
+        else
+        {
+            _acceleration = _onGround ? maxSlowdownAcc : maxAirAcc;
+        }
+
         _maxSpeedChange = _acceleration * Time.deltaTime;
         _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
