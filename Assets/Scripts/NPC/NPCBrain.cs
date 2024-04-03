@@ -51,17 +51,18 @@ public class NPCBrain : MonoBehaviour
     public void HandleRequest(NPCStates requestedState, bool completed)
     {
         StateObject newState = new StateObject(requestedState, statePriorities.GetValueOrDefault(requestedState));
-        Debug.Log(newState.NPCStates + " " + completed);
+
+        //Index of item in the queue (-1 if not)
+        int queueIndex = FindStateInQueue(newState);
 
         //If the request has been completed
         if(completed)
         {
+            Debug.Log(newState.NPCStates + " " + completed);
             //Remove the old state and switch to the next in queue
-            int indexToRemove = FindStateInQueue(newState);
-
-            if(indexToRemove > -1)
+            if(queueIndex > -1)
             {
-                stateQueue.RemoveAt(indexToRemove);
+                stateQueue.RemoveAt(queueIndex);
 
                 if (stateQueue.Count > 0)
                 {
@@ -80,11 +81,13 @@ public class NPCBrain : MonoBehaviour
             return;
         }
 
-        if(stateQueue.Contains(newState))
+        if(queueIndex != -1)
         {
             //Don't queue up the same request multiple times
             return;
         }
+
+        Debug.Log(newState.NPCStates + " " + completed);
 
         stateQueue.Add(newState);
 
@@ -107,6 +110,7 @@ public class NPCBrain : MonoBehaviour
         {
             case NPCStates.Following:
                 followCommands.StartFollowing();
+                jumpCommands.StopJumping();
                 break;
 
             case NPCStates.Idle:
@@ -114,6 +118,8 @@ public class NPCBrain : MonoBehaviour
                 break;
 
             case NPCStates.Jumping:
+                followCommands.StopFollowing();
+                jumpCommands.StartJumping();
                 break;
 
             case NPCStates.Moving: 
@@ -163,6 +169,8 @@ public class NPCBrain : MonoBehaviour
                 index = i;
             }
         }
+
+        Debug.Log(state.NPCStates + " " + index);
 
         return index;
     }
