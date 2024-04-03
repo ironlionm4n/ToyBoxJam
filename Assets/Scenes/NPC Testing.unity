@@ -5432,8 +5432,11 @@ GameObject:
   - component: {fileID: 2043486139}
   - component: {fileID: 2043486141}
   - component: {fileID: 2043486140}
+  - component: {fileID: 2043486145}
   - component: {fileID: 2043486142}
   - component: {fileID: 2043486143}
+  - component: {fileID: 2043486144}
+  - component: {fileID: 2043486146}
   m_Layer: 11
   m_Name: Paladin
   m_TagString: Untagged
@@ -5519,6 +5522,7 @@ MonoBehaviour:
   followDistance: 5
   maxSpeed: 10
   maxGroundAcc: 35
+  maxSlowdownAcc: 15
   maxAirAcc: 20
 --- !u!114 &2043486143
 MonoBehaviour:
@@ -5530,6 +5534,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7667980fece741e4085d9a82125858fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2043486144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043486138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf839c311faaf04fb58c4b5bce8b617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2043486145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043486138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ae7d43a8861f94da66247b38e2d45c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2043486146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043486138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 852fecf976be58243805d717f79da974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2124552001

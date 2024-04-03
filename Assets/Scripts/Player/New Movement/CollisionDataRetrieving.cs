@@ -53,7 +53,6 @@ using UnityEngine;
                 if (material != null)
                 {
                     Friction = material.friction;
-                Debug.Log(Friction);
                 }
             }
         }

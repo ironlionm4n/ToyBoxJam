@@ -23,23 +23,38 @@ public class NPCFollow : MonoBehaviour
     private Transform player;
 
     private Rigidbody2D rb;
+
+    private bool following = false;
+
+    private NPCBrain brain;
+
     private void Awake()
     {
-        player = GameObject.Find("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
+        brain = GetComponent<NPCBrain>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = brain.Player;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Vector2.Distance(player.position, transform.position) > followDistance)
+        if (Vector2.Distance(player.position, transform.position) > followDistance && !following)
+        {
+            RequestToFollow();
+        }
+
+        if (!following)
+        {
+            return;
+        }
+
+        if (Vector2.Distance(player.position, transform.position) > followDistance)
         {
             _slowing = false;
             Vector2 _direction = player.position - transform.position;
@@ -55,6 +70,11 @@ public class NPCFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!following)
+        {
+            return;
+        }
+
         _onGround = _collisionDataRetrieving.OnGround;
         _currentVelocity = rb.velocity;
 
@@ -70,6 +90,33 @@ public class NPCFollow : MonoBehaviour
         _maxSpeedChange = _acceleration * Time.deltaTime;
         _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
+        if(_slowing && _currentVelocity.x == 0)
+        {
+            RequestComplete();
+        }
+
         rb.velocity = _currentVelocity;
+    }
+
+    private void RequestToFollow()
+    {
+        brain.HandleRequest(NPCStates.Following, false);
+    }
+
+    private void RequestComplete()
+    {
+        StopFollowing();
+
+        brain.HandleRequest(NPCStates.Following, true);
+    }
+
+    public void StartFollowing()
+    {
+        following = true;
+    }
+
+    public void StopFollowing()
+    {
+        following = false;
     }
 }
