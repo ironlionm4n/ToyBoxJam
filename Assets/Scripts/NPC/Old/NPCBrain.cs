@@ -12,6 +12,8 @@ public class NPCBrain : MonoBehaviour
     //Keeps track of each states priority for the state machine
     private Dictionary<NPCStates, float> statePriorities = new Dictionary<NPCStates, float>();
 
+    public Dictionary<NPCStates, float> StatePriorities { get { return statePriorities; } }
+
     private List<StateObject> stateQueue = new List<StateObject>();
 
     private StateObject currentState;
@@ -24,6 +26,13 @@ public class NPCBrain : MonoBehaviour
 
     private NPCIdle idleCommands;
 
+    StateObject idleState;
+    StateObject jumpingState;
+    StateObject fallingState;
+    StateObject movingState;
+    StateObject abilityState;
+    StateObject dodgingState;
+
     private void Awake()
     {
        IntializePriorities();
@@ -34,6 +43,14 @@ public class NPCBrain : MonoBehaviour
         followCommands = GetComponent<NPCFollow>();
         jumpCommands = GetComponent<NPCJump>();
         idleCommands = GetComponent<NPCIdle>();
+
+        
+        idleState = new StateObject(NPCStates.Idle, statePriorities.GetValueOrDefault(NPCStates.Idle));
+        
+        fallingState = new StateObject(NPCStates.Falling, statePriorities.GetValueOrDefault(NPCStates.Falling));
+        movingState = new StateObject(NPCStates.Moving, statePriorities.GetValueOrDefault(NPCStates.Moving));
+        abilityState = new StateObject(NPCStates.AbilityUsed, statePriorities.GetValueOrDefault(NPCStates.AbilityUsed));
+        dodgingState = new StateObject(NPCStates.Dodging, statePriorities.GetValueOrDefault(NPCStates.Dodging));
     }
 
     // Start is called before the first frame update
@@ -48,21 +65,18 @@ public class NPCBrain : MonoBehaviour
         
     }
 
-    public void HandleRequest(NPCStates requestedState, bool completed)
+    public void HandleRequest(StateObject requestedState, bool completed)
     {
-        StateObject newState = new StateObject(requestedState, statePriorities.GetValueOrDefault(requestedState));
 
-        //Index of item in the queue (-1 if not)
-        int queueIndex = FindStateInQueue(newState);
 
         //If the request has been completed
         if(completed)
         {
-            Debug.Log(newState.NPCStates + " " + completed);
+            Debug.Log(requestedState.NPCStates + " " + completed);
             //Remove the old state and switch to the next in queue
-            if(queueIndex > -1)
+            if(stateQueue.Contains(requestedState))
             {
-                stateQueue.RemoveAt(queueIndex);
+                stateQueue.Remove(requestedState);
 
                 if (stateQueue.Count > 0)
                 {
@@ -81,15 +95,17 @@ public class NPCBrain : MonoBehaviour
             return;
         }
 
-        if(queueIndex != -1)
+        if(stateQueue.Contains(requestedState))
         {
             //Don't queue up the same request multiple times
             return;
         }
 
-        Debug.Log(newState.NPCStates + " " + completed);
+        Debug.Log(requestedState.NPCStates + " " + completed);
 
-        stateQueue.Add(newState);
+        stateQueue.Add(requestedState);
+
+        Debug.Log(stateQueue.Count);
 
         stateQueue.OrderByDescending(x => x.Priority).FirstOrDefault();
 

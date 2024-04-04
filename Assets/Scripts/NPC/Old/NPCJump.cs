@@ -24,6 +24,9 @@ public class NPCJump : MonoBehaviour
     [SerializeField, Range(0f, .5f), Tooltip("Detection window for jump input")]
     private float jumpBuffer = .25f;
 
+    [SerializeField]
+    private float minYDifForJump = 3f;
+
     private Rigidbody2D _npcRigidbody;
     private CollisionDataRetrieving _ground;
     private Vector2 _velocity;
@@ -45,6 +48,7 @@ public class NPCJump : MonoBehaviour
     [SerializeField]
     private bool jumping = false;
 
+    StateObject jumpingState;
     private void Awake()
     {
         brain = GetComponent<NPCBrain>();
@@ -57,13 +61,14 @@ public class NPCJump : MonoBehaviour
     {
         player = brain.Player;
         playerJump = player.GetComponent<Jump>();
+        jumpingState = new StateObject(NPCStates.Jumping, brain.StatePriorities.GetValueOrDefault(NPCStates.Jumping));
     }
 
     // Update is called once per frame
     void Update()
     {
         //Y values are different and the player is not currently jumping
-        if (_onGround && player.position.y != transform.position.y && !playerJump.IsJumping)
+        if (_onGround && Mathf.Abs(player.position.y - transform.position.y) > minYDifForJump && !playerJump.IsJumping)
         {
             RequestToJump();
         }
@@ -124,11 +129,12 @@ public class NPCJump : MonoBehaviour
             return;
         }
 
-        float angle = Mathf.Atan(yOffset / xOffset) * Mathf.Deg2Rad;
+        float angle = 45 * Mathf.Deg2Rad;
 
         Debug.Log(angle);
 
         float initialVelocity = (1f / Mathf.Cos(angle)) * Mathf.Sqrt(Mathf.Abs((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset)));
+        
         Debug.Log(Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2))));
         Debug.Log((0.5f * gravity * Mathf.Pow(distance, 2) / (distance * Mathf.Tan(angle) + yOffset)));
         Debug.Log(initialVelocity);
@@ -160,14 +166,14 @@ public class NPCJump : MonoBehaviour
 
     private void RequestToJump()
     {
-        brain.HandleRequest(NPCStates.Jumping, false);
+        brain.HandleRequest(jumpingState, false);
     }
 
     private void RequestComplete()
     {
         StopJumping();
 
-        brain.HandleRequest(NPCStates.Jumping, true);
+        brain.HandleRequest(jumpingState, true);
 
         _isJumping = false;
     }

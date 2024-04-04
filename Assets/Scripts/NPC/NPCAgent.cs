@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCFollow : MonoBehaviour
+public class NPCAgent : MonoBehaviour
 {
     [Header("Follow Settings")]
     [SerializeField] private float followDistance = 8f;
@@ -28,26 +28,28 @@ public class NPCFollow : MonoBehaviour
 
     private NPCBrain brain;
 
+    StateObject followingState;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
         brain = GetComponent<NPCBrain>();
+
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
         player = brain.Player;
+
+        followingState = new StateObject(NPCStates.Following, brain.StatePriorities.GetValueOrDefault(NPCStates.Following));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(player.position, transform.position) > followDistance && !following)
-        {
-            RequestToFollow();
-        }
+
 
         if (!following)
         {
@@ -90,33 +92,36 @@ public class NPCFollow : MonoBehaviour
         _maxSpeedChange = _acceleration * Time.deltaTime;
         _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
-        if(_slowing && _currentVelocity.x == 0)
+        if (_slowing && _currentVelocity.x == 0)
         {
-            RequestComplete();
+            StopFollowing();
         }
 
         rb.velocity = _currentVelocity;
     }
 
-    private void RequestToFollow()
-    {
-        brain.HandleRequest(NPCStates.Following, false);
-    }
-
-    private void RequestComplete()
-    {
-        StopFollowing();
-
-        brain.HandleRequest(NPCStates.Following, true);
-    }
-
     public void StartFollowing()
     {
-        following = true;
+        bool needToMove = CheckIfNeedFollow();
+
+        if (needToMove)
+        {
+            following = true;
+        }
     }
 
     public void StopFollowing()
     {
         following = false;
+    }
+
+    public bool CheckIfNeedFollow()
+    {
+        if (Vector2.Distance(player.position, transform.position) > followDistance && !following)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
