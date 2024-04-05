@@ -17,24 +17,6 @@ public class BTSetup : MonoBehaviour
 
         var BTRoot = LinkedBT.RootNode.Add<BTNode_Selector>("Base Logic");
 
-       /* var slowRoot = BTRoot.Add(new BTNode_Conditional("Can Slow",
-            () =>
-            {
-                return Agent.CheckIfNeedSlowdown();
-            }));
-
-        slowRoot.Add<BTNode_Action>("Perform Slow",
-        () =>
-        {
-            Agent.StartSlowing();
-            return BehaviorTree.ENodeStatus.InProgress;
-        },
-        () =>
-        {
-            return !Agent.CheckIfNeedSlowdown() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
-        }
-        );*/
-
         var followRoot = BTRoot.Add (new BTNode_Conditional("Can Follow",
             () =>
             {
