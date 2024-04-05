@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class BTNodeBase 
@@ -165,5 +166,31 @@ public class BTNodeBase
     protected virtual void OnTickedAllChildren()
     {
 
+    }
+
+    public string GetDebugText()
+    {
+        StringBuilder debugTextBuilder = new StringBuilder();
+
+        GetDebugTextInternal(debugTextBuilder);
+
+        return debugTextBuilder.ToString();
+    }
+
+    protected virtual void GetDebugTextInternal(StringBuilder debugTextBuilder, int indexLevel = 0)
+    {
+        //apply the indet
+        for(int index = 0; index < indexLevel; ++index) 
+        {
+            debugTextBuilder.Append(' ');
+        }
+
+        debugTextBuilder.Append($"{Name} [{LastStatus.ToString()}]");
+
+        foreach(var child in Children)
+        {
+            debugTextBuilder.AppendLine();
+            child.GetDebugTextInternal(debugTextBuilder, indexLevel+1);
+        }
     }
 }

@@ -25,4 +25,9 @@ public class BehaviorTree : MonoBehaviour
     {
         RootNode.Tick(Time.deltaTime);
     }
+
+    public string GetDebugText()
+    {
+        return RootNode.GetDebugText();
+    }
 }

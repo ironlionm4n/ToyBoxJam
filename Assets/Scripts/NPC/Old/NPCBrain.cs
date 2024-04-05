@@ -125,7 +125,7 @@ public class NPCBrain : MonoBehaviour
         switch (newState.NPCStates)
         {
             case NPCStates.Following:
-                followCommands.StartFollowing();
+                //followCommands.StartFollowing();
                 jumpCommands.StopJumping();
                 break;
 
@@ -157,7 +157,7 @@ public class NPCBrain : MonoBehaviour
         //Following is next lowest and should be overwritten by many other requests
         statePriorities.Add(NPCStates.Following, 0.1f);
 
-        //Jumping should overwrite following so the AI can get to player but not much else
+        //Jumping should overwrite slowing so the AI can get to player but not much else
         statePriorities.Add(NPCStates.Jumping, 0.2f);
 
         //Slightly above Jumping, this state means the AI is moving to a specific location to complete a task (i.e. moving somewhere to jump up to player)

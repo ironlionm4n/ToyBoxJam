@@ -5,7 +5,10 @@ using UnityEngine;
 public class NPCFollow : MonoBehaviour
 {
     [Header("Follow Settings")]
-    [SerializeField] private float followDistance = 8f;
+    [SerializeField] private float followDistance = 5f;
+
+    public float FollowDistance { get { return followDistance; } }
+
     [SerializeField][Range(0f, 100f)] private float maxSpeed = 4f;
     [SerializeField][Range(0f, 100f)] private float maxGroundAcc = 35f;
     [SerializeField][Range(0f, 100f)] private float maxSlowdownAcc = 15f;
@@ -18,43 +21,27 @@ public class NPCFollow : MonoBehaviour
     private float _maxSpeedChange;
     private float _acceleration;
     private bool _onGround;
-    private bool _slowing = false;
 
     private Transform player;
 
     private Rigidbody2D rb;
 
-    private bool following = false;
+    private bool _following = false;
+    private bool _slowing = false;
 
-    private NPCBrain brain;
-
-    StateObject followingState;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
-        brain = GetComponent<NPCBrain>();
 
-        
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = brain.Player;
-
-        followingState = new StateObject(NPCStates.Following, brain.StatePriorities.GetValueOrDefault(NPCStates.Following));
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(player.position, transform.position) > followDistance && !following)
-        {
-            RequestToFollow();
-        }
 
-        if (!following)
+        if (!_following)
         {
             return;
         }
@@ -71,11 +58,12 @@ public class NPCFollow : MonoBehaviour
             _slowing = true;
             _desiredVelocity = Vector2.zero;
         }
+
     }
 
     private void FixedUpdate()
     {
-        if (!following)
+        if (!_following)
         {
             return;
         }
@@ -95,33 +83,32 @@ public class NPCFollow : MonoBehaviour
         _maxSpeedChange = _acceleration * Time.deltaTime;
         _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
-        if(_slowing && _currentVelocity.x == 0)
+        if (_slowing && _currentVelocity.x == 0)
         {
-            RequestComplete();
+            StopFollowing();
         }
 
         rb.velocity = _currentVelocity;
     }
 
-    private void RequestToFollow()
+        public void StartFollowing(Transform target)
     {
-        brain.HandleRequest(followingState, false);
-    }
-
-    private void RequestComplete()
-    {
-        StopFollowing();
-
-        brain.HandleRequest(followingState, true);
-    }
-
-    public void StartFollowing()
-    {
-        following = true;
+        player = target;
+        _following = true;
     }
 
     public void StopFollowing()
     {
-        following = false;
+        _following = false;
+    }
+
+    public bool CheckIfNeedFollow(Transform _player)
+    {
+        if (Vector2.Distance(_player.position, transform.position) > followDistance || _following)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
