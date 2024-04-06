@@ -13,6 +13,9 @@ public class NPCFollow : MonoBehaviour
     [SerializeField][Range(0f, 100f)] private float maxGroundAcc = 35f;
     [SerializeField][Range(0f, 100f)] private float maxSlowdownAcc = 15f;
     [SerializeField][Range(0f, 100f)] private float maxAirAcc = 20f;
+    
+    public float MaxSlowdownAcc { get { return maxSlowdownAcc; } }
+    public float MaxAirAcc { get { return maxAirAcc; } }
 
     private Vector2 _direction;
     private Vector2 _desiredVelocity;

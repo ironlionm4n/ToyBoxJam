@@ -5746,7 +5746,7 @@ MonoBehaviour:
   upwardMovementMultiplier: 1.7
   coyoteTime: 0.25
   jumpBuffer: 0.25
-  minYDifForJump: 3
+  minYDifForJump: 1
   _onGround: 0
   jumping: 0
 --- !u!114 &2043486145

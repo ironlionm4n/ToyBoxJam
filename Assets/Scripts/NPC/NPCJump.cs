@@ -28,7 +28,7 @@ public class NPCJump : MonoBehaviour
     private float minYDifForJump = 3f;
 
     private Rigidbody2D _npcRigidbody;
-    private CollisionDataRetrieving _ground;
+    private CollisionDataRetrieving _collisionDataRetrieving;
     private Vector2 _velocity;
     private int _jumpPhase;
     private float _defaultGravityScale;
@@ -42,17 +42,23 @@ public class NPCJump : MonoBehaviour
 
     private Transform player;
     private Jump playerJump;
+    private float _maxSpeedChange;
+    private float _acceleration;
 
-    private NPCBrain brain;
+
 
     [SerializeField]
     private bool jumping = false;
 
-    StateObject jumpingState;
+    private NPCFollow _followingCommands;
+    private Vector2 _currentVelocity;
+    Vector2 _desiredVelocity;
+
     private void Awake()
     {
         _npcRigidbody = GetComponent<Rigidbody2D>();
-        _ground = GetComponent<CollisionDataRetrieving>();
+        _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
+        _followingCommands= GetComponent<NPCFollow>();
     }
 
     // Update is called once per frame
@@ -64,11 +70,13 @@ public class NPCJump : MonoBehaviour
         {
             return;
         }
+
+        _desiredVelocity = Vector2.zero;
     }
 
     private void FixedUpdate()
     {
-        _onGround = _ground.OnGround;
+        _onGround = _collisionDataRetrieving.OnGround;
 
         if (!jumping)
         {
@@ -83,9 +91,23 @@ public class NPCJump : MonoBehaviour
             CaclulateJumpForce();
         }
 
+        //Since we are jumping with force we need to slow the AI down manually after they land
         if (_onGround && _npcRigidbody.velocity.y == 0)
         {
-            StopJumping();
+            _onGround = _collisionDataRetrieving.OnGround;
+            _currentVelocity = _npcRigidbody.velocity;
+
+            _acceleration = _onGround ? _followingCommands.MaxSlowdownAcc : _followingCommands.MaxAirAcc;
+
+            _maxSpeedChange = _acceleration * Time.deltaTime;
+
+            _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
+            _npcRigidbody.velocity = _currentVelocity;
+
+            if (_currentVelocity.x == 0)
+            {
+                StopJumping();
+            }
         }
     }
 
@@ -104,7 +126,27 @@ public class NPCJump : MonoBehaviour
         // Calculate the force needed to reach the desired height
         float forceY = Mathf.Sqrt(2.1f * jumpHeight * gravity * mass);
 
-        _npcRigidbody.AddForce(new Vector2(0, forceY), ForceMode2D.Impulse);
+        float jumpDistance = player.position.x - transform.position.x;
+
+        float timeToTarget;
+
+        // Check if the horizontal velocity is zero or close to zero
+        if (Mathf.Approximately(_npcRigidbody.velocity.x, 0f))
+        {
+            // Set a default time to reach the target
+            timeToTarget = Mathf.Abs(jumpDistance) / 1f; // Change 1f to the default speed if needed
+        }
+        else
+        {
+            timeToTarget = Mathf.Abs(jumpDistance) / Mathf.Abs(_npcRigidbody.velocity.x);
+        }
+
+        float v0x = jumpDistance / timeToTarget;
+
+        //float launchAngle = Mathf.Rad2Deg * Mathf.Atan(v0y / v0x);
+        float forceX = mass * v0x / timeToTarget;
+
+        _npcRigidbody.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
     }
 
     private void CheckForGround()
@@ -128,10 +170,9 @@ public class NPCJump : MonoBehaviour
     public bool CheckIfNeedToJump(Transform _player)
     {
         playerJump = _player.GetComponent<Jump>();
-        Debug.Log(Mathf.Abs(_player.position.y - transform.position.y));
 
         //Y values are different and the player is not currently jumping OR the player is currently jumping
-        if (jumping || (_onGround && Mathf.Abs(_player.position.y - transform.position.y) > minYDifForJump && !playerJump.IsJumping))
+        if (jumping || (_onGround && Mathf.Abs(_player.position.y - transform.position.y) > minYDifForJump  && !playerJump.IsJumping))
         {
             return true;
         }
