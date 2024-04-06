@@ -51,27 +51,14 @@ public class NPCJump : MonoBehaviour
     StateObject jumpingState;
     private void Awake()
     {
-        brain = GetComponent<NPCBrain>();
         _npcRigidbody = GetComponent<Rigidbody2D>();
         _ground = GetComponent<CollisionDataRetrieving>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = brain.Player;
-        playerJump = player.GetComponent<Jump>();
-        jumpingState = new StateObject(NPCStates.Jumping, brain.StatePriorities.GetValueOrDefault(NPCStates.Jumping));
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Y values are different and the player is not currently jumping
-        if (_onGround && Mathf.Abs(player.position.y - transform.position.y) > minYDifForJump && !playerJump.IsJumping)
-        {
-            RequestToJump();
-        }
+
 
         if (!jumping)
         {
@@ -88,6 +75,8 @@ public class NPCJump : MonoBehaviour
             return;
         }
 
+        Debug.Log(_npcRigidbody.velocity.ToString());
+
         if (!_isJumping)
         {
             _isJumping = true;
@@ -96,7 +85,7 @@ public class NPCJump : MonoBehaviour
 
         if (_onGround && _npcRigidbody.velocity.y == 0)
         {
-            RequestComplete();
+            StopJumping();
         }
     }
 
@@ -104,49 +93,18 @@ public class NPCJump : MonoBehaviour
     private void CaclulateJumpForce()
     {
 
-        Vector3 target = player.position;
+        float gravity = Physics2D.gravity.magnitude;
 
-        float gravity = Physics.gravity.magnitude;
+        // Calculate the jump height considering gravity
+        float jumpHeight = Mathf.Abs(player.position.y - transform.position.y);
 
-        // Positions of this object and the target on the same plane
-        Vector3 planarTarget = new Vector3(target.x, 0, target.z);
-        Vector3 planarPostion = new Vector3(transform.position.x, 0, transform.position.z);
+        // Get the mass of the character
+        float mass = _npcRigidbody.mass;
 
-        // Planar distance between objects
-        float distance = Vector3.Distance(planarTarget, planarPostion);
+        // Calculate the force needed to reach the desired height
+        float forceY = Mathf.Sqrt(2.1f * jumpHeight * gravity * mass);
 
-        if(distance == 0)
-        {
-            return;
-        }
-
-        // Distance along the y axis between objects
-        float yOffset = transform.position.y - target.y;
-        float xOffset = transform.position.x - target.x;
-
-        if(xOffset == 0 || distance == 0)
-        {
-            return;
-        }
-
-        float angle = 45 * Mathf.Deg2Rad;
-
-        Debug.Log(angle);
-
-        float initialVelocity = (1f / Mathf.Cos(angle)) * Mathf.Sqrt(Mathf.Abs((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset)));
-        
-        Debug.Log(Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2))));
-        Debug.Log((0.5f * gravity * Mathf.Pow(distance, 2) / (distance * Mathf.Tan(angle) + yOffset)));
-        Debug.Log(initialVelocity);
-
-
-        Vector3 velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
-
-        // Rotate our velocity to match the direction between the two objects
-        float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion);
-        Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
-        Debug.Log(finalVelocity);
-        _npcRigidbody.velocity = finalVelocity;
+        _npcRigidbody.AddForce(new Vector2(0, forceY), ForceMode2D.Impulse);
     }
 
     private void CheckForGround()
@@ -154,27 +112,31 @@ public class NPCJump : MonoBehaviour
 
     }
 
-    public void StartJumping()
+    public void StartJumping(Transform _player)
     {
+        player = _player;
+        playerJump = _player.GetComponent<Jump>();
         jumping = true;
     }
 
     public void StopJumping()
     {
         jumping = false;
-    }
-
-    private void RequestToJump()
-    {
-        brain.HandleRequest(jumpingState, false);
-    }
-
-    private void RequestComplete()
-    {
-        StopJumping();
-
-        brain.HandleRequest(jumpingState, true);
-
         _isJumping = false;
     }
+
+    public bool CheckIfNeedToJump(Transform _player)
+    {
+        playerJump = _player.GetComponent<Jump>();
+        Debug.Log(Mathf.Abs(_player.position.y - transform.position.y));
+
+        //Y values are different and the player is not currently jumping OR the player is currently jumping
+        if (jumping || (_onGround && Mathf.Abs(_player.position.y - transform.position.y) > minYDifForJump && !playerJump.IsJumping))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }

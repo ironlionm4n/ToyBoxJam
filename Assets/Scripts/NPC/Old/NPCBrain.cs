@@ -135,7 +135,7 @@ public class NPCBrain : MonoBehaviour
 
             case NPCStates.Jumping:
                 followCommands.StopFollowing();
-                jumpCommands.StartJumping();
+                //jumpCommands.StartJumping();
                 break;
 
             case NPCStates.Moving: 

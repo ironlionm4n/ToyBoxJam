@@ -8,7 +8,7 @@ public class NPCAgent : MonoBehaviour
 
     private NPCFollow followCommands;
     private NPCSlowdown slowdownCommands;
-
+    private NPCJump jumpCommands;
 
     private void Awake()
     {
@@ -16,16 +16,12 @@ public class NPCAgent : MonoBehaviour
 
         followCommands = GetComponent<NPCFollow>();
         slowdownCommands = GetComponent<NPCSlowdown>();
+        jumpCommands = GetComponent<NPCJump>();
     }
 
     public void StartFollowing()
     {
-        bool needToMove = CheckIfNeedFollow();
-
-        if (needToMove)
-        {
-            followCommands.StartFollowing(player);
-        }
+        followCommands.StartFollowing(player);
     }
 
     public void StopFollowing()
@@ -38,19 +34,18 @@ public class NPCAgent : MonoBehaviour
       return followCommands.CheckIfNeedFollow(player);
     }
 
-    public void StartSlowing()
+    public bool CheckIfNeedToJump()
     {
-        slowdownCommands.StartSlowingdown();
+        return jumpCommands.CheckIfNeedToJump(player);
     }
 
-    public void StopSlowing()
+    public void StartJumping()
     {
-        slowdownCommands.StopSlowingdown();
+        jumpCommands.StartJumping(player);
     }
 
-    public bool CheckIfNeedSlowdown()
+    public void StopJumping()
     {
-        //Debug.Log(followCommands.FollowDistance);
-        return slowdownCommands.CheckIfNeedSlowdown(player, followCommands.FollowDistance);
+        jumpCommands.StopJumping();
     }
 }
