@@ -95,6 +95,8 @@ public class PlayerStats : MonoBehaviour
 
     public void CoinPickedUp()
     {
+        if(numCoins >= maxCoins) { return; }
+        
         coins[numCoins].color = Color.white;
         numCoins++;
         SFX.instance.CoinPickedUp();
