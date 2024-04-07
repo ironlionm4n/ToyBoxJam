@@ -30,22 +30,37 @@ public class Coin : MonoBehaviour
         ammoRigidbody.AddForce(transform.up * throwForce, ForceMode2D.Impulse);
         StartCoroutine(Disapear());
 
-        if (GameObject.Find("Player"))
+        GameObject Mage = GameObject.Find("Mage");
+        GameObject Boss = GameObject.Find("Boss");
+
+        if (GameObject.Find("Player") != null)
         {
             Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Player").GetComponent<Collider2D>());
         }
 
-        if (GameObject.Find("Mage")) {
-            Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Mage").GetComponent<Collider2D>());
+        if (Mage != null) {
+            Collider2D collider = Mage.GetComponent<Collider2D>();
+
+            if (collider != null)
+            {
+                Physics2D.IgnoreCollision(nonTriggerCollider, GameObject.Find("Mage").GetComponent<Collider2D>());
+            }
             return;
         }
 
-        if (GameObject.Find("Boss"))
+        if (Boss != null)
         {
-            foreach(Collider2D col in GameObject.Find("Boss").GetComponents<Collider2D>())
+            Collider2D collider = Boss.GetComponent<Collider2D>();
+
+            if (collider != null)
             {
-                Physics2D.IgnoreCollision(nonTriggerCollider, col);
+
+                foreach (Collider2D col in GameObject.Find("Boss").GetComponents<Collider2D>())
+                {
+                    Physics2D.IgnoreCollision(nonTriggerCollider, col);
+                }
             }
+
             return;
         }
     }

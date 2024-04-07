@@ -13,6 +13,8 @@ public class ClapAttack : MonoBehaviour
 
     private GolemHand golemLeftHand;
 
+    private GolemDebrisSpawning debrisSpawner;
+
     [Header("Attack Config")]
 
     [SerializeField]
@@ -67,6 +69,7 @@ public class ClapAttack : MonoBehaviour
 
         impulseSource = GetComponent<CinemachineImpulseSource>();
         golemManager = GetComponent<GolemManager>();
+        debrisSpawner = GetComponent<GolemDebrisSpawning>();
 
         currentChanceForDouble = chanceForDoubleSlam;
     }
@@ -138,6 +141,7 @@ public class ClapAttack : MonoBehaviour
         {
             shaking = true;
             CameraShakeManager.instance.CameraShake(impulseSource);
+            debrisSpawner.StartDebris();
         }
     }
 }
