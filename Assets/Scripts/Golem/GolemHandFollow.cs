@@ -13,6 +13,9 @@ public class GolemHandFollow : MonoBehaviour
     public float HorizontalOffset { get { return horizontalOffset; }}
 
     [SerializeField]
+    private Transform[] xClamps;
+
+    [SerializeField]
     private float followDelay = 0.8f;
 
     private bool rightHand = false;
@@ -46,37 +49,40 @@ public class GolemHandFollow : MonoBehaviour
     {
         if(following)
         {
-            if(!moving)
+            if (!moving)
             {
                 moving = true;
                 targetLocation = new Vector2();
 
-                if(rightHand)
+                // during normal attacks we want to limit the x values to avoid wall clipping
+                if (!constantFollow) { 
+
+                if (rightHand)
                 {
-                    targetLocation = new Vector2(player.position.x + horizontalOffset, player.position.y);
+                    targetLocation = new Vector2(Mathf.Clamp(player.position.x + horizontalOffset, xClamps[0].position.x, xClamps[1].position.x), player.position.y);
                 }
                 else
                 {
-                    targetLocation = new Vector2(player.position.x - horizontalOffset, player.position.y);
+                    targetLocation = new Vector2(Mathf.Clamp(player.position.x - horizontalOffset, xClamps[0].position.x, xClamps[1].position.x), player.position.y);
+                }
+                }
+                else
+                {
+                    if (rightHand)
+                    {
+                        targetLocation = new Vector2(player.position.x + horizontalOffset, player.position.y);
+                    }
+                    else
+                    {
+                        targetLocation = new Vector2(player.position.x - horizontalOffset, player.position.y);
+                    }
                 }
 
                 StartCoroutine(Follow());
             }
         }
 
-        if(constantFollow)
-        {
-            targetLocation = new Vector2();
-
-            if (rightHand)
-            {
-                transform.position = new Vector2(player.position.x + horizontalOffset, player.position.y);
-            }
-            else
-            {
-                transform.position = new Vector2(player.position.x - horizontalOffset, player.position.y);
-            }
-        }
+        
     }
 
 
@@ -118,7 +124,9 @@ public class GolemHandFollow : MonoBehaviour
     public void StartConstantFollow()
     {
         //StopFollowing();
-        //constantFollow = true; 
+        constantFollow = true; 
+
+        // set follow delay to near 0 for no delay in tracking player y
         followDelay = 0.05f;
     }
 
