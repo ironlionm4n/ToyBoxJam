@@ -20,6 +20,7 @@ public class GolemManager : MonoBehaviour
     private int attacksRunning = 0;
     private bool canAttack = false;
 
+    [SerializeField]
     private int phase = 2;
 
     private ClapAttack clapAttackManager;
