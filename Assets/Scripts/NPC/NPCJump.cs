@@ -133,14 +133,18 @@ public class NPCJump : MonoBehaviour
         if (Mathf.Approximately(_npcRigidbody.velocity.x, 0f))
         {
             // Set a default time to reach the target
-            timeToTarget = Mathf.Abs(jumpDistance) / 1f; // Change 1f to the default speed if needed
+            timeToTarget =  1f; // Change 1f to the default speed if needed
         }
         else
         {
             timeToTarget = Mathf.Abs(jumpDistance) / Mathf.Abs(_npcRigidbody.velocity.x);
         }
 
+       // Debug.Log(jumpDistance);
+
         float v0x = jumpDistance / timeToTarget;
+
+        //Debug.Log(v0x);
 
         //float launchAngle = Mathf.Rad2Deg * Mathf.Atan(v0y / v0x);
         float forceX = mass * v0x / timeToTarget;
