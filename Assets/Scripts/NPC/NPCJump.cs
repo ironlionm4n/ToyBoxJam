@@ -45,7 +45,7 @@ public class NPCJump : MonoBehaviour
     private float _maxSpeedChange;
     private float _acceleration;
 
-
+    private bool jumpCompleted = false;
 
     [SerializeField]
     private bool jumping = false;
@@ -83,8 +83,6 @@ public class NPCJump : MonoBehaviour
             return;
         }
 
-        Debug.Log(_npcRigidbody.velocity.ToString());
-
         if (!_isJumping)
         {
             _isJumping = true;
@@ -114,6 +112,7 @@ public class NPCJump : MonoBehaviour
 
     private void CaclulateJumpForce()
     {
+        Debug.Log("Calcualting jump force");
 
         float gravity = Physics2D.gravity.magnitude;
 
@@ -159,24 +158,27 @@ public class NPCJump : MonoBehaviour
         player = _player;
         playerJump = _player.GetComponent<Jump>();
         jumping = true;
+        _isJumping = false;
     }
 
     public void StopJumping()
     {
         jumping = false;
         _isJumping = false;
+        jumpCompleted = true;
     }
 
     public bool CheckIfNeedToJump(Transform _player)
     {
         playerJump = _player.GetComponent<Jump>();
 
-        //Y values are different and the player is not currently jumping OR the player is currently jumping
-        if (jumping || (_onGround && Mathf.Abs(_player.position.y - transform.position.y) > minYDifForJump  && !playerJump.IsJumping))
+        //Y values are different and the player is not currently jumping OR the NPC is currently jumping
+        if (jumping || (_onGround && (_player.position.y - transform.position.y) > minYDifForJump  && !playerJump.IsJumping) && !jumpCompleted)
         {
             return true;
         }
 
+        jumpCompleted = false;
         return false;
     }
 
