@@ -177,7 +177,7 @@ public class NPCJump : MonoBehaviour
         Debug.Log("Jump Completed: " + (jumpCompleted));
 
         //Y values are different and the player is not currently jumping OR the NPC is currently jumping
-        if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Vector2.Distance(_player.transform.position, transform.position) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
+        if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
         {
             return true;
         }
