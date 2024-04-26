@@ -7,16 +7,16 @@ public class NPCAgent : MonoBehaviour
     private Transform player;
 
     private NPCFollow followCommands;
-    private NPCSlowdown slowdownCommands;
     private NPCJump jumpCommands;
+    private NPCAbility abilityCommands;
 
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
 
         followCommands = GetComponent<NPCFollow>();
-        slowdownCommands = GetComponent<NPCSlowdown>();
         jumpCommands = GetComponent<NPCJump>();
+        abilityCommands = GetComponent<NPCAbility>();
     }
 
     public void StartFollowing()

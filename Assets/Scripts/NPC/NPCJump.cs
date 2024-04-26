@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NPCJump : MonoBehaviour
 {
@@ -171,10 +172,8 @@ public class NPCJump : MonoBehaviour
     public bool CheckIfNeedToJump(Transform _player)
     {
         playerJump = _player.GetComponent<Jump>();
-        Debug.Log("OnGround: " + _onGround);
-        Debug.Log("Y Dif: " + (_player.position.y - transform.position.y));
-        Debug.Log("Player Jumping: " + (playerJump.IsJumping));
-        Debug.Log("Jump Completed: " + (jumpCompleted));
+
+       // LogJumpVars(_player);
 
         //Y values are different and the player is not currently jumping OR the NPC is currently jumping
         if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
@@ -184,6 +183,17 @@ public class NPCJump : MonoBehaviour
 
         jumpCompleted = false;
         return false;
+    }
+
+    /// <summary>
+    /// TESTING
+    /// </summary>
+    private void LogJumpVars(Transform _player)
+    {
+        Debug.Log("OnGround: " + _onGround);
+        Debug.Log("Y Dif: " + (_player.position.y - transform.position.y));
+        Debug.Log("Player Jumping: " + (playerJump.IsJumping));
+        Debug.Log("Jump Completed: " + (jumpCompleted));
     }
 
 }

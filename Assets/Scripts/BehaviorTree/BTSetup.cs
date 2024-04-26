@@ -9,6 +9,9 @@ public class BTSetup : MonoBehaviour
     protected NPCAgent Agent;
     protected AwarenessSystem Sensors;
 
+    [SerializeField]
+    private KeyCode abilityKey;
+
     void Awake()
     {
         Agent = GetComponent<NPCAgent>();
