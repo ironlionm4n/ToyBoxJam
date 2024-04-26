@@ -27,6 +27,9 @@ public class NPCJump : MonoBehaviour
     [SerializeField]
     private float minYDifForJump = 3f;
 
+    [SerializeField]
+    private float maxJumpDistance = 5f;
+
     private Rigidbody2D _npcRigidbody;
     private CollisionDataRetrieving _collisionDataRetrieving;
     private Vector2 _velocity;
@@ -65,6 +68,7 @@ public class NPCJump : MonoBehaviour
     void Update()
     {
 
+        _onGround = _collisionDataRetrieving.OnGround;
 
         if (!jumping)
         {
@@ -76,7 +80,7 @@ public class NPCJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _onGround = _collisionDataRetrieving.OnGround;
+
 
         if (!jumping)
         {
@@ -129,16 +133,8 @@ public class NPCJump : MonoBehaviour
 
         float timeToTarget;
 
-        // Check if the horizontal velocity is zero or close to zero
-        if (Mathf.Approximately(_npcRigidbody.velocity.x, 0f))
-        {
-            // Set a default time to reach the target
-            timeToTarget =  1f; // Change 1f to the default speed if needed
-        }
-        else
-        {
-            timeToTarget = Mathf.Abs(jumpDistance) / Mathf.Abs(_npcRigidbody.velocity.x);
-        }
+        // Set a default time to reach the target
+        timeToTarget = 1f; // Change 1f to the default speed if needed
 
        // Debug.Log(jumpDistance);
 
@@ -175,9 +171,13 @@ public class NPCJump : MonoBehaviour
     public bool CheckIfNeedToJump(Transform _player)
     {
         playerJump = _player.GetComponent<Jump>();
+        Debug.Log("OnGround: " + _onGround);
+        Debug.Log("Y Dif: " + (_player.position.y - transform.position.y));
+        Debug.Log("Player Jumping: " + (playerJump.IsJumping));
+        Debug.Log("Jump Completed: " + (jumpCompleted));
 
         //Y values are different and the player is not currently jumping OR the NPC is currently jumping
-        if (jumping || (_onGround && (_player.position.y - transform.position.y) > minYDifForJump  && !playerJump.IsJumping) && !jumpCompleted)
+        if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Vector2.Distance(_player.transform.position, transform.position) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
         {
             return true;
         }

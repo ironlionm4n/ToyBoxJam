@@ -83,6 +83,8 @@ public class Jump : MonoBehaviour
                 playerAnimator.SetFloat("VerticalMovement", _playerRigidbody.velocity.y);
             }
         }
+
+        //Debug.Log("Player Is Jumping: " + _isJumping);
     }
 
     private void FixedUpdate()

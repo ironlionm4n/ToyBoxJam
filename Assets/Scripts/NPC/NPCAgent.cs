@@ -31,7 +31,7 @@ public class NPCAgent : MonoBehaviour
 
     public bool CheckIfNeedFollow()
     {
-      return followCommands.CheckIfNeedFollow(player);
+      return followCommands.CheckIfNeedFollow(player, jumpCommands);
     }
 
     public bool CheckIfNeedToJump()

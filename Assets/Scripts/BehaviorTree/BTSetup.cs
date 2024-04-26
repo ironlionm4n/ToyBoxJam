@@ -18,10 +18,11 @@ public class BTSetup : MonoBehaviour
         var BTRoot = LinkedBT.RootNode.Add<BTNode_Selector>("Base Logic");
 
         var jumpRoot = BTRoot.Add(new BTNode_Conditional("Can Jump",
-            () =>
-            {
-                return Agent.CheckIfNeedToJump();
-            }));
+           () =>
+           {
+               Debug.Log(Agent.CheckIfNeedToJump());
+               return Agent.CheckIfNeedToJump();
+           }));
 
         jumpRoot.Add<BTNode_Action>("Perform Jump",
             () =>
@@ -33,6 +34,7 @@ public class BTSetup : MonoBehaviour
             {
                 return !Agent.CheckIfNeedToJump() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
             });
+
 
         var followRoot = BTRoot.Add (new BTNode_Conditional("Can Follow",
             () =>
@@ -50,6 +52,8 @@ public class BTSetup : MonoBehaviour
             {
                 return !Agent.CheckIfNeedFollow() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
             });
+
+      
 
         var idleRoot = BTRoot.Add<BTNode_Sequence>("Idle");
         idleRoot.Add<BTNode_Action>("Idle Action",

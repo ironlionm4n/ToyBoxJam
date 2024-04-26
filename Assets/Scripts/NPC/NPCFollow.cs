@@ -31,7 +31,7 @@ public class NPCFollow : MonoBehaviour
 
     private bool _following = false;
     private bool _slowing = false;
-
+    private NPCJump jumpCommands;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -105,9 +105,9 @@ public class NPCFollow : MonoBehaviour
         _following = false;
     }
 
-    public bool CheckIfNeedFollow(Transform _player)
+    public bool CheckIfNeedFollow(Transform _player, NPCJump npcJump)
     {
-        if (Vector2.Distance(_player.position, transform.position) > followDistance || _following)
+        if ((Vector2.Distance(_player.position, transform.position) > followDistance || _following) && !npcJump.CheckIfNeedToJump(_player))
         {
             return true;
         }
