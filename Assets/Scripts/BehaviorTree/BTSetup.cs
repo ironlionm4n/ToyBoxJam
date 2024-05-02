@@ -9,8 +9,9 @@ public class BTSetup : MonoBehaviour
     protected NPCAgent Agent;
     protected AwarenessSystem Sensors;
 
-    [SerializeField]
-    private KeyCode abilityKey;
+    private KeyCode abilityKey = KeyCode.Q;
+
+    private bool usingAbility = false;
 
     void Awake()
     {
@@ -19,6 +20,24 @@ public class BTSetup : MonoBehaviour
         Sensors = GetComponent<AwarenessSystem>();
 
         var BTRoot = LinkedBT.RootNode.Add<BTNode_Selector>("Base Logic");
+
+        var abilityRoot = BTRoot.Add(new BTNode_Conditional("Using Ability",
+            () =>
+            {
+                if (!usingAbility)
+                {
+                    Agent.StopAbility();
+                }
+
+                return usingAbility;
+            }));
+
+        abilityRoot.Add<BTNode_Action>("Use Ability",
+            () =>
+            {
+                Agent.UseAbility();
+                return BehaviorTree.ENodeStatus.InProgress;
+            });
 
         var jumpRoot = BTRoot.Add(new BTNode_Conditional("Can Jump",
            () =>
@@ -71,5 +90,14 @@ public class BTSetup : MonoBehaviour
             
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(abilityKey))
+        {
+            usingAbility = !usingAbility;
+            LinkedBT.RootNode.Reset();
+        }
+    }
 
 }

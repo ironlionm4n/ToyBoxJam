@@ -14,6 +14,7 @@ public class PaladinMoveable : MonoBehaviour, IPaladinInteractable
     private void Awake()
     {
         hookPoint = transform.GetChild(0);
+        GrappleType = EPaladinGrappleTypes.Moveable;
     }
 
 

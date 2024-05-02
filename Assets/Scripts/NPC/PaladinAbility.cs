@@ -12,14 +12,17 @@ public class PaladinAbility : NPCAbility
     private Transform currentTarget;
 
     private LineRenderer grappleLine;
+    private SpringJoint2D springJoint;
 
     private List<IPaladinInteractable> interactables;
 
-
+    private bool usingAbility = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        springJoint = GetComponent<SpringJoint2D>();
+
         interactables = FindPossibleGrappableObjects();
     }
 
@@ -41,16 +44,43 @@ public class PaladinAbility : NPCAbility
             currentTarget = null;
         }
 
+        if (usingAbility && currentTarget != null)
+        {
+            if (currentTarget.GetComponent<IPaladinInteractable>().GrappleType == EPaladinGrappleTypes.Moveable)
+            {
+                Vector2 dirToHook = currentTarget.GetChild(0).transform.position - transform.position;
+
+                //TODO - Rewrite to use velocity?
+
+                transform.position += (Vector3)(transform.right * -dirToHook * 10 * Time.deltaTime);
+            }
+        }
+
     }
 
     public override void UseAbility()
     {
-        
+        if(currentTarget == null)
+        {
+            return;
+        }
+
+        springJoint.enabled = true;
+
+
+        springJoint.connectedBody = currentTarget.GetComponent<Rigidbody2D>();
+
+        usingAbility = true;
     }
 
     public override void AbilityComplete()
     {
         base.AbilityComplete();
+
+        springJoint.connectedBody = null;
+        springJoint.enabled = false;
+
+        usingAbility = false;
     }
 
     public List<IPaladinInteractable> FindPossibleGrappableObjects()

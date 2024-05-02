@@ -48,4 +48,14 @@ public class NPCAgent : MonoBehaviour
     {
         jumpCommands.StopJumping();
     }
+
+    public void UseAbility()
+    {
+        abilityCommands.UseAbility();
+    }
+
+    public void StopAbility()
+    {
+        abilityCommands.AbilityComplete();
+    }
 }
