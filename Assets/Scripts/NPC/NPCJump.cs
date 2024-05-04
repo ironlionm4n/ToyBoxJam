@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NPCJump : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class NPCJump : MonoBehaviour
     [SerializeField]
     private float minYDifForJump = 3f;
 
+    [SerializeField]
+    private float maxJumpDistance = 5f;
+
     private Rigidbody2D _npcRigidbody;
     private CollisionDataRetrieving _collisionDataRetrieving;
     private Vector2 _velocity;
@@ -45,7 +49,7 @@ public class NPCJump : MonoBehaviour
     private float _maxSpeedChange;
     private float _acceleration;
 
-
+    private bool jumpCompleted = false;
 
     [SerializeField]
     private bool jumping = false;
@@ -65,6 +69,7 @@ public class NPCJump : MonoBehaviour
     void Update()
     {
 
+        _onGround = _collisionDataRetrieving.OnGround;
 
         if (!jumping)
         {
@@ -76,14 +81,12 @@ public class NPCJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _onGround = _collisionDataRetrieving.OnGround;
+
 
         if (!jumping)
         {
             return;
         }
-
-        Debug.Log(_npcRigidbody.velocity.ToString());
 
         if (!_isJumping)
         {
@@ -114,6 +117,7 @@ public class NPCJump : MonoBehaviour
 
     private void CaclulateJumpForce()
     {
+        Debug.Log("Calcualting jump force");
 
         float gravity = Physics2D.gravity.magnitude;
 
@@ -130,18 +134,14 @@ public class NPCJump : MonoBehaviour
 
         float timeToTarget;
 
-        // Check if the horizontal velocity is zero or close to zero
-        if (Mathf.Approximately(_npcRigidbody.velocity.x, 0f))
-        {
-            // Set a default time to reach the target
-            timeToTarget = Mathf.Abs(jumpDistance) / 1f; // Change 1f to the default speed if needed
-        }
-        else
-        {
-            timeToTarget = Mathf.Abs(jumpDistance) / Mathf.Abs(_npcRigidbody.velocity.x);
-        }
+        // Set a default time to reach the target
+        timeToTarget = 1f; // Change 1f to the default speed if needed
+
+       // Debug.Log(jumpDistance);
 
         float v0x = jumpDistance / timeToTarget;
+
+        //Debug.Log(v0x);
 
         //float launchAngle = Mathf.Rad2Deg * Mathf.Atan(v0y / v0x);
         float forceX = mass * v0x / timeToTarget;
@@ -159,25 +159,41 @@ public class NPCJump : MonoBehaviour
         player = _player;
         playerJump = _player.GetComponent<Jump>();
         jumping = true;
+        _isJumping = false;
     }
 
     public void StopJumping()
     {
         jumping = false;
         _isJumping = false;
+        jumpCompleted = true;
     }
 
     public bool CheckIfNeedToJump(Transform _player)
     {
         playerJump = _player.GetComponent<Jump>();
 
-        //Y values are different and the player is not currently jumping OR the player is currently jumping
-        if (jumping || (_onGround && Mathf.Abs(_player.position.y - transform.position.y) > minYDifForJump  && !playerJump.IsJumping))
+       // LogJumpVars(_player);
+
+        //Y values are different and the player is not currently jumping OR the NPC is currently jumping
+        if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
         {
             return true;
         }
 
+        jumpCompleted = false;
         return false;
+    }
+
+    /// <summary>
+    /// TESTING
+    /// </summary>
+    private void LogJumpVars(Transform _player)
+    {
+        Debug.Log("OnGround: " + _onGround);
+        Debug.Log("Y Dif: " + (_player.position.y - transform.position.y));
+        Debug.Log("Player Jumping: " + (playerJump.IsJumping));
+        Debug.Log("Jump Completed: " + (jumpCompleted));
     }
 
 }

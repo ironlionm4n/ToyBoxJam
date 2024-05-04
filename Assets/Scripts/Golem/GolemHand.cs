@@ -12,23 +12,29 @@ public class GolemHand : MonoBehaviour
 
     public bool RightHand { get { return rightHand; } }
 
-    private GolemHandFollow ghf;
+    private GolemHandFollow golemHandFollowing;
 
     private RotateToPlayer playerRotater;
 
     private ClapAttack clapAttack;
+    private WaveSlamAttack waveSlamAttack;
 
     private CinemachineImpulseSource impulseSource;
 
+    public LayerMask groundMask;
+
     private bool collision = false;
     private bool waitingForCollision = false;
+
+    private bool waitingForSlam = false;
 
     private float slamSpeed = 0;
 
     private void Awake()
     {
-        ghf = GetComponent<GolemHandFollow>();
+        golemHandFollowing = GetComponent<GolemHandFollow>();
         clapAttack = transform.parent.GetComponent<ClapAttack>();
+        waveSlamAttack = transform.parent.GetComponent<WaveSlamAttack>();
         playerRotater = GetComponent<RotateToPlayer>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
@@ -44,14 +50,26 @@ public class GolemHand : MonoBehaviour
     {
        if(waitingForCollision)
         {
-            transform.position += transform.right * slamSpeed * Time.deltaTime;
+            if (rightHand)
+            {
+                transform.position -= transform.right * slamSpeed * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += transform.right * slamSpeed * Time.deltaTime;
+            }
+        }
+
+       if(waitingForSlam)
+        {
+            transform.position -= transform.up * slamSpeed * Time.deltaTime;
         }
     }
 
 
     public void SingleClap(float moveBackAmount, float pauseTime, float slamSpeed, float stunTime)
     {
-        ghf.StopFollowing();
+        golemHandFollowing.StopFollowing();
         collision = false;
         this.slamSpeed = slamSpeed;
 
@@ -60,7 +78,7 @@ public class GolemHand : MonoBehaviour
 
     public void DoubleClap(float moveBackAmount, float pauseTime, float slamSpeed, Transform player)
     {
-        ghf.StartConstantFollow();
+        golemHandFollowing.StartConstantFollow();
         playerRotater.StopRotating();
 
         Vector2 rotation = new Vector2(transform.rotation.x, 0);
@@ -69,22 +87,23 @@ public class GolemHand : MonoBehaviour
         StartCoroutine(DoubleSlam(moveBackAmount, pauseTime, slamSpeed, player));
     }
 
+
     private IEnumerator DoubleSlam(float moveBackAmount, float pauseTime, float slamSpeed, Transform player)
     {
         yield return new WaitForSeconds(pauseTime * 2);
 
 
-        ghf.StopFollowing();
+        golemHandFollowing.StopFollowing();
         transform.DOMove(player.position, slamSpeed * 0.75f);
 
         yield return new WaitForSeconds(slamSpeed * 0.75f);
-        clapAttack.DoubleClap();
+        clapAttack.DoubleClapShake();
 
         yield return new WaitForSeconds(10);
 
         clapAttack.AttackFinished();
-        ghf.StopConstantFollow();
-        ghf.StartFollowing();
+        golemHandFollowing.StopConstantFollow();
+        golemHandFollowing.StartFollowing();
         playerRotater.StartRotating();
     }
 
@@ -97,12 +116,12 @@ public class GolemHand : MonoBehaviour
 
         if (rightHand)
         {
-            targetLocation = new Vector2(transform.position.x - (ghf.HorizontalOffset* offsetMultiplier), transform.position.y);
+            targetLocation = new Vector2(transform.position.x - (golemHandFollowing.HorizontalOffset* offsetMultiplier), transform.position.y);
             moveBackXVal = transform.position.x + moveBackAmount;
         }
         else
         {
-            targetLocation = new Vector2(transform.position.x + (ghf.HorizontalOffset * offsetMultiplier), transform.position.y);
+            targetLocation = new Vector2(transform.position.x + (golemHandFollowing.HorizontalOffset * offsetMultiplier), transform.position.y);
             moveBackXVal = transform.position.x - moveBackAmount;
         }
 
@@ -127,7 +146,7 @@ public class GolemHand : MonoBehaviour
         yield return new WaitForSeconds(stunTime);
 
         clapAttack.AttackFinished();
-        ghf.StartFollowing();
+        golemHandFollowing.StartFollowing();
         playerRotater.StartRotating();
 
     }
@@ -139,5 +158,56 @@ public class GolemHand : MonoBehaviour
 
             this.collision = true;
         }
+    }
+
+    public void WaveSlam(float slamSpeed, float slamPauseTime, GameObject WavePrefab)
+    {
+        this.slamSpeed = slamSpeed;
+
+        // stop following the player
+
+        golemHandFollowing.StopFollowing();
+        playerRotater.StopRotating();
+        playerRotater.ResetRotation();
+
+        // start Coroutine for Wave Slam Attack
+
+        StartCoroutine(WaveSlamRoutine(slamPauseTime, WavePrefab));
+    }
+
+    private IEnumerator WaveSlamRoutine(float slamPauseTime, GameObject WavePrefab)
+    {
+        // TODO - Change to fist sprite
+
+        // slam hand onto ground
+        collision = false;
+        waitingForSlam = true;
+
+        // wait for ground contact
+
+        yield return new WaitWhile(() => !collision);
+
+        waitingForSlam = false;
+        //transform.DOKill();
+
+        // add camera shake
+        CameraShakeManager.instance.CameraShake(impulseSource);
+
+        // on ground hit spawn waves on right and left sides
+
+        GameObject currentWave = Instantiate(WavePrefab, transform.position, Quaternion.identity);
+        currentWave.GetComponent<GolemMovingWave>().StartMoving(true);
+
+        currentWave = Instantiate(WavePrefab, transform.position, Quaternion.identity);
+        currentWave.GetComponent<GolemMovingWave>().StartMoving(false);
+
+        // wait some time before returning hand
+
+        yield return new WaitForSeconds(slamPauseTime);
+
+        golemHandFollowing.StartFollowing();
+        playerRotater.StartRotating();
+
+        waveSlamAttack.AttackDone();
     }
 }

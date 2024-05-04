@@ -9,6 +9,10 @@ public class BTSetup : MonoBehaviour
     protected NPCAgent Agent;
     protected AwarenessSystem Sensors;
 
+    private KeyCode abilityKey = KeyCode.Q;
+
+    private bool usingAbility = false;
+
     void Awake()
     {
         Agent = GetComponent<NPCAgent>();
@@ -17,11 +21,30 @@ public class BTSetup : MonoBehaviour
 
         var BTRoot = LinkedBT.RootNode.Add<BTNode_Selector>("Base Logic");
 
-        var jumpRoot = BTRoot.Add(new BTNode_Conditional("Can Jump",
+        var abilityRoot = BTRoot.Add(new BTNode_Conditional("Using Ability",
             () =>
             {
-                return Agent.CheckIfNeedToJump();
+                if (!usingAbility)
+                {
+                    Agent.StopAbility();
+                }
+
+                return usingAbility;
             }));
+
+        abilityRoot.Add<BTNode_Action>("Use Ability",
+            () =>
+            {
+                Agent.UseAbility();
+                return BehaviorTree.ENodeStatus.InProgress;
+            });
+
+        var jumpRoot = BTRoot.Add(new BTNode_Conditional("Can Jump",
+           () =>
+           {
+               Debug.Log(Agent.CheckIfNeedToJump());
+               return Agent.CheckIfNeedToJump();
+           }));
 
         jumpRoot.Add<BTNode_Action>("Perform Jump",
             () =>
@@ -33,6 +56,7 @@ public class BTSetup : MonoBehaviour
             {
                 return !Agent.CheckIfNeedToJump() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
             });
+
 
         var followRoot = BTRoot.Add (new BTNode_Conditional("Can Follow",
             () =>
@@ -51,6 +75,8 @@ public class BTSetup : MonoBehaviour
                 return !Agent.CheckIfNeedFollow() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
             });
 
+      
+
         var idleRoot = BTRoot.Add<BTNode_Sequence>("Idle");
         idleRoot.Add<BTNode_Action>("Idle Action",
              () =>
@@ -64,5 +90,14 @@ public class BTSetup : MonoBehaviour
             
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(abilityKey))
+        {
+            usingAbility = !usingAbility;
+            LinkedBT.RootNode.Reset();
+        }
+    }
 
 }
