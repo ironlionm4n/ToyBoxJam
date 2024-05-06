@@ -66,7 +66,7 @@ public class LightFlickerAttack : MonoBehaviour
             flickering = true;
             EvenLights();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.75f);
 
             //attacking = true;
             EvenSlices();
@@ -88,7 +88,7 @@ public class LightFlickerAttack : MonoBehaviour
 
             OddLights();
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.75f);
 
 
             OddSlices();
@@ -103,10 +103,12 @@ public class LightFlickerAttack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Makes lights in odd spaced flicker
+    /// </summary>
     private void OddLights()
     {
-        Debug.Log("Odd");
-        Debug.Log(lights.Count);
+
         for (int i = 0; i < lights.Count; i++)
         {
             if (i % 2 != 0)
@@ -119,6 +121,9 @@ public class LightFlickerAttack : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Spawns slice attacks on lists on odd spaced lights
+    /// </summary>
     private void OddSlices()
     {
         for (int i = 0; i < lights.Count; i++)
@@ -130,9 +135,11 @@ public class LightFlickerAttack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Makes lights in even spaced flicker
+    /// </summary>
     private void EvenLights()
     {
-        Debug.Log("Even");
         for (int i = 0; i < lights.Count; i++)
         {
             if (i % 2 == 0)
@@ -144,6 +151,9 @@ public class LightFlickerAttack : MonoBehaviour
         flickering = false;
     }
 
+    /// <summary>
+    /// Spawns slice attacks on lists on even spaced lights
+    /// </summary>
     private void EvenSlices()
     {
         for (int i = 0; i < lights.Count; i++)
