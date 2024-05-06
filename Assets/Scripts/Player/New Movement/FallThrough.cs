@@ -45,7 +45,9 @@ public class FallThrough : MonoBehaviour
 
     private IEnumerator DisableCollision()
     {
+
         TilemapCollider2D platformCollider = currentOneWay.GetComponent<TilemapCollider2D>();
+        Debug.Log(platformCollider);
 
         Physics2D.IgnoreCollision(playerCollider, platformCollider);
 
