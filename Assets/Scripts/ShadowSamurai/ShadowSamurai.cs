@@ -14,9 +14,13 @@ public class ShadowSamurai : MonoBehaviour
     private void Awake()
     {
         lightFlickerAttack = GetComponent<LightFlickerAttack>();
-        StartAttacks();
+
     }
 
+    private void Start()
+    {
+        StartAttacks();
+    }
     // Update is called once per frame
     void Update()
     {

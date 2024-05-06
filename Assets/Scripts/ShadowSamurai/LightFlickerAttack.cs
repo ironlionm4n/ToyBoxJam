@@ -105,6 +105,8 @@ public class LightFlickerAttack : MonoBehaviour
 
     private void OddLights()
     {
+        Debug.Log("Odd");
+        Debug.Log(lights.Count);
         for (int i = 0; i < lights.Count; i++)
         {
             if (i % 2 != 0)
@@ -130,6 +132,7 @@ public class LightFlickerAttack : MonoBehaviour
 
     private void EvenLights()
     {
+        Debug.Log("Even");
         for (int i = 0; i < lights.Count; i++)
         {
             if (i % 2 == 0)
