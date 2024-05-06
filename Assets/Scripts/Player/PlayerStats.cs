@@ -61,6 +61,11 @@ public class PlayerStats : MonoBehaviour
     {
         if(inCutscene) { return; }
 
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            CoinPickedUp();
+        }
+        
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
@@ -81,6 +86,8 @@ public class PlayerStats : MonoBehaviour
     //Fires a coin as long as the player has some available
     private void Fire()
     {
+        if (!_canFire) { return; }
+        
         if (numCoins <= 0) { 
 
             coins[0].color = Color.gray;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,11 +24,14 @@ public class Coin : MonoBehaviour
     [SerializeField] private float damage = 10f;
 
     [SerializeField] Collider2D nonTriggerCollider;
+    private Coroutine _slowDownRoutine;
 
     void OnEnable()
     {
         //Launches Coin Up
         ammoRigidbody.AddForce(transform.up * throwForce, ForceMode2D.Impulse);
+        var torque = UnityEngine.Random.Range(-1, 1f);
+        ammoRigidbody.AddTorque(torque, ForceMode2D.Impulse);
         StartCoroutine(Disapear());
 
         GameObject Mage = GameObject.Find("Mage");
@@ -107,6 +111,24 @@ public class Coin : MonoBehaviour
                 collision.GetComponent<Enemy>().TakeDamage(damage);
                 Destroy(gameObject);
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            StartCoroutine(SlowDownRoutine());
+        }
+    }
+
+    private IEnumerator SlowDownRoutine()
+    {
+        while (ammoRigidbody.velocity.magnitude > 0.1f || ammoRigidbody.angularVelocity > 0.1f)
+        {
+            ammoRigidbody.velocity = Vector2.Lerp(ammoRigidbody.velocity, Vector2.zero, Time.deltaTime);
+            ammoRigidbody.angularVelocity = Mathf.Lerp(ammoRigidbody.angularVelocity, 0, Time.deltaTime);
+            yield return null;
         }
     }
 }

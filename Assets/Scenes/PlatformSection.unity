@@ -97571,6 +97571,14 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 101188707672128513, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: circleCastRadius
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 101188707672128513, guid: 50c2e67444f392f47934919f1da25331, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 101188707672128522, guid: 50c2e67444f392f47934919f1da25331, type: 3}
       propertyPath: m_Name
       value: Player
