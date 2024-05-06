@@ -13,6 +13,8 @@ public class Torch : MonoBehaviour
     public float intensityChangeAmount = 0.1f;
     public float flickerEndIntensity = 1f;
 
+
+
     private int numberOfFlickers = 2;
 
     // have to use this to set the falloff value as it's get only
@@ -41,7 +43,7 @@ public class Torch : MonoBehaviour
         StartCoroutine(FlickerRoutine());
     }
 
-    private IEnumerator FlickerRoutine()
+    public IEnumerator FlickerRoutine()
     {
         // lower and raise the intensity quickly to give off a flicker effect
 
@@ -64,9 +66,12 @@ public class Torch : MonoBehaviour
             }
         }
 
-        yield return null;
+        while (light2D.intensity > 0)
+        {
+            light2D.intensity -= intensityChangeAmount;
 
-        Extinguish();
+            yield return null;
+        }
     }
 
     private void Extinguish()

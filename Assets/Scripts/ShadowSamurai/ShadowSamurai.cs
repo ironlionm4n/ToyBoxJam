@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class ShadowSamurai : MonoBehaviour
 {
@@ -19,12 +20,15 @@ public class ShadowSamurai : MonoBehaviour
 
     private void Start()
     {
-        StartAttacks();
+        //StartAttacks();
     }
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            StartAttacks();
+        }
     }
 
     public void StartAttacks()

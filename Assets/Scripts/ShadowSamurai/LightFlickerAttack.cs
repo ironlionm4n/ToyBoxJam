@@ -16,6 +16,8 @@ public class LightFlickerAttack : MonoBehaviour
     private bool attacking = false;
     private bool flickering = false;
 
+    [SerializeField]
+    private float sliceDelay = 0.5f;
     private void Awake()
     {
         // get all the lights in the scene
@@ -53,7 +55,7 @@ public class LightFlickerAttack : MonoBehaviour
             // flicker odd lights
             OddLights();
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(sliceDelay);
 
             //attacking = true;
 
@@ -66,7 +68,7 @@ public class LightFlickerAttack : MonoBehaviour
             flickering = true;
             EvenLights();
 
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(sliceDelay);
 
             //attacking = true;
             EvenSlices();
@@ -78,7 +80,7 @@ public class LightFlickerAttack : MonoBehaviour
             // flicker even lights
             EvenLights();
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(sliceDelay);
 
             EvenSlices();
 
@@ -88,7 +90,7 @@ public class LightFlickerAttack : MonoBehaviour
 
             OddLights();
 
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(sliceDelay);
 
 
             OddSlices();
