@@ -15,7 +15,7 @@ public class Torch : MonoBehaviour
 
     private int numberOfFlickers = 2;
 
-
+    // have to use this to set the falloff value as it's get only
     private static FieldInfo m_FalloffField = typeof(Light2D).GetField("m_FalloffIntensity", BindingFlags.NonPublic | BindingFlags.Instance);
 
 
@@ -85,7 +85,7 @@ public class Torch : MonoBehaviour
         m_FalloffField.SetValue(light2D, 1);
 
         // then reset the intensity
-        light2D.intensity = 3;
+        light2D.intensity = 2;
 
         // then increment the falloff
 
