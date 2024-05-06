@@ -190,6 +190,11 @@ public class PlayerMovement : MonoBehaviour
 
         playerRigidbody.velocity = _currentVelocity;
 
+        // if (_currentVelocity.y < 0)
+        // {
+        //     playerRigidbody.AddForce(Vector2.down * (fallForce * 4));
+        // }
+
         if (_currentVelocity.x != 0 && playerRigidbody.velocity.y == 0)
         {
             SFX.instance.Run();

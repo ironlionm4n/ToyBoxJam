@@ -17,23 +17,18 @@ public class Aim : MonoBehaviour
     [SerializeField] private Vector3 mousePosition;
     [SerializeField] private float rotZ;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float circleCastRadius;
     
-    
+    public Vector3 CoinSpawnPointUp => coinSpawnPoint.transform.up;
+    public Transform CoinSpawnPointTransform => coinSpawnPoint.transform;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector3 rotation = mousePosition - pivotPoint.transform.position;
         rotZ = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
 
-        if(rotZ < -30 && rotZ > -140)
+        /*if(rotZ < -30 && rotZ > -140)
         {
             if((mousePosition.x) < (transform.position.x))
             {
@@ -42,25 +37,26 @@ public class Aim : MonoBehaviour
             {
                 rotZ = -30;
             }
-        }
+        }*/
 
+        //Debug.DrawRay(coinSpawnPoint.transform.position, coinSpawnPoint.transform.up, Color.cyan);
         pivotPoint.transform.rotation = Quaternion.Euler(0, 0, rotZ-90);
-        
         playerStats.SetCanFire(CheckIfShootingIntoGround()); 
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(coinSpawnPoint.GetComponent<Transform>().position, Vector2.down);
     }
 
     private bool CheckIfShootingIntoGround()
     {
-        var ray = Physics2D.Raycast(coinSpawnPoint.GetComponent<Transform>().position, Vector2.down, .1f, groundLayer);
-        
-        if(ray.transform != null)
-            if (ray.transform.name.Equals("Ground") || ray.transform.name.Equals("OneWayPlatforms")) return false;
-        
+        var position = coinSpawnPoint.transform.position;
+        var direction = transform.position - position;
+        var midPoint = (transform.position + position) / 2;
+        var ray = Physics2D.CircleCast(position, circleCastRadius, direction.normalized, direction.magnitude, groundLayer);
+        var midPointRay = Physics2D.CircleCast(midPoint, circleCastRadius, -direction.normalized, direction.magnitude * .75f, groundLayer);
+        if(ray.collider || midPointRay.collider)
+        {
+            Debug.DrawRay(position, direction, Color.magenta);
+            return false;
+        }
+        Debug.DrawRay(position, direction, Color.yellow);    
         return true;
     }
 }
