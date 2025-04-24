@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GolemManager : MonoBehaviour
+public class GolemManager : Boss
 {
     private Transform player;
 
@@ -16,12 +16,8 @@ public class GolemManager : MonoBehaviour
 
     private int currentChanceForDouble = 0;
 
-    private bool attacking = false;
     private int attacksRunning = 0;
     private bool canAttack = false;
-
-    [SerializeField]
-    private int phase = 2;
 
     private ClapAttack clapAttackManager;
     private WaveSlamAttack waveSlamAttackManager;
@@ -76,7 +72,7 @@ public class GolemManager : MonoBehaviour
 
                 clapAttackManager.SingleClap(attackingHand);
 
-                if(phase > 1)
+                if(currentPhase > 1)
                 {
                     attacksRunning++;
                     waveSlamAttackManager.Attack(attackingHand);
