@@ -39,6 +39,7 @@ public class Grapple : MonoBehaviour
     [SerializeField]private bool finishedShooting = false;
     [SerializeField] private bool shortenRope = false;
     [SerializeField] private float pullSpeed = 0.5f;
+    [SerializeField] private float snapDetectionRadius = 1f;
 
     [Header("Rope Variables")]
     [SerializeField] private int numberOfPoints = 40;
@@ -80,16 +81,16 @@ public class Grapple : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             targetPosition = cam.ScreenToWorldPoint(Input.mousePosition);
-            
 
-            if(!returning && !latched && !shooting)
+
+            if (!returning && !latched && !shooting)
             {
                 grappling = true;
                 shooting = true;
             }
         }
 
-        if(Input.GetKeyUp(KeyCode.Mouse1))
+        if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             StopGrappling();
         }
@@ -104,7 +105,7 @@ public class Grapple : MonoBehaviour
 
         lineRenderer.enabled = true;
 
-        if(returning)
+        if (returning)
         {
             springJoint.enabled = false;
 
@@ -119,21 +120,33 @@ public class Grapple : MonoBehaviour
         //Gets the length between the player and target position
         var length = Vector2.Distance(transform.position, targetPosition);
 
-        //Makes sure the player is not clicking past the maxTravelDistance mark
-        if (length > maxTravelDistance)
-        {
-            length = maxTravelDistance;
-        }
+
 
         //Checks for a Raycast hit on the specified layers
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, length, layerMask);
+        Collider2D hit = Physics2D.Raycast(transform.position, direction, length, layerMask).collider;
 
+        // if we hit nothing straight on double check with radius
+        if (hit == null) {
+            hit = Physics2D.OverlapCircle(targetPosition, snapDetectionRadius, layerMask);
+        }
+
+        // hit a target snap to it
+        if(hit != null)
+        {
+            targetPosition = hit.transform.position;
+        }
+        //Makes sure the player is not clicking past the maxTravelDistance mark
+        else if (length > maxTravelDistance)
+        {
+            hit = null;
+            length = maxTravelDistance;
+        }
 
         moveTime += Time.deltaTime;
 
         if (!snap)
         {
-            DrawRope(hit);
+            DrawRope(hit, length);
         }
         else
         {
@@ -165,14 +178,14 @@ public class Grapple : MonoBehaviour
 
     }
 
-    public void DrawRope(RaycastHit2D hit)
+    public void DrawRope(Collider2D hit, float length)
     {
         Vector2 currentPosition = Vector2.zero; 
 
         for (int i = 0; i < numberOfPoints; i++)
         {
             float delta = (float)i / ((float)numberOfPoints - 1f);
-            var distance = targetPosition - transform.position;
+            var distance = (targetPosition - transform.position).normalized * length;
 
             //New Code
             /*Vector2 offset = Vector2.Perpendicular(distance).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
@@ -192,10 +205,10 @@ public class Grapple : MonoBehaviour
         //Once the line is finished moving, set finishedShooting to true || if the distance is greater or equal to max travel distance
         if (currentPosition == (Vector2)targetPosition || Vector2.Distance(transform.position, currentPosition) >= maxTravelDistance)
         {
-            if (hit.collider != null)
+            if (hit != null)
             {
 
-                if (hit.collider.gameObject.layer == 9)
+                if (hit.gameObject.layer == 9)
                 {
                     SnapRope(hit);
                     snap = true;
@@ -208,13 +221,13 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    public void SnapRope(RaycastHit2D hit)
+    public void SnapRope(Collider2D hit)
     {
-        if (hit.collider != null)
+        if (hit != null)
         {
             lineRenderer.positionCount = 2;
 
-            snapPoint = hit.collider.transform;
+            snapPoint = hit.transform;
 
             //If the player is hooked to a moving hook, move hook start moving hook
             if (hit.transform.tag.Equals("MovingHook"))
@@ -252,15 +265,15 @@ public class Grapple : MonoBehaviour
         snap = false;
     }
 
-    private IEnumerator CheckIfHit(RaycastHit2D hit)
+    private IEnumerator CheckIfHit(Collider2D hit)
     {
         //Waits until the line is finished being drawn to the target position
         yield return new WaitWhile(() => !finishedShooting);
 
         //If something was hit
-        if (hit.collider != null)
+        if (hit != null)
         {
-            Debug.Log(hit.collider);
+            Debug.Log(hit);
 
             //Get the distance to what the rope is snapped to
             var distance = Vector2.Distance(transform.position, snapPoint.position);
@@ -277,7 +290,7 @@ public class Grapple : MonoBehaviour
 
             //Enable spring joint and set connectedBody
             springJoint.enabled = true;
-            springJoint.connectedBody = hit.collider.GetComponent<Rigidbody2D>();
+            springJoint.connectedBody = hit.GetComponent<Rigidbody2D>();
         }
         else
         {
