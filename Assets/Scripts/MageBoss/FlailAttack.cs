@@ -61,7 +61,7 @@ public class FlailAttack : MonoBehaviour, IAttack
     // Update is called once per frame
     void Update()
     {
-        if(shouldShoot && !shooting)
+        if(!stopped && shouldShoot && !shooting)
         {
             shooting = true;
             lastCoroutine = StartCoroutine(StartMoving());
@@ -184,13 +184,16 @@ public class FlailAttack : MonoBehaviour, IAttack
 
     public void StopAttack()
     {
-        if (!active) return;
+        if (stopped) return;
+
+        Debug.Log("Stopping Attack");
 
         stopped = true;
 
         DOTween.Kill(transform);
 
         StopCoroutine(lastCoroutine);
+        StopAllCoroutines();
 
         //Calculates total distance from starting to end position
         var targetDistance = Vector2.Distance(transform.position, startingPosition);
@@ -228,7 +231,13 @@ public class FlailAttack : MonoBehaviour, IAttack
         }
 
         currentProjectiles.Clear();
-        active = false;
+        shooting = false;
+
+        // if attack is stopping
+        if (stopped)
+        {
+            active = false;
+        }
     }
 
     public bool GetIsActive()

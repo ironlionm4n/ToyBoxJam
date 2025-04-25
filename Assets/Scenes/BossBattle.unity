@@ -89071,12 +89071,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748e3843c1a469145af367eeaa4eebde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BossHealth: 0
+  currentPhase: 1
+  defeated: 0
+  PhaseThresholds:
+  - 70
+  - 30
+  healthBar: {fileID: 1535316295}
   bossMusic: {fileID: 1681127819}
   homingSpawn: {fileID: 937386948}
   fourWaySpawn: {fileID: 495933000}
   indicatorSpawn: {fileID: 261401251}
   animations: {fileID: 1681127814}
-  healthBar: {fileID: 1535316295}
   bossHitParticles: {fileID: 1750041488}
   bossHitAudioSource: {fileID: 1681127822}
   pmove: {fileID: 591771534}
@@ -89090,10 +89096,6 @@ MonoBehaviour:
   fourWaySpawned: 0
   timeBetweenIndicatorAttacks: 2
   indicatorTimer: 1
-  currentHealth: 0
-  phase: 1
-  defeated: 0
-  attacking: 0
   inCutscene: 0
   cutscene: {fileID: 1446662657}
 --- !u!95 &1681127816

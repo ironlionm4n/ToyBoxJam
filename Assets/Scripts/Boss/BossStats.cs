@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossStats : MonoBehaviour
+public class BossStats : Boss
 {
     [Header("Required Components")]
     [SerializeField] private AudioSource bossMusic;
@@ -11,7 +11,6 @@ public class BossStats : MonoBehaviour
     [SerializeField] private GameObject fourWaySpawn;
     [SerializeField] private GameObject indicatorSpawn;
     [SerializeField] private BossAnimations animations;
-    [SerializeField] private Slider healthBar;
     [SerializeField] ParticleSystem bossHitParticles;
     [SerializeField] AudioSource bossHitAudioSource;
     [SerializeField] private PlayerMovement pmove;
@@ -35,12 +34,6 @@ public class BossStats : MonoBehaviour
     [SerializeField] private float timeBetweenIndicatorAttacks = 1f;
     [SerializeField] private float indicatorTimer = 0f;
 
-    [Header("Stats")]
-    [SerializeField] private float currentHealth = 0f;
-    [SerializeField] private int phase = 1;
-    [SerializeField] private bool defeated = false;
-    [SerializeField] private bool attacking = false;
-
     [Header("Cutscene Management")]
     [SerializeField] private bool inCutscene = false;
     [SerializeField] private CutsceneManager cutscene;
@@ -62,19 +55,8 @@ public class BossStats : MonoBehaviour
     {
         if (inCutscene || defeated) { return; }
 
-        //Changes music based on boss health
-        if (currentHealth <= 30)
-        {
-            bossMusic.pitch = 1.16f;
-            phase = 3;
-        }
-        else if (currentHealth <= 70)
-        {
-            bossMusic.pitch = 1.05f;
-            phase = 2;
-        }
 
-        switch (phase)
+        switch (currentPhase)
         {
             case 1:
                 homeShotTimer += Time.deltaTime;
@@ -117,44 +99,40 @@ public class BossStats : MonoBehaviour
 
     }
 
-    public void Dead()
+    protected override void Dead()
     {
-        defeated = true;
-       // animations.Dead();
+        base.Dead();
+
         cutscene.BossDead();
     }
 
-    public void Hit(float damage)
+    public override void Hit(float damage)
     {
+        base.Hit(damage);
+
         bossHitParticles.Play();
         bossHitAudioSource.Play();
-        UpdateHealth(-damage);
-    }
-
-    public void UpdateHealth(float amount)
-    {
-        if (!defeated)
-        {
-            healthBar.value = currentHealth + amount;
-            currentHealth = healthBar.value;
-
-            if (currentHealth > 100)
-            {
-                currentHealth = 100;
-                healthBar.value = 100;
-            }
-
-            if (currentHealth <= 0)
-            {
-                healthBar.gameObject.SetActive(false);
-                Dead();
-            }
-        }
+       
     }
 
     public float GetCurrentHealth()
     {
         return currentHealth;
+    }
+
+    protected override void SwapPhase()
+    {
+        base.SwapPhase();
+
+        //Changes music based on boss health
+        if (currentHealth <= 30)
+        {
+            bossMusic.pitch = 1.16f;
+        }
+        else if (currentHealth <= 70)
+        {
+            bossMusic.pitch = 1.05f;
+        }
     }
 
 }

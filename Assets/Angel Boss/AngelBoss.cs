@@ -100,7 +100,7 @@ public class AngelBoss : MonoBehaviour
         groundSlam = GetComponent<GroundSlam>();
 
         //Testing attacks
-        //dashing = true;
+        dashing = true;
 
         StartCoroutine(StartFlying());
     }
