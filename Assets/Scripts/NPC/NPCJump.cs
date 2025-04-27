@@ -58,6 +58,9 @@ public class NPCJump : MonoBehaviour
     private Vector2 _currentVelocity;
     Vector2 _desiredVelocity;
 
+    [SerializeField]
+    private Collider2D _jumpCollider;
+
     private void Awake()
     {
         _npcRigidbody = GetComponent<Rigidbody2D>();
@@ -97,7 +100,8 @@ public class NPCJump : MonoBehaviour
         //Since we are jumping with force we need to slow the AI down manually after they land
         if (_onGround && _npcRigidbody.velocity.y == 0)
         {
-            _onGround = _collisionDataRetrieving.OnGround;
+            //_onGround = _collisionDataRetrieving.OnGround;
+            _onGround = _jumpCollider.IsTouchingLayers(LayerMask.NameToLayer("Ground"));
             _currentVelocity = _npcRigidbody.velocity;
 
             _acceleration = _onGround ? _followingCommands.MaxSlowdownAcc : _followingCommands.MaxAirAcc;
@@ -176,7 +180,12 @@ public class NPCJump : MonoBehaviour
        // LogJumpVars(_player);
 
         //Y values are different and the player is not currently jumping OR the NPC is currently jumping
-        if (jumping || (_onGround &&_npcRigidbody.velocity.y == 0 && (_player.position.y - transform.position.y) > minYDifForJump && (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && !playerJump.IsJumping) && !jumpCompleted)
+        if (jumping || 
+            (_onGround && _npcRigidbody.velocity.y == 0 && 
+            (_player.position.y - transform.position.y) > minYDifForJump && 
+            (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && 
+            !playerJump.IsJumping) && 
+            !jumpCompleted)
         {
             return true;
         }

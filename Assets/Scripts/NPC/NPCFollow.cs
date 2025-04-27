@@ -17,7 +17,6 @@ public class NPCFollow : MonoBehaviour
     public float MaxSlowdownAcc { get { return maxSlowdownAcc; } }
     public float MaxAirAcc { get { return maxAirAcc; } }
 
-    private Vector2 _direction;
     private Vector2 _desiredVelocity;
     private Vector2 _currentVelocity;
     private CollisionDataRetrieving _collisionDataRetrieving;
@@ -31,7 +30,6 @@ public class NPCFollow : MonoBehaviour
 
     private bool _following = false;
     private bool _slowing = false;
-    private NPCJump jumpCommands;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -94,15 +92,19 @@ public class NPCFollow : MonoBehaviour
         rb.velocity = _currentVelocity;
     }
 
-        public void StartFollowing(Transform target)
+    public void StartFollowing(Transform target)
     {
         player = target;
+        _slowing = false;
         _following = true;
+
+        Debug.Log("following");
     }
 
     public void StopFollowing()
     {
         _following = false;
+        Debug.Log("stop following");
     }
 
     public bool CheckIfNeedFollow(Transform _player, NPCJump npcJump)

@@ -42,7 +42,7 @@ public class BTSetup : MonoBehaviour
         var jumpRoot = BTRoot.Add(new BTNode_Conditional("Can Jump",
            () =>
            {
-               Debug.Log(Agent.CheckIfNeedToJump());
+               //Debug.Log(Agent.CheckIfNeedToJump());
                return Agent.CheckIfNeedToJump();
            }));
 
@@ -85,7 +85,12 @@ public class BTSetup : MonoBehaviour
              },
             () =>
             {
-                return BehaviorTree.ENodeStatus.Succeeded;
+                if (Agent.CheckIfNeedToJump() || Agent.CheckIfNeedFollow() || usingAbility)
+                {
+                    return BehaviorTree.ENodeStatus.Succeeded;
+                }
+
+                return BehaviorTree.ENodeStatus.InProgress;
             }); 
             
     }
