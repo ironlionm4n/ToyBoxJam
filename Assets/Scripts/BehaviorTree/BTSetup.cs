@@ -72,6 +72,13 @@ public class BTSetup : MonoBehaviour
             },
             () =>
             {
+
+                if (Agent.CheckIfNeedToJump())
+                {
+                    Agent.StopFollowing();  // <-- Make sure NPC stops its horizontal movement immediately
+                    return BehaviorTree.ENodeStatus.Failed;
+                }
+
                 return !Agent.CheckIfNeedFollow() ? BehaviorTree.ENodeStatus.Succeeded : BehaviorTree.ENodeStatus.InProgress;
             });
 

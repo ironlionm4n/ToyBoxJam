@@ -8,6 +8,8 @@ public class NPCSlowdown : MonoBehaviour
     [SerializeField][Range(0f, 100f)] private float maxSlowdownAcc = 15f;
     [SerializeField][Range(0f, 100f)] private float maxAirAcc = 20f;
 
+    public float MaxAirAcc { get { return maxAirAcc; } }
+
     private Vector2 _direction;
     private Vector2 _desiredVelocity;
     private Vector2 _currentVelocity;
@@ -15,7 +17,6 @@ public class NPCSlowdown : MonoBehaviour
     private float _maxSpeedChange;
     private float _acceleration;
     private bool _onGround;
-    private bool _slowing = false;
 
 
     private Rigidbody2D rb;
@@ -56,7 +57,7 @@ public class NPCSlowdown : MonoBehaviour
         _maxSpeedChange = _acceleration * Time.deltaTime;
         _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
-        if (_slowing && _currentVelocity.x == 0)
+        if (slowing && _currentVelocity.x == 0)
         {
             StopSlowingdown();
         }
@@ -67,6 +68,8 @@ public class NPCSlowdown : MonoBehaviour
     public void StartSlowingdown()
     {
         slowing = true;
+
+        Debug.Log("Slowing");
     }
 
     public void StopSlowingdown()

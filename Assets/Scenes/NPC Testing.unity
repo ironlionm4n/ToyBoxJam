@@ -6636,8 +6636,6 @@ MonoBehaviour:
   followDistance: 5
   maxSpeed: 9
   maxGroundAcc: 35
-  maxSlowdownAcc: 15
-  maxAirAcc: 20
 --- !u!114 &2043486143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6668,8 +6666,8 @@ MonoBehaviour:
   upwardMovementMultiplier: 1.7
   coyoteTime: 0.25
   jumpBuffer: 0.25
-  minYDifForJump: 1
-  maxJumpDistance: 3
+  minYDifForJump: 0.5
+  maxJumpDistance: 4
   _onGround: 0
   jumping: 0
   _jumpCollider: {fileID: 2043486153}

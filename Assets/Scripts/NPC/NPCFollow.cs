@@ -7,15 +7,11 @@ public class NPCFollow : MonoBehaviour
     [Header("Follow Settings")]
     [SerializeField] private float followDistance = 5f;
 
+    private bool _slowing = false;
     public float FollowDistance { get { return followDistance; } }
 
     [SerializeField][Range(0f, 100f)] private float maxSpeed = 4f;
     [SerializeField][Range(0f, 100f)] private float maxGroundAcc = 35f;
-    [SerializeField][Range(0f, 100f)] private float maxSlowdownAcc = 15f;
-    [SerializeField][Range(0f, 100f)] private float maxAirAcc = 20f;
-    
-    public float MaxSlowdownAcc { get { return maxSlowdownAcc; } }
-    public float MaxAirAcc { get { return maxAirAcc; } }
 
     private Vector2 _desiredVelocity;
     private Vector2 _currentVelocity;
@@ -29,11 +25,14 @@ public class NPCFollow : MonoBehaviour
     private Rigidbody2D rb;
 
     private bool _following = false;
-    private bool _slowing = false;
+
+    private NPCSlowdown _slowdown;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
+        _slowdown = GetComponent<NPCSlowdown>();
 
     }
 
@@ -49,6 +48,7 @@ public class NPCFollow : MonoBehaviour
 
         if (Vector2.Distance(player.position, transform.position) > followDistance)
         {
+            _slowdown.StopSlowingdown();
             _slowing = false;
             Vector2 _direction = player.position - transform.position;
 
@@ -56,6 +56,7 @@ public class NPCFollow : MonoBehaviour
         }
         else
         {
+            _slowdown.StartSlowingdown();
             _slowing = true;
             _desiredVelocity = Vector2.zero;
         }
@@ -74,28 +75,27 @@ public class NPCFollow : MonoBehaviour
 
         if (!_slowing)
         {
-            _acceleration = _onGround ? maxGroundAcc : maxAirAcc;
-        }
-        else
-        {
-            _acceleration = _onGround ? maxSlowdownAcc : maxAirAcc;
-        }
+            _acceleration = _onGround ? maxGroundAcc : _slowdown.MaxAirAcc;
 
-        _maxSpeedChange = _acceleration * Time.deltaTime;
-        _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
+            _maxSpeedChange = _acceleration * Time.deltaTime;
+            _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
 
-        if (_slowing && _currentVelocity.x == 0)
+            rb.velocity = _currentVelocity;
+        }
+        else if (_currentVelocity.x == 0)
         {
             StopFollowing();
         }
 
-        rb.velocity = _currentVelocity;
+
     }
 
     public void StartFollowing(Transform target)
     {
         player = target;
         _slowing = false;
+        _slowdown.StopSlowingdown();
+
         _following = true;
 
         Debug.Log("following");
@@ -109,7 +109,7 @@ public class NPCFollow : MonoBehaviour
 
     public bool CheckIfNeedFollow(Transform _player, NPCJump npcJump)
     {
-        if ((Vector2.Distance(_player.position, transform.position) > followDistance || _following) && !npcJump.CheckIfNeedToJump(_player))
+        if ((Vector2.Distance(_player.position, transform.position) > followDistance || _following))
         {
             return true;
         }

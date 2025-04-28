@@ -61,11 +61,16 @@ public class NPCJump : MonoBehaviour
     [SerializeField]
     private Collider2D _jumpCollider;
 
+    private NPCSlowdown _slowdown;
+
+    private bool hasLanded = false;
+
     private void Awake()
     {
         _npcRigidbody = GetComponent<Rigidbody2D>();
         _collisionDataRetrieving = GetComponent<CollisionDataRetrieving>();
         _followingCommands= GetComponent<NPCFollow>();
+        _slowdown= GetComponent<NPCSlowdown>();
     }
 
     // Update is called once per frame
@@ -94,34 +99,32 @@ public class NPCJump : MonoBehaviour
         if (!_isJumping)
         {
             _isJumping = true;
+            hasLanded = false;  // Reset land check when starting jump
             CaclulateJumpForce();
         }
 
-        //Since we are jumping with force we need to slow the AI down manually after they land
-        if (_onGround && _npcRigidbody.velocity.y == 0)
+        _currentVelocity = _npcRigidbody.velocity;
+
+        // Detect landing
+        if (_onGround && !_npcRigidbody.IsSleeping() && !hasLanded && Mathf.Abs(_currentVelocity.y) < 0.01f)
         {
-            //_onGround = _collisionDataRetrieving.OnGround;
-            _onGround = _jumpCollider.IsTouchingLayers(LayerMask.NameToLayer("Ground"));
-            _currentVelocity = _npcRigidbody.velocity;
+            hasLanded = true;
 
-            _acceleration = _onGround ? _followingCommands.MaxSlowdownAcc : _followingCommands.MaxAirAcc;
+            // Now that landed, start slowing down horizontally
+            _slowdown.StartSlowingdown();
+        }
 
-            _maxSpeedChange = _acceleration * Time.deltaTime;
-
-            _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _desiredVelocity.x, _maxSpeedChange);
-            _npcRigidbody.velocity = _currentVelocity;
-
-            if (_currentVelocity.x == 0)
-            {
-                StopJumping();
-            }
+        // After slowing down, once we have stopped moving horizontally, end the jump
+        if (hasLanded && Mathf.Approximately(_currentVelocity.x, 0f))
+        {
+            StopJumping();
         }
     }
 
 
     private void CaclulateJumpForce()
     {
-        Debug.Log("Calcualting jump force");
+        //Debug.Log("Calcualting jump force");
 
         float gravity = Physics2D.gravity.magnitude;
 
@@ -150,6 +153,8 @@ public class NPCJump : MonoBehaviour
         //float launchAngle = Mathf.Rad2Deg * Mathf.Atan(v0y / v0x);
         float forceX = mass * v0x / timeToTarget;
 
+        //_npcRigidbody.velocity = new Vector2(0, 0);
+
         _npcRigidbody.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
     }
 
@@ -171,6 +176,8 @@ public class NPCJump : MonoBehaviour
         jumping = false;
         _isJumping = false;
         jumpCompleted = true;
+
+        //_slowdown.StopSlowingdown();
     }
 
     public bool CheckIfNeedToJump(Transform _player)
@@ -181,11 +188,10 @@ public class NPCJump : MonoBehaviour
 
         //Y values are different and the player is not currently jumping OR the NPC is currently jumping
         if (jumping || 
-            (_onGround && _npcRigidbody.velocity.y == 0 && 
+            (_onGround && Mathf.Approximately(_npcRigidbody.velocity.y, 0) && 
             (_player.position.y - transform.position.y) > minYDifForJump && 
             (Mathf.Abs(_player.position.x - transform.position.x) < maxJumpDistance) && 
-            !playerJump.IsJumping) && 
-            !jumpCompleted)
+            !playerJump.IsJumping) )
         {
             return true;
         }
