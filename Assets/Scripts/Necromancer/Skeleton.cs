@@ -28,11 +28,15 @@ public class Skeleton : MonoBehaviour
 
     public GameObject CoinPrefab;
 
+    private SkeletonSpawnAttack AttackManager;
+
     // Start is called before the first frame update
     void Awake()
     {
         skeletonRigidbody = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").transform;
+
+        walkingLeft = Random.value > 0.5f; // randomly set move dir
     }
 
     private void Update()
@@ -101,6 +105,11 @@ public class Skeleton : MonoBehaviour
             SpawnCoin();
         }
 
+        if(AttackManager != null)
+        {
+            AttackManager.SkeletonDied();
+        }
+
         Destroy(gameObject);
     }
 
@@ -148,11 +157,16 @@ public class Skeleton : MonoBehaviour
         //Debug.Log(playerInFront);
     }
 
+    public void SetAttackManager(SkeletonSpawnAttack am)
+    {
+        AttackManager = am;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (charging)
         {
-            if (collision.tag.Equals("Enemy"))
+            if (collision.tag.Equals("Enemy") && collision.GetComponent<Skeleton>().charging)
             {
                 Die();
             }
