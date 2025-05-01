@@ -23,7 +23,7 @@ public class SkeletonSpawnAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        attacking = true;
+        //attacking = true;
     }
 
     // Update is called once per frame
