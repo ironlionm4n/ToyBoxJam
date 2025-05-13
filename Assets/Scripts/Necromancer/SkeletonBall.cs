@@ -13,7 +13,8 @@ public class SkeletonBall : MonoBehaviour
     [SerializeField] private float SizeDecreaseAmount = 0.5f;
 
     // min speed ball needs to be moving to be considered kicked
-    [SerializeField] private float kickedVelocityThreshold = 1.0f; 
+    [SerializeField] private float kickedVelocityThreshold = 1.0f;
+    [SerializeField] private GameObject CoinPrefab;
 
     private bool kicked = false;
 
@@ -59,6 +60,7 @@ public class SkeletonBall : MonoBehaviour
 
         if(newScale.x <= 0)
         {
+            Instantiate(CoinPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
