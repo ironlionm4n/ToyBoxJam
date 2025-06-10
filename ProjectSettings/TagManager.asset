@@ -22,6 +22,7 @@ TagManager:
   - BouncingAttack
   - TurnPoint
   - Roller
+  - Breakable
   layers:
   - Default
   - TransparentFX

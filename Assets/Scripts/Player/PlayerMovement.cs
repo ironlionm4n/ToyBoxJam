@@ -333,6 +333,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public IEnumerator TemporaryKnockback(float knockbackTime)
+    {
+        knockbacked = true;
+
+        yield return new WaitForSeconds(knockbackTime);
+
+        knockbacked = false;
+    }
+
     public void SetKnockbacked(bool kb)
     {
         knockbacked = kb;
