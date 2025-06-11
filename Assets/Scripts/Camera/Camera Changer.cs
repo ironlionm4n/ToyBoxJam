@@ -1,18 +1,24 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraChanger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static CameraChanger instance;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] CinemachineVirtualCamera CurrentCam;
+    [SerializeField] CinemachineVirtualCamera NextCam;
+
+    private void Awake()
     {
-        
+        instance = this;
+    }
+    public void ChangeCam(CinemachineVirtualCamera newCam)
+    {
+        NextCam = newCam;
+        CurrentCam.Priority = 0;
+        NextCam.Priority = 1;
+        CurrentCam = NextCam;
     }
 }
