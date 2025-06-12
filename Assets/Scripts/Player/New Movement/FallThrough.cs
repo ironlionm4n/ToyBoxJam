@@ -7,7 +7,7 @@ public class FallThrough : MonoBehaviour
 {
     private OneWay currentOneWay;
 
-    [SerializeField] private BoxCollider2D playerCollider;
+    [SerializeField] private Collider2D playerCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +46,7 @@ public class FallThrough : MonoBehaviour
     private IEnumerator DisableCollision()
     {
 
-        TilemapCollider2D platformCollider = currentOneWay.GetComponent<TilemapCollider2D>();
+        Collider2D platformCollider = currentOneWay.GetComponent<Collider2D>();
         Debug.Log(platformCollider);
 
         Physics2D.IgnoreCollision(playerCollider, platformCollider);
