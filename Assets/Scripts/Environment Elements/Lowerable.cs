@@ -29,13 +29,13 @@ public class Lowerable : MonoBehaviour
 
     private void Update()
     {
-        if (moving && transform.localPosition.y > movePosition.y)
+        if (moving && !(transform.position.y == movePosition.y))
         {
             timer = TimeBeforeRise;
             transform.localPosition = new Vector2(transform.localPosition.x, 
                 Mathf.MoveTowards(transform.localPosition.y, movePosition.y, MoveSpeed * Time.deltaTime));
         }
-        else if(!moving)
+        else if(!moving && !(transform.position.y == startPosition.y))
         {
             if(timer > 0)
             {
@@ -43,7 +43,7 @@ public class Lowerable : MonoBehaviour
                 return;
             }
 
-            if (!PermanantLowering && transform.localPosition.y < startPosition.y) 
+            if (!PermanantLowering) 
             {
                 transform.localPosition = new Vector2(transform.localPosition.x,
                 Mathf.MoveTowards(transform.localPosition.y, startPosition.y, RiseSpeed * Time.deltaTime));
